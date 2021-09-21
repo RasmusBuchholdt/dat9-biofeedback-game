@@ -5,11 +5,13 @@ import { WebBluetoothModule } from '@manekinekko/angular-web-bluetooth';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { BatteryLevelComponent } from './battery-level/battery-level.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    BatteryLevelComponent
   ],
   imports: [
     BrowserModule,
