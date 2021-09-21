@@ -1,1 +1,11 @@
-<a href="#" (click)="getBatteryLevel()">Get Battery Level ({{batteryLevel || 'N/A'}}%)</a>
+<div class="toolbar">
+  <div class="btn-group-vertical">
+    <button class="btn btn-success" data-toggle="modal" data-target="#screenshotModal" (click)="takeScreenshot()"
+      title="test">
+      <i class="fas fa-camera"></i>
+    </button>
+  </div>
+</div>
+<div class="engine-wrapper">
+  <canvas #rendererCanvas id="renderCanvas"></canvas>
+</div>

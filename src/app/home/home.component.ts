@@ -1,6 +1,6 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { BatteryLevelService } from '../_services/battery-level.service';
+import { RenderingEngineService } from '../_services/rendering-engine.service';
 
 @Component({
   selector: 'app-home',
@@ -9,53 +9,19 @@ import { BatteryLevelService } from '../_services/battery-level.service';
 })
 export class HomeComponent implements OnInit {
 
-  batteryLevel: string = '--';
-  device: any = {};
+  @ViewChild('rendererCanvas', { static: true })
+  public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
 
   constructor(
-    public _zone: NgZone,
-    public _batteryLevelService: BatteryLevelService
-  ) { }
-
-  ngOnInit() {
-    this.getDeviceStatus();
-    this.streamValues();
+    private renderingService: RenderingEngineService
+  ) {
   }
 
-  streamValues() {
-    this._batteryLevelService.stream().subscribe(this.showBatteryLevel.bind(this));
+  ngOnInit(): void {
+    this.renderingService.createScene(this.rendererCanvas);
+    this.renderingService.animate();
   }
 
-  getDeviceStatus() {
-    this._batteryLevelService.getDevice().subscribe(
-      (device) => {
-
-        if (device) {
-          this.device = device;
-        }
-        else {
-          // device not connected or disconnected
-          this.device = null;
-          this.batteryLevel = '--';
-        }
-      }
-    );
-  }
-
-  getFakeValue() {
-    this._batteryLevelService.getFakeValue();
-  }
-
-  getBatteryLevel() {
-    return this._batteryLevelService.value().subscribe(this.showBatteryLevel.bind(this));
-  }
-
-  showBatteryLevel(value: number) {
-
-    // force change detection
-    this._zone.run(() => {
-      console.log('Reading battery level %d', value);
-      this.batteryLevel = '' + value;
-    });
+  takeScreenshot(): void {
   }
 }
