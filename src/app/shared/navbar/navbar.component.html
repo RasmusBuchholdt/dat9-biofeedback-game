@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/']">
+    Biofeedback Game
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show"
+          [routerLink]="['/battery']">Battery</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+        <a class="nav-link" href="#" [routerLink]="['/account']"><i class="fas fa-user"></i></a>
+      </li>
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+        <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i></a>
+      </li>
+    </ul>
+  </div>
+</nav>

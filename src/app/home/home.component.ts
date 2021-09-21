@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+
+import { RenderingEngineService } from '../_services/rendering-engine.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(
-  ) { }
+  @ViewChild('rendererCanvas', { static: true })
+  public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
 
-  ngOnInit() {
+  constructor(
+    private renderingService: RenderingEngineService
+  ) {
+  }
+
+  ngOnInit(): void {
+    this.renderingService.createScene(this.rendererCanvas);
+    this.renderingService.animate();
+  }
+
+  takeScreenshot(): void {
   }
 }
