@@ -11,7 +11,12 @@ export class RenderingEngineService {
   private scene: THREE.Scene;
   private light: THREE.HemisphereLight;
 
-  private cube: THREE.Mesh;
+  private increasing = true;
+  private circleMaxValue = 3;
+  private circleMinValue = 0.1;
+  private currentInnerCicleSize = 0.1;
+  private innerCircle: THREE.Mesh;
+  private outerCircle: THREE.Mesh;
 
   private frameId: number = null;
 
@@ -51,10 +56,33 @@ export class RenderingEngineService {
     this.light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
     this.scene.add(this.light);
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    this.cube = new THREE.Mesh(geometry, material);
-    this.scene.add(this.cube);
+    this.addCircles();
+  }
+
+  private addCircles(): void {
+    let geometry = new THREE.CircleGeometry(this.circleMaxValue, 64);
+    let material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    this.outerCircle = new THREE.Mesh(geometry, material);
+    this.scene.add(this.outerCircle);
+
+    geometry = new THREE.CircleGeometry(this.circleMinValue, 64);
+    material = new THREE.MeshBasicMaterial({ color: 'green' });
+    this.innerCircle = new THREE.Mesh(geometry, material);
+    this.scene.add(this.innerCircle);
+  }
+
+  private adjustInnerCircle(): void {
+    if (this.currentInnerCicleSize >= this.circleMaxValue) {
+      this.increasing = false;
+    } else if (!this.increasing && this.currentInnerCicleSize <= this.circleMinValue) {
+      this.increasing = true;
+    }
+    this.currentInnerCicleSize += this.increasing ? 0.02 : -0.02;
+    let geometry = new THREE.CircleGeometry(this.currentInnerCicleSize, 64);
+    let material = new THREE.MeshBasicMaterial({ color: 'green' });
+    this.scene.remove(this.innerCircle);
+    this.innerCircle = new THREE.Mesh(geometry, material);
+    this.scene.add(this.innerCircle);
   }
 
   public animate(): void {
@@ -79,9 +107,7 @@ export class RenderingEngineService {
     this.frameId = requestAnimationFrame(() => {
       this.render();
     });
-
-    this.cube.rotation.x += 0.01;
-    this.cube.rotation.y += 0.01;
+    this.adjustInnerCircle();
     this.renderer.render(this.scene, this.camera);
   }
 
