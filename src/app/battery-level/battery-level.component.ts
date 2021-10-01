@@ -55,35 +55,57 @@ export class BatteryLevelComponent implements OnInit {
   }
 
   counter = 1;
-  series: SeriesEntry[] = [];
+  seriesOne: SeriesEntry[] = [];
+  seriesTwo: SeriesEntry[] = [];
+  seriesThree: SeriesEntry[] = [];
 
   showBatteryLevel(value: DataView) {
+    console.log("tihi", value);
+
+
+    // console.log(value.getInt16(0));
+    // console.log(value.getInt32(0));
+    // console.log(value.getFloat32(0));
+    // console.log(value.getFloat64(0));
+    // console.log(value.getUint16(0));
+
+    const convertedValue = value.getInt32(1, true);
     // force change detection
     this._zone.run(() => {
       console.log(this.counter);
-      this.series.push({
+      this.seriesOne.push({
         id: this.counter,
-        value: value.getInt16(0),
+        value: convertedValue,
         timestamp: new Date()
       })
+      // this.seriesTwo.push({
+      //   id: this.counter,
+      //   value: value.getFloat32(0),
+      //   timestamp: new Date()
+      // })
+      // this.seriesThree.push({
+      //   id: this.counter,
+      //   value: value.get(0),
+      //   timestamp: new Date()
+      // })
       this.counter++;
       // console.log('Reading battery level %d', value.getInt32(1));
-      this.batteryLevel = '' + value.getInt32(1);
+      this.batteryLevel = '' + convertedValue;
     });
   }
 
-  download() {
-    var a = document.createElement("a");
-    var file = new Blob([JSON.stringify(this.series)], { type: 'text/plain' });
-    a.href = URL.createObjectURL(file);
-    a.download = 'json.txt';
-    a.click();
-  }
+  // download() {
+  //   var a = document.createElement("a");
+  //   var file = new Blob([JSON.stringify(this.series)], { type: 'text/plain' });
+  //   a.href = URL.createObjectURL(file);
+  //   a.download = 'json.txt';
+  //   a.click();
+  // }
 
   updateGraph(): void {
     let newDatasets: ChartDataSets[] = [];
     newDatasets.push({
-      label: 'My Title',
+      label: '1',
       lineTension: 0.3,
       backgroundColor: "#ffb68c",
       borderColor: "#f26d21",
@@ -95,9 +117,39 @@ export class BatteryLevelComponent implements OnInit {
       pointHoverBorderColor: "#f26d21",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: this.series.map(e => e.value)
+      data: this.seriesOne.map(e => e.value)
     });
-    this.lineChartLabels = this.series.map(e => `${e.timestamp.getMinutes()}:${e.timestamp.getSeconds()}`);
+    newDatasets.push({
+      label: '2',
+      lineTension: 0.3,
+      backgroundColor: "#ffb68c",
+      borderColor: "#f26d21",
+      pointRadius: 3,
+      pointBackgroundColor: "#f26d21",
+      pointBorderColor: "#f26d21",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "#f26d21",
+      pointHoverBorderColor: "#f26d21",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: this.seriesTwo.map(e => e.value)
+    });
+    newDatasets.push({
+      label: '3',
+      lineTension: 0.3,
+      backgroundColor: "#ffb68c",
+      borderColor: "#f26d21",
+      pointRadius: 3,
+      pointBackgroundColor: "#f26d21",
+      pointBorderColor: "#f26d21",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "#f26d21",
+      pointHoverBorderColor: "#f26d21",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: this.seriesThree.map(e => e.value)
+    });
+    this.lineChartLabels = this.seriesOne.map(e => `${e.timestamp.getMinutes()}:${e.timestamp.getSeconds()}`);
     console.log(newDatasets);
 
     this.lineChartData = newDatasets;
