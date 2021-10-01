@@ -1,1 +1,3 @@
-<a href="#" (click)="$event.preventDefault(); getBatteryLevel()">Get Battery Level ({{batteryLevel || 'N/A'}}%)</a>
+<a href="#" (click)="$event.preventDefault(); getBatteryLevel()">Characteristic reading ({{batteryLevel || 'N/A'}})</a>
+
+<a href="#" (click)="$event.preventDefault(); download()">Download ({{counter || 'N/A'}}) log entries</a>

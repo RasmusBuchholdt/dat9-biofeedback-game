@@ -29,6 +29,7 @@ export class BatteryLevelComponent implements OnInit {
   getDeviceStatus() {
     this._batteryLevelService.getDevice().subscribe(
       (device) => {
+        console.log("device", device);
 
         if (device) {
           this.device = device;
@@ -50,12 +51,35 @@ export class BatteryLevelComponent implements OnInit {
     return this._batteryLevelService.value().subscribe(this.showBatteryLevel.bind(this));
   }
 
-  showBatteryLevel(value: number) {
+  counter = 1;
+  series: SeriesEntry[] = [];
 
+  showBatteryLevel(value: DataView) {
     // force change detection
     this._zone.run(() => {
-      console.log('Reading battery level %d', value);
-      this.batteryLevel = '' + value;
+      console.log(this.counter);
+      this.series.push({
+        id: this.counter,
+        value: value.getInt16(0),
+        timestamp: new Date()
+      })
+      this.counter++;
+      // console.log('Reading battery level %d', value.getInt32(1));
+      this.batteryLevel = '' + value.getInt32(1);
     });
   }
+
+  download() {
+    var a = document.createElement("a");
+    var file = new Blob([JSON.stringify(this.series)], { type: 'text/plain' });
+    a.href = URL.createObjectURL(file);
+    a.download = 'json.txt';
+    a.click();
+  }
+}
+
+export interface SeriesEntry {
+  id: number;
+  value: any
+  timestamp: Date;
 }

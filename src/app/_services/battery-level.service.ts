@@ -7,8 +7,8 @@ import { map, mergeMap } from 'rxjs/operators';
 })
 export class BatteryLevelService {
 
-  static GATT_CHARACTERISTIC_BATTERY_LEVEL = 'battery_level';
-  static GATT_PRIMARY_SERVICE = 'battery_service';
+  static GATT_PRIMARY_SERVICE = '73ab1200-a251-4c85-0f8c-d8db000021df';
+  static GATT_CHARACTERISTIC_BATTERY_LEVEL = '73ab1201-a251-4c85-0f8c-d8db000021df';
 
   constructor(public ble: BluetoothCore) { }
 
@@ -23,7 +23,7 @@ export class BatteryLevelService {
 
   stream() {
     // call this method to get a stream of values emitted by the device
-    return this.ble.streamValues$().pipe(map((value: DataView) => value.getUint8(0)));
+    return this.ble.streamValues$().pipe(map((value: DataView) => value));
   }
 
   disconnectDevice() {
@@ -66,7 +66,7 @@ export class BatteryLevelService {
         }),
 
         // 5) on that DataView, get the right value
-        map((value: DataView) => value.getUint8(0))
+        map((value: DataView) => value)
       )
   }
 }
