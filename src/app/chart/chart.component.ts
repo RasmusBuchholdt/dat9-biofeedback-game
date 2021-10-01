@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+
+import { SeriesEntry } from '../_models/series-entry';
 
 @Component({
   selector: 'app-chart',
@@ -8,6 +10,9 @@ import { Color, Label } from 'ng2-charts';
   styleUrls: ['./chart.component.scss']
 })
 export class ChartComponent implements OnInit {
+
+  @Input() series: SeriesEntry[];
+
   public lineChartData: ChartDataSets[] = [
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
   ];
@@ -69,6 +74,10 @@ export class ChartComponent implements OnInit {
 
   constructor(
   ) { }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log("detected", changes.series.currentValue);
+  }
 
   ngOnInit(): void {
   }

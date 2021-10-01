@@ -1,5 +1,8 @@
 import { Component, NgZone, OnInit } from '@angular/core';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Color, Label } from 'ng2-charts';
 
+import { SeriesEntry } from '../_models/series-entry';
 import { BatteryLevelService } from '../_services/battery-level.service';
 
 @Component({
@@ -76,10 +79,87 @@ export class BatteryLevelComponent implements OnInit {
     a.download = 'json.txt';
     a.click();
   }
+
+  updateGraph(): void {
+    let newDatasets: ChartDataSets[] = [];
+    newDatasets.push({
+      label: 'My Title',
+      lineTension: 0.3,
+      backgroundColor: "#ffb68c",
+      borderColor: "#f26d21",
+      pointRadius: 3,
+      pointBackgroundColor: "#f26d21",
+      pointBorderColor: "#f26d21",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "#f26d21",
+      pointHoverBorderColor: "#f26d21",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: this.series.map(e => e.value)
+    });
+    this.lineChartLabels = this.series.map(e => `${e.timestamp.getMinutes()}:${e.timestamp.getSeconds()}`);
+    console.log(newDatasets);
+
+    this.lineChartData = newDatasets;
+  }
+
+  public lineChartData: ChartDataSets[] = [
+    { data: [65], label: 'Series A' },
+  ];
+  public lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  public lineChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      xAxes: [{
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 10
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          maxTicksLimit: 5,
+          padding: 10
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      }]
+    },
+    legend: {
+      display: true
+    },
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      titleMarginBottom: 10,
+      titleFontColor: "#6e707e",
+      titleFontSize: 14,
+      borderColor: "#dddfeb",
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      intersect: false,
+      mode: "index",
+      caretPadding: 10,
+    }
+  };
+  public lineChartColors: Color[] = [
+    {
+      borderColor: 'black',
+      backgroundColor: 'rgba(255,0,0,0.3)',
+    },
+  ];
+  public lineChartLegend = true;
+  public lineChartType = 'line' as ChartType;
+  public lineChartPlugins = [];
 }
 
-export interface SeriesEntry {
-  id: number;
-  value: any
-  timestamp: Date;
-}
