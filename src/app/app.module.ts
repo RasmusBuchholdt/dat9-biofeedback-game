@@ -9,15 +9,13 @@ import { AppComponent } from './app.component';
 import { BatteryLevelComponent } from './battery-level/battery-level.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
-import { ChartComponent } from './chart/chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     BatteryLevelComponent,
-    NavbarComponent,
-    ChartComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
