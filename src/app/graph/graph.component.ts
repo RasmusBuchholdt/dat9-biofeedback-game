@@ -46,20 +46,21 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fakeValues();
+    // this.getReadings();
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  getReadings(): void {
+  private getReadings(): void {
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
       console.log("Got the reading", reading);
       this.pushReadingToGraph(reading);
     });
   }
 
-  fakeValues(): void {
+  private fakeValues(): void {
     setTimeout(() => {
       this.pushReadingToGraph(+Math.random().toFixed(2));
       this.fakeValues();
