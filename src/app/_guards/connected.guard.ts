@@ -5,7 +5,6 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { take } from 'rxjs/operators';
 
 import { SpiromagicService } from '../_services/spiromagic.service';
 
@@ -19,10 +18,7 @@ export class ConnectedGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    let isConnected = false;
-    this.spiromagicService.device.pipe(take(1)).subscribe(device => {
-      isConnected = device ? true : false;
-    });
+    let isConnected = this.spiromagicService.connected;
     if (!isConnected) {
       this.router.navigateByUrl('/');
     }

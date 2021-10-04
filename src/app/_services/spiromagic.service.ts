@@ -8,6 +8,7 @@ import { GATTCharacteristicService } from './gatt-characteristic.service';
 })
 export class SpiromagicService {
 
+  public connected = false;
   public reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
 
   constructor(
@@ -22,11 +23,12 @@ export class SpiromagicService {
   }
 
   public disconnect(): void {
+    this.connected = false;
     this.gattService.disconnectDevice();
-
   }
 
   private getSpirometerReadings() {
+    this.connected = true;
     return this.gattService.value().subscribe(this.handleReading.bind(this));
   }
 
