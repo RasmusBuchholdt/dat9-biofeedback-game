@@ -60,13 +60,21 @@ export class RenderingEngineService {
   }
 
   private addCircles(): void {
-    let geometry = new THREE.CircleGeometry(this.circleMaxValue, 64);
+    let geometry = new THREE.CircleGeometry(this.circleMaxValue, 32);
     let material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
     this.outerCircle = new THREE.Mesh(geometry, material);
     this.scene.add(this.outerCircle);
 
-    geometry = new THREE.CircleGeometry(this.circleMinValue, 64);
+    geometry = new THREE.CircleGeometry(this.circleMinValue, 32);
     material = new THREE.MeshBasicMaterial({ color: 'green' });
+    this.innerCircle = new THREE.Mesh(geometry, material);
+    this.scene.add(this.innerCircle);
+  }
+
+  public setInnerCircle(value: number) {
+    let geometry = new THREE.CircleGeometry(value, 32);
+    let material = new THREE.MeshBasicMaterial({ color: 'green' });
+    this.scene.remove(this.innerCircle);
     this.innerCircle = new THREE.Mesh(geometry, material);
     this.scene.add(this.innerCircle);
   }
@@ -96,28 +104,30 @@ export class RenderingEngineService {
           this.render();
         });
       }
-
       window.addEventListener('resize', () => {
         this.resize();
       });
     });
   }
 
-  public render(): void {
+  private render(): void {
     this.frameId = requestAnimationFrame(() => {
       this.render();
     });
-    this.adjustInnerCircle();
+    // this.adjustInnerCircle();
     this.renderer.render(this.scene, this.camera);
   }
 
-  public resize(): void {
+  private resize(): void {
     const width = window.innerWidth;
     const height = window.innerHeight;
-
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-
     this.renderer.setSize(width, height);
+  }
+
+  public takeSceneScreenshot(): string {
+    this.renderer.render(this.scene, this.camera);
+    return this.renderer.domElement.toDataURL();
   }
 }
