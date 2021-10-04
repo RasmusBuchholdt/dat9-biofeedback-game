@@ -23,7 +23,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     NgxSpinnerModule,
     ChartsModule,
     WebBluetoothModule.forRoot({
-      enableTracing: true // or false, this will enable logs in the browser's console
+      enableTracing: !environment.production
     })
   ],
   providers: [],
