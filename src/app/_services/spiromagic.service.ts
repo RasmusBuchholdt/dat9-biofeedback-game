@@ -15,7 +15,7 @@ export class SpiromagicService {
     private zone: NgZone,
     public gattService: GATTCharacteristicService
   ) {
-    this.gattService.stream('0000180a-0000-1000-8000-00805f9b34fb', '00002a23-0000-1000-8000-00805f9b34fb');
+    this.gattService.stream('73ab1200-a251-4c85-0f8c-d8db000021df', '73ab1201-a251-4c85-0f8c-d8db000021df');
   }
 
   public connect(): void {
