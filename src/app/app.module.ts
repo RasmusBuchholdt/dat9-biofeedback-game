@@ -8,10 +8,10 @@ import { environment } from 'src/environments/environment';
 import { SpiromagicService } from './_services/spiromagic.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { GameComponent } from './game/game.component';
 import { GraphComponent } from './graph/graph.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
-import { SetupComponent } from './setup/setup.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { SetupComponent } from './setup/setup.component';
     HomeComponent,
     GraphComponent,
     NavbarComponent,
-    SetupComponent
+    GameComponent
   ],
   imports: [
     BrowserModule,
