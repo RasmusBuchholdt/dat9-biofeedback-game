@@ -18,10 +18,6 @@ export class SpiroMagicService {
     return this.bluetoothService.getDevice$();
   }
 
-  getFakeValue() {
-    this.bluetoothService.fakeNext();
-  }
-
   stream() {
     return this.bluetoothService.streamValues$().pipe(map((value: DataView) => value));
   }

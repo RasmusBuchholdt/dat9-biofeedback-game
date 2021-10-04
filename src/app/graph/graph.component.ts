@@ -12,29 +12,35 @@ import { SpiroMagicService } from '../_services/spiro-magic.service';
 })
 export class GraphComponent implements OnInit {
 
-  private eventsOnChartLimit = 20;
-  countEventsChartType = "line" as ChartType;
-  countEventsData: ChartDataSets[] = [
-    { data: [], label: "Number of Events", fill: false }
+  chartType = "line" as ChartType;
+  chartData: ChartDataSets[] = [
+    { data: [], label: "Spirometer readings", fill: false }
   ];
-  countEventsLabels: Label[] = [];
-  countEventsColors: Color[] = [
+  chartLabels: Label[] = [];
+  chartColors: Color[] = [
     {
       borderColor: "#039BE5",
       pointBackgroundColor: "#039BE5"
     }
   ];
-  countEventsOptions: ChartOptions = {
+  chartOptions: ChartOptions = {
     animation: {
       duration: 0
+    },
+    scales: {
+      xAxes: [{
+        ticks: {
+          maxTicksLimit: 30
+        }
+      }],
     }
-  };
+  }
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
   device: BluetoothDevice | null = null;
   lastReading = 0;
-  readings = 1;
+  readings = null;
 
   constructor(
     public zone: NgZone,
@@ -49,42 +55,42 @@ export class GraphComponent implements OnInit {
 
   fakeValues(): void {
     setTimeout(() => {
-      // this.series.push({
-      //   id: this.readings,
-      //   value: Math.floor(Math.random() * 100),
-      //   timestamp: new Date()
-      // });
-      this.pushEventToChartData({
+      this.pushReadingToGraph({
         id: this.readings,
         value: Math.floor(Math.random() * 100),
         timestamp: new Date()
       });
       this.fakeValues();
-    }, 1000);
+    }, 100);
   }
 
-  private pushEventToChartData(event: SeriesEntry): void {
-    if (this.isChartDataFull(this.countEventsData, 20)) {
-      this.removeLastElementFromChartDataAndLabel();
+  private pushReadingToGraph(entry: SeriesEntry): void {
+    if (this.isGraphFull(this.chartData, 20)) {
+      this.removeLastElement();
     }
-    this.countEventsData[0].data.push(event.value);
-    this.countEventsLabels.push(
-      this.getLabel(event)
+    this.lastReading = entry.value;
+    this.readings++;
+    this.chartData[0].data.push(entry.value);
+    this.chartLabels.push(
+      this.getLabel(entry)
     );
   }
+
   private getLabel(event: SeriesEntry): string {
-    return `${event.id}`;
+    return `${event.timestamp.getHours()}:${event.timestamp.getMinutes()}:${event.timestamp.getSeconds()}`
   }
-  private removeLastElementFromChartDataAndLabel(): void {
-    this.countEventsData[0].data = this.countEventsData[0].data.slice(1);
-    this.countEventsLabels = this.countEventsLabels.slice(1);
+
+  private removeLastElement(): void {
+    this.chartData[0].data = this.chartData[0].data.slice(1);
+    this.chartLabels = this.chartLabels.slice(1);
   }
-  private isChartDataFull(chartData: ChartDataSets[], limit: number): boolean {
+
+  private isGraphFull(chartData: ChartDataSets[], limit: number): boolean {
     return chartData[0].data.length >= limit;
   }
 
   streamValues() {
-    this.spiroMagicService.stream().subscribe(this.showBatteryLevel.bind(this));
+    this.spiroMagicService.stream().subscribe(this.showSpirometerReading.bind(this));
   }
 
   getDeviceStatus() {
@@ -101,35 +107,27 @@ export class GraphComponent implements OnInit {
     );
   }
 
-  getFakeValue() {
-    this.spiroMagicService.getFakeValue();
+  getSpirometerReadings() {
+    return this.spiroMagicService.value().subscribe(this.showSpirometerReading.bind(this));
   }
 
-  getBatteryLevel() {
-    return this.spiroMagicService.value().subscribe(this.showBatteryLevel.bind(this));
-  }
-
-  series: SeriesEntry[] = [];
-  showBatteryLevel(value: number) {
+  showSpirometerReading(value: number) {
     this.zone.run(() => {
       // Add data to graph
-      // this.series.push({
-      //   id: this.counter,
-      //   value: value,
-      //   timestamp: new Date()
-      // });
-      // this.updateGraph(value);
-      this.readings++;
-      this.lastReading = value;
+      this.pushReadingToGraph({
+        id: this.readings,
+        value: value,
+        timestamp: new Date()
+      });
     });
   }
 
-  download() {
-    var a = document.createElement("a");
-    var file = new Blob([JSON.stringify(this.series)], { type: 'text/plain' });
-    a.href = URL.createObjectURL(file);
-    a.download = 'json.txt';
-    a.click();
-  }
+  // series: SeriesEntry[] = [];
+  // download() {
+  //   var a = document.createElement("a");
+  //   var file = new Blob([JSON.stringify(this.series)], { type: 'text/plain' });
+  //   a.href = URL.createObjectURL(file);
+  //   a.download = 'json.txt';
+  //   a.click();
+  // }
 }
-
