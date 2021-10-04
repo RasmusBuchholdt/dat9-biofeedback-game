@@ -3,21 +3,21 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
 import { SeriesEntry } from '../_models/series-entry';
-import { BatteryLevelService } from '../_services/battery-level.service';
+import { SpiroMagicService } from '../_services/spiro-magic.service';
 
 @Component({
-  selector: 'app-battery-level',
-  templateUrl: './battery-level.component.html',
-  styleUrls: ['./battery-level.component.scss']
+  selector: 'app-graph',
+  templateUrl: './graph.component.html',
+  styleUrls: ['./graph.component.scss']
 })
-export class BatteryLevelComponent implements OnInit {
+export class GraphComponent implements OnInit {
 
   batteryLevel: string = '--';
   device: any = {};
 
   constructor(
-    public _zone: NgZone,
-    public _batteryLevelService: BatteryLevelService
+    public zone: NgZone,
+    public spiroMagicService: SpiroMagicService
   ) { }
 
   ngOnInit() {
@@ -26,11 +26,11 @@ export class BatteryLevelComponent implements OnInit {
   }
 
   streamValues() {
-    this._batteryLevelService.stream().subscribe(this.showBatteryLevel.bind(this));
+    this.spiroMagicService.stream().subscribe(this.showBatteryLevel.bind(this));
   }
 
   getDeviceStatus() {
-    this._batteryLevelService.getDevice().subscribe(
+    this.spiroMagicService.getDevice().subscribe(
       (device) => {
         console.log("device", device);
 
@@ -47,11 +47,11 @@ export class BatteryLevelComponent implements OnInit {
   }
 
   getFakeValue() {
-    this._batteryLevelService.getFakeValue();
+    this.spiroMagicService.getFakeValue();
   }
 
   getBatteryLevel() {
-    return this._batteryLevelService.value().subscribe(this.showBatteryLevel.bind(this));
+    return this.spiroMagicService.value().subscribe(this.showBatteryLevel.bind(this));
   }
 
   counter = 1;
@@ -61,7 +61,7 @@ export class BatteryLevelComponent implements OnInit {
     const convertedValue = this.normalize(value.getInt32(1, true)).toFixed(2);
     // const convertedValue = this.normalize(value.getInt32(1, true) / 1000000);
     // force change detection
-    this._zone.run(() => {
+    this.zone.run(() => {
       console.log(this.counter);
       this.series.push({
         id: this.counter,

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { BatteryLevelComponent } from './battery-level/battery-level.component';
+import { GraphComponent } from './graph/graph.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
@@ -10,8 +10,8 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path: 'battery',
-    component: BatteryLevelComponent
+    path: 'graph',
+    component: GraphComponent
   },
   {
     path: '**',

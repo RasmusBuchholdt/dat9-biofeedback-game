@@ -3,10 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { WebBluetoothModule } from '@manekinekko/angular-web-bluetooth';
 import { ChartsModule } from 'ng2-charts';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { environment } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BatteryLevelComponent } from './battery-level/battery-level.component';
+import { GraphComponent } from './graph/graph.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 
@@ -14,8 +15,8 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
   declarations: [
     AppComponent,
     HomeComponent,
-    BatteryLevelComponent,
-    NavbarComponent
+    GraphComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
