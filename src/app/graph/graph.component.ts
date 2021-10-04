@@ -1,28 +1,23 @@
-import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { BaseChartDirective, Color, Label } from 'ng2-charts';
+import { BaseChartDirective, Label } from 'ng2-charts';
+import { Subscription } from 'rxjs';
 
 import { SeriesEntry } from '../_models/series-entry';
-import { SpiroMagicService } from '../_services/spiro-magic.service';
+import { SpiromagicService } from '../_services/spiromagic.service';
 
 @Component({
   selector: 'app-graph',
   templateUrl: './graph.component.html',
   styleUrls: ['./graph.component.scss']
 })
-export class GraphComponent implements OnInit {
+export class GraphComponent implements OnInit, OnDestroy {
 
   chartType = "line" as ChartType;
   chartData: ChartDataSets[] = [
     { data: [], label: "Spirometer readings", fill: false }
   ];
   chartLabels: Label[] = [];
-  chartColors: Color[] = [
-    {
-      borderColor: "#039BE5",
-      pointBackgroundColor: "#039BE5"
-    }
-  ];
   chartOptions: ChartOptions = {
     animation: {
       duration: 0
@@ -30,7 +25,7 @@ export class GraphComponent implements OnInit {
     scales: {
       xAxes: [{
         ticks: {
-          maxTicksLimit: 30
+          maxTicksLimit: 10
         }
       }],
     }
@@ -42,38 +37,50 @@ export class GraphComponent implements OnInit {
   lastReading = 0;
   readings = null;
 
+  private subscription: Subscription | null;
+
   constructor(
     public zone: NgZone,
-    public spiroMagicService: SpiroMagicService
+    public spiromagicService: SpiromagicService
   ) { }
 
   ngOnInit() {
-    this.getDeviceStatus();
-    this.streamValues();
     this.fakeValues();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  getReadings(): void {
+    this.subscription = this.spiromagicService.reading$.subscribe(reading => {
+      console.log("Got the reading", reading);
+      this.pushReadingToGraph(reading);
+    });
   }
 
   fakeValues(): void {
     setTimeout(() => {
-      this.pushReadingToGraph({
-        id: this.readings,
-        value: Math.floor(Math.random() * 100),
-        timestamp: new Date()
-      });
+      this.pushReadingToGraph(+Math.random().toFixed(2));
       this.fakeValues();
     }, 100);
   }
 
-  private pushReadingToGraph(entry: SeriesEntry): void {
-    if (this.isGraphFull(this.chartData, 20)) {
+  private pushReadingToGraph(value: number): void {
+    if (this.isGraphFull(this.chartData, 50)) {
       this.removeLastElement();
     }
-    this.lastReading = entry.value;
+
+    const reading = {
+      id: this.readings,
+      value: value,
+      timestamp: new Date()
+    };
+
+    this.lastReading = reading.value;
     this.readings++;
-    this.chartData[0].data.push(entry.value);
-    this.chartLabels.push(
-      this.getLabel(entry)
-    );
+    this.chartData[0].data.push(reading.value);
+    this.chartLabels.push(this.getLabel(reading));
   }
 
   private getLabel(event: SeriesEntry): string {
@@ -87,39 +94,6 @@ export class GraphComponent implements OnInit {
 
   private isGraphFull(chartData: ChartDataSets[], limit: number): boolean {
     return chartData[0].data.length >= limit;
-  }
-
-  streamValues() {
-    this.spiroMagicService.stream().subscribe(this.showSpirometerReading.bind(this));
-  }
-
-  getDeviceStatus() {
-    this.spiroMagicService.getDevice().subscribe(
-      (device) => {
-        if (device) {
-          this.device = device;
-        } else {
-          // device not connected or disconnected
-          this.device = null;
-          this.lastReading = 0;
-        }
-      }
-    );
-  }
-
-  getSpirometerReadings() {
-    return this.spiroMagicService.value().subscribe(this.showSpirometerReading.bind(this));
-  }
-
-  showSpirometerReading(value: number) {
-    this.zone.run(() => {
-      // Add data to graph
-      this.pushReadingToGraph({
-        id: this.readings,
-        value: value,
-        timestamp: new Date()
-      });
-    });
   }
 
   // series: SeriesEntry[] = [];
