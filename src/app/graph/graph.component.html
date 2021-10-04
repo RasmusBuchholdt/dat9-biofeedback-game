@@ -1,10 +1,16 @@
-<a href="#" (click)="$event.preventDefault(); getBatteryLevel()">Reading ({{batteryLevel || 'N/A'}})%</a>
+<a href="#" (click)="$event.preventDefault(); getBatteryLevel()">Reading ({{lastReading}})%</a>
 
 <div style="display: block;">
-  <canvas baseChart width="100%" height="20" [datasets]="lineChartData" [options]="lineChartOptions"
-    [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" [labels]="lineChartLabels"
-    [plugins]="lineChartPlugins">
-  </canvas>
+  <canvas
+    baseChart
+    width="100%"
+    height="20"
+    [datasets]="countEventsData"
+    [chartType]="countEventsChartType"
+    [labels]="countEventsLabels"
+    [colors]="countEventsColors"
+    [options]="countEventsOptions"
+  ></canvas>
 </div>
 
-<a href="#" (click)="$event.preventDefault(); download()">Download ({{counter || 'N/A'}}) log entries</a>
+<a href="#" (click)="$event.preventDefault(); download()">Download ({{readings || 'N/A'}}) log entries</a>
