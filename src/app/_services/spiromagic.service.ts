@@ -1,7 +1,7 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import { Calibration } from '../_models/calibration';
+import { Calibration, CalibrationType } from '../_models/calibration';
 import { normalize } from '../_utils/normalize';
 import { GATTCharacteristicService } from './gatt-characteristic.service';
 
@@ -12,7 +12,7 @@ export class SpiromagicService implements OnDestroy {
 
   public connected = false;
   public reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
-  public calibration$: BehaviorSubject<Calibration | null> = new BehaviorSubject<Calibration | null>(Calibration.DYNAMIC);
+  public calibration$: BehaviorSubject<Calibration | null> = new BehaviorSubject<Calibration | null>(this.calibrations[0]);
   public minReading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(Number.MAX_SAFE_INTEGER);
   public maxReading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(Number.MIN_SAFE_INTEGER);
   private subscription: Subscription | null = null;
@@ -64,11 +64,7 @@ export class SpiromagicService implements OnDestroy {
   private convertValue(value: DataView): number {
     const rawValue = value.getInt32(1, true);
     const calibration = this.calibration$.getValue();
-    // TODO: Refactor this (Move it to a service)
-    let min: number;
-    let max: number;
 
-    // Log min and max readings in development
     if (rawValue > this.maxRawReading) {
       this.maxRawReading = rawValue;
       console.log("New raw max reading", this.maxRawReading);
@@ -78,24 +74,34 @@ export class SpiromagicService implements OnDestroy {
       console.log("New raw min reading", this.minRawReading);
     }
 
-    if (calibration === Calibration.DYNAMIC) {
-      min = this.minRawReading;
-      max = this.maxRawReading;
-    } else if (calibration === Calibration.HARDWARE) {
-      min = 26804568;
-      max = 2110814406;
-    } else if (calibration === Calibration.EXHALE) {
-      min = 436542358;
-      max = 469441172
-    }
-    return +normalize(rawValue, min, max).toFixed(2);
-  }
-
-  getStrategyValues(): void {
-
+    return +normalize(rawValue, calibration.min || this.minRawReading, calibration.max || this.maxRawReading).toFixed(2);
   }
 
   get device(): Observable<BluetoothDevice> {
     return this.gattService.getDevice();
+  }
+
+  get calibrations(): Calibration[] {
+    return [
+      {
+        name: 'Dynamic',
+        description: 'The readings will be normalized based on your personal readings.',
+        calibrationType: CalibrationType.DYNAMIC
+      },
+      {
+        name: 'Hardware',
+        description: 'The readings will be normalized based on the hardware capacity.',
+        calibrationType: CalibrationType.HARDWARE,
+        min: 26804568,
+        max: 2110814406
+      },
+      {
+        name: 'Exhale',
+        description: 'The readings will be normalized based on the overall average exhale readings.',
+        calibrationType: CalibrationType.EXHALE,
+        min: 436542358,
+        max: 469441172
+      }
+    ];
   }
 }

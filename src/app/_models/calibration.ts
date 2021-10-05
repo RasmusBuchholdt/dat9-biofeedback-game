@@ -1,10 +1,12 @@
-export interface CalibrationOption {
+export interface Calibration {
   name: string;
   description: string;
-  calibration: Calibration;
+  min?: number;
+  max?: number;
+  calibrationType: CalibrationType;
 }
 
-export enum Calibration {
+export enum CalibrationType {
   DYNAMIC = 0,
   HARDWARE = 1,
   EXHALE = 2

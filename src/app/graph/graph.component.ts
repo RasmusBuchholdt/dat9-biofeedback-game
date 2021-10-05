@@ -3,7 +3,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { Subscription } from 'rxjs';
 
-import { Calibration, CalibrationOption } from '../_models/calibration';
+import { Calibration } from '../_models/calibration';
 import { SeriesEntry } from '../_models/series-entry';
 import { SpiromagicService } from '../_services/spiromagic.service';
 
@@ -49,24 +49,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   minReading: number;
   maxReading: number;
 
-  calibrationOptions: CalibrationOption[] =
-    [
-      {
-        name: 'Dynamic',
-        description: 'The readings will be normalized based on your personal readings.',
-        calibration: Calibration.DYNAMIC
-      },
-      {
-        name: 'Hardware',
-        description: 'The readings will be normalized based on the hardware capacity.',
-        calibration: Calibration.HARDWARE
-      },
-      {
-        name: 'Exhale',
-        description: 'The readings will be normalized based on the overall average exhale readings.',
-        calibration: Calibration.EXHALE,
-      }
-    ]
+  calibrations = this.spiromagicService.calibrations;
   activeCalibration: Calibration | null = null;
   calibrationDescription: string;
 
@@ -101,7 +84,7 @@ export class GraphComponent implements OnInit, OnDestroy {
       this.pushReadingToGraph(reading);
     });
     this.subscriptionCalibration = this.spiromagicService.calibration$.subscribe(calibration => {
-      this.calibrationDescription = this.calibrationOptions.find(e => e.calibration === calibration).description;
+      this.calibrationDescription = this.calibrations.find(e => e.calibrationType === calibration.calibrationType).description;
       this.activeCalibration = calibration;
     });
     this.subscriptionCalibration = this.spiromagicService.minReading$.subscribe(minReading => {
