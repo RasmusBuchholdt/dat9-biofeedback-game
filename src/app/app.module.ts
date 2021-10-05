@@ -27,7 +27,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     NgxSpinnerModule,
     ChartsModule,
     WebBluetoothModule.forRoot({
-      enableTracing: environment.production
+      enableTracing: !environment.production
     })
   ],
   providers: [SpiromagicService],
