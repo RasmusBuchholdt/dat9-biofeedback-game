@@ -9,11 +9,11 @@ import { SeriesEntry } from '../_models/series-entry';
 import { SpiromagicService } from '../_services/spiromagic.service';
 
 @Component({
-  selector: 'app-graph',
-  templateUrl: './graph.component.html',
-  styleUrls: ['./graph.component.scss']
+  selector: 'app-calibration',
+  templateUrl: './calibration.component.html',
+  styleUrls: ['./calibration.component.scss']
 })
-export class GraphComponent implements OnInit, OnDestroy {
+export class CalibrationComponent implements OnInit, OnDestroy {
   chartType = "line" as ChartType;
   chartData: ChartDataSets[] = [
     { data: [], label: "Spirometer readings", fill: false }

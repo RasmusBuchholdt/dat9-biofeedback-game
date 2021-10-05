@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 import { ConnectedGuard } from './_guards/connected.guard';
+import { CalibrationComponent } from './calibration/calibration.component';
 import { GameComponent } from './game/game.component';
-import { GraphComponent } from './graph/graph.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
@@ -18,9 +18,9 @@ const routes: Routes = [
     component: GameComponent
   },
   {
-    path: 'graph',
+    path: 'calibration',
     canActivate: environment.production ? [ConnectedGuard] : [],
-    component: GraphComponent
+    component: CalibrationComponent
   },
   {
     path: '**',
