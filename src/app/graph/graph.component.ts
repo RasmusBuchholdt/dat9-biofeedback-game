@@ -68,7 +68,7 @@ export class GraphComponent implements OnInit, OnDestroy {
         name: 'Exhale'
       }
     ]
-  selectedNormalizationStrategy: NormalizationStrategy | null = null;
+  selectedNormalizationStrategy = NormalizationStrategy.HARDWARE;
 
   private subscription: Subscription | null;
 
