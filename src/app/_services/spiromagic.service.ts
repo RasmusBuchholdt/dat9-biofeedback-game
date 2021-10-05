@@ -17,7 +17,13 @@ export class SpiromagicService implements OnDestroy {
     public gattService: GATTCharacteristicService
   ) {
     this.subscription = this.gattService
-      .stream('73ab1200-a251-4c85-0f8c-d8db000021df', '73ab1201-a251-4c85-0f8c-d8db000021df')
+      .stream(
+        '73ab1200-a251-4c85-0f8c-d8db000021df',
+        '73ab1201-a251-4c85-0f8c-d8db000021df',
+        [
+          { name: 'SPIRO/MAGIC' },
+          { services: ['73ab1200-a251-4c85-0f8c-d8db000021df'] }
+        ])
       .subscribe(reading => {
         this.handleReading(reading);
       });
