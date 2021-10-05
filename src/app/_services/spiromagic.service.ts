@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { GATTCharacteristicService } from './gatt-characteristic.service';
@@ -6,7 +6,7 @@ import { GATTCharacteristicService } from './gatt-characteristic.service';
 @Injectable({
   providedIn: 'root'
 })
-export class SpiromagicService {
+export class SpiromagicService implements OnDestroy {
 
   public connected = false;
   public reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
@@ -21,6 +21,10 @@ export class SpiromagicService {
       .subscribe(reading => {
         this.handleReading(reading);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   public connect(): void {
@@ -38,7 +42,6 @@ export class SpiromagicService {
   }
 
   private handleReading(value: DataView) {
-
     this.zone.run(() => {
       this.reading$.next(this.convertValue(value));
     });

@@ -25,9 +25,18 @@ export class GraphComponent implements OnInit, OnDestroy {
     scales: {
       xAxes: [{
         ticks: {
-          maxTicksLimit: 10
+          maxTicksLimit: 10,
+          max: 20
         }
       }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          stepSize: 10,
+          max: 100,
+          min: 0
+        }
+      }]
     }
   }
 
@@ -45,8 +54,8 @@ export class GraphComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.fakeValues();
-    // this.getReadings();
+    // this.fakeValues();
+    this.getReadings();
   }
 
   ngOnDestroy() {
@@ -55,7 +64,6 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   private getReadings(): void {
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
-      console.log("Got the reading", reading);
       this.pushReadingToGraph(reading);
     });
   }
@@ -68,7 +76,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   }
 
   private pushReadingToGraph(value: number): void {
-    if (this.isGraphFull(this.chartData, 50)) {
+    if (this.isGraphFull(this.chartData, 100)) {
       this.removeLastElement();
     }
 
