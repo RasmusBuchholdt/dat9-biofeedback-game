@@ -23,9 +23,15 @@ export class RenderingEngineService {
   public constructor(private ngZone: NgZone) {
   }
 
-  public ngOnDestroy(): void {
+  public stopGame(): void {
     if (this.frameId != null) {
       cancelAnimationFrame(this.frameId);
+    }
+    if (this.scene != null) {
+      this.renderer.dispose();
+      this.scene.children.forEach(this.killObject); // Remove children, but also their materials.
+      this.scene.clear(); // This does remove all the children too, but does not dispose the materials (I think).
+      this.scene = null;
     }
   }
 
@@ -121,6 +127,32 @@ export class RenderingEngineService {
     });
     // this.adjustInnerCircle();
     this.renderer.render(this.scene, this.camera);
+  }
+
+  private killObject(object: (THREE.Object3D | THREE.HemisphereLight | THREE.Mesh) & { isMesh: boolean, material: any, geometry: THREE.BoxGeometry }): void {
+    object.clear();
+    if (object.isMesh) {
+      object.geometry.dispose()
+      if (object.material.type == 'MeshBasicMaterial') {
+        return;
+      }
+      if (object.material.isMaterial) {
+        this.cleanMaterial(object.material)
+      } else {
+        for (const material of object.material) this.cleanMaterial(material)
+      }
+    }
+  }
+
+  private cleanMaterial(material: any): void {
+    material.dispose()
+    // dispose textures
+    for (const key of Object.keys(material)) {
+      const value = material[key]
+      if (value && typeof value === 'object' && 'minFilter' in value) {
+        value.dispose()
+      }
+    }
   }
 
   private resize(): void {

@@ -33,8 +33,9 @@ export class GameComponent implements OnInit, OnDestroy {
     this.renderingService.animate();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.renderingService.stopGame();
   }
 
   getReadings(): void {
