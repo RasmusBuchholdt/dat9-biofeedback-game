@@ -1,6 +1,8 @@
 import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
+import { normalize } from '../_utils/normalize';
 import { GATTCharacteristicService } from './gatt-characteristic.service';
 
 @Injectable({
@@ -53,9 +55,32 @@ export class SpiromagicService implements OnDestroy {
     });
   }
 
+  private maxReading = 0;
+  private minReading = Number.MAX_SAFE_INTEGER;
 
   private convertValue(value: DataView): number {
-    return +this.normalize(value.getInt32(1, true)).toFixed(2);
+    const rawValue = value.getInt32(1, true);
+
+    // Hardware capped values:
+    // Min: 26804568
+    // Max: 2110814406
+
+    // Human reachable values:
+    // Min: 351147229
+    // Max: 897135635
+
+    // Log min and max readings in development
+    if (!environment.production) {
+      if (rawValue > this.maxReading) {
+        this.maxReading = rawValue;
+        console.log("New raw max reading", this.maxReading);
+      }
+      if (rawValue < this.minReading) {
+        this.minReading = rawValue;
+        console.log("New raw min reading", this.minReading);
+      }
+    }
+    return +normalize(rawValue, 351147229, 897135635).toFixed(2);
   }
 
   get device(): Observable<BluetoothDevice> {
