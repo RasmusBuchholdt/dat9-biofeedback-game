@@ -65,9 +65,13 @@ export class SpiromagicService implements OnDestroy {
     // Min: 26804568
     // Max: 2110814406
 
-    // Human reachable values:
+    // Human blow reachable values:
     // Min: 351147229
     // Max: 897135635
+
+    // Human exhale reachable values:
+    // Min: 436542358
+    // Max: 469441172
 
     // Log min and max readings in development
     if (!environment.production) {
@@ -80,7 +84,7 @@ export class SpiromagicService implements OnDestroy {
         console.log("New raw min reading", this.minReading);
       }
     }
-    return +normalize(rawValue, 351147229, 897135635).toFixed(2);
+    return +normalize(rawValue, 436542358, 469441172).toFixed(2);
   }
 
   get device(): Observable<BluetoothDevice> {
