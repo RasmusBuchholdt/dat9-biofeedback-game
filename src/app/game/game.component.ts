@@ -41,7 +41,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   getReadings(): void {
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
-      console.log("Got the reading", reading);
       this.renderingService.setInnerCircle(reading);
     })
   }

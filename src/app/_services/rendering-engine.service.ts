@@ -11,12 +11,13 @@ export class RenderingEngineService {
   private scene: THREE.Scene;
   private light: THREE.HemisphereLight;
 
-  private increasing = true;
   private circleMaxValue = 3;
   private circleMinValue = 0.1;
-  private currentInnerCicleSize = 0.1;
+  private biggestValue = 0;
+
   private innerCircle: THREE.Mesh;
   private outerCircle: THREE.Mesh;
+  private maxValueCircle: THREE.Mesh;
 
   private frameId: number = null;
 
@@ -36,17 +37,15 @@ export class RenderingEngineService {
   }
 
   public createScene(canvas: ElementRef<HTMLCanvasElement>): void {
-    // The first step is to get the reference of the canvas element from our HTML document
     this.canvas = canvas.nativeElement;
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
-      alpha: true,    // transparent background
-      antialias: true // smooth edges
+      alpha: true,
+      antialias: true
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-    // create the scene
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x999999);
 
@@ -56,8 +55,8 @@ export class RenderingEngineService {
     this.camera.position.z = 5;
     this.scene.add(this.camera);
 
-    const skyColor = 0xB1E1FF;  // light blue
-    const groundColor = 0xB97A20;  // brownish orange
+    const skyColor = 0xB1E1FF;
+    const groundColor = 0xB97A20;
     const intensity = 1.5;
     this.light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
     this.scene.add(this.light);
@@ -88,25 +87,20 @@ export class RenderingEngineService {
     this.scene.remove(this.innerCircle);
     this.innerCircle = new THREE.Mesh(geometry, material);
     this.scene.add(this.innerCircle);
+
+    if (scaledValue > this.biggestValue) this.adjustMaxValueCircle(scaledValue);
   }
 
-  private adjustInnerCircle(): void {
-    if (this.currentInnerCicleSize >= this.circleMaxValue) {
-      this.increasing = false;
-    } else if (!this.increasing && this.currentInnerCicleSize <= this.circleMinValue) {
-      this.increasing = true;
-    }
-    this.currentInnerCicleSize += this.increasing ? 0.02 : -0.02;
-    let geometry = new THREE.CircleGeometry(this.currentInnerCicleSize, 64);
-    let material = new THREE.MeshBasicMaterial({ color: 'green' });
-    this.scene.remove(this.innerCircle);
-    this.innerCircle = new THREE.Mesh(geometry, material);
-    this.scene.add(this.innerCircle);
+  private adjustMaxValueCircle(value: number): void {
+    this.biggestValue = value;
+    let geometry = new THREE.CircleGeometry(value, 32);
+    let material = new THREE.MeshBasicMaterial({ color: 'red' });
+    this.scene.remove(this.maxValueCircle);
+    this.maxValueCircle = new THREE.Mesh(geometry, material);
+    this.scene.add(this.maxValueCircle);
   }
 
   public animate(): void {
-    // We have to run this outside angular zones,
-    // because it could trigger heavy changeDetection cycles.
     this.ngZone.runOutsideAngular(() => {
       if (document.readyState !== 'loading') {
         this.render();
@@ -125,7 +119,6 @@ export class RenderingEngineService {
     this.frameId = requestAnimationFrame(() => {
       this.render();
     });
-    // this.adjustInnerCircle();
     this.renderer.render(this.scene, this.camera);
   }
 
