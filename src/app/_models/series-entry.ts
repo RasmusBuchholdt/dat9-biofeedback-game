@@ -1,5 +1,4 @@
 export interface SeriesEntry {
-  id: number;
-  value: any
+  value: number;
   timestamp: Date;
 }

@@ -5,14 +5,15 @@
         <div class="card-body">
           <h5 class="card-title">Spirometer Stats</h5>
           <p>Current reading: {{lastReading || 'N/A'}}</p>
-          <p>Smallest reading: {{smallestReading || 'N/A'}}</p>
-          <p>Biggest reading: {{biggestReading || 'N/A'}}</p>
-          <p>Normalization strategy:</p>
-          <button type="button" class="btn btn-primary btn-strategy" *ngFor="let option of normalizationOptions"
-            [ngClass]="{'active': selectedNormalizationStrategy === option.strategy}"
-            (click)="changeNormalizationStrategy(option.strategy)">
+          <p>Smallest reading: {{minReading || 'N/A'}}</p>
+          <p>Biggest reading: {{maxReading || 'N/A'}}</p>
+          <p>Calibration:</p>
+          <button type="button" class="btn btn-primary btn-calibration" *ngFor="let option of calibrationOptions"
+            [ngClass]="{'active': activeCalibration === option.calibration}"
+            (click)="changeCalibration(option.calibration)">
             {{option.name}}
           </button>
+          <p class="text-muted mt-2"><small >{{calibrationDescription}}</small></p>
         </div>
       </div>
     </div>

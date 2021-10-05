@@ -3,10 +3,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { Subscription } from 'rxjs';
 
-import {
-  NormalizationOption,
-  NormalizationStrategy,
-} from '../_models/normalization-strategy';
+import { Calibration, CalibrationOption } from '../_models/calibration';
 import { SeriesEntry } from '../_models/series-entry';
 import { SpiromagicService } from '../_services/spiromagic.service';
 
@@ -48,29 +45,35 @@ export class GraphComponent implements OnInit, OnDestroy {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
   device: BluetoothDevice | null = null;
-  lastReading = 0;
-  smallestReading: number;
-  biggestReading: number;
-  readings = null;
+  lastReading: number;
+  minReading: number;
+  maxReading: number;
 
-  normalizationOptions: NormalizationOption[] =
+  calibrationOptions: CalibrationOption[] =
     [
       {
-        strategy: NormalizationStrategy.HARDWARE,
-        name: 'Hardware'
+        name: 'Dynamic',
+        description: 'The readings will be normalized based on your personal readings.',
+        calibration: Calibration.DYNAMIC
       },
       {
-        strategy: NormalizationStrategy.BLOW,
-        name: 'Blow'
+        name: 'Hardware',
+        description: 'The readings will be normalized based on the hardware capacity.',
+        calibration: Calibration.HARDWARE
       },
       {
-        strategy: NormalizationStrategy.EXHALE,
-        name: 'Exhale'
+        name: 'Exhale',
+        description: 'The readings will be normalized based on the overall average exhale readings.',
+        calibration: Calibration.EXHALE,
       }
     ]
-  selectedNormalizationStrategy = NormalizationStrategy.HARDWARE;
+  activeCalibration: Calibration | null = null;
+  calibrationDescription: string;
 
-  private subscription: Subscription | null;
+  private subscriptionReading: Subscription | null;
+  private subscriptionCalibration: Subscription | null;
+  private subscriptionMinReading: Subscription | null;
+  private subscriptionMaxReading: Subscription | null;
 
   constructor(
     public zone: NgZone,
@@ -79,21 +82,33 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.fakeValues();
-    this.getReadings();
+    this.setupSpirometer();
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptionReading.unsubscribe();
+    this.subscriptionCalibration.unsubscribe();
+    this.subscriptionMinReading.unsubscribe();
+    this.subscriptionMaxReading.unsubscribe();
   }
 
-  changeNormalizationStrategy(strategy: NormalizationStrategy): void {
-    this.spiromagicService.setNormalizationStrategy(strategy);
-    this.selectedNormalizationStrategy = strategy;
+  changeCalibration(calibration: Calibration): void {
+    this.spiromagicService.calibration$.next(calibration);
   }
 
-  private getReadings(): void {
-    this.subscription = this.spiromagicService.reading$.subscribe(reading => {
+  private setupSpirometer(): void {
+    this.subscriptionReading = this.spiromagicService.reading$.subscribe(reading => {
       this.pushReadingToGraph(reading);
+    });
+    this.subscriptionCalibration = this.spiromagicService.calibration$.subscribe(calibration => {
+      this.calibrationDescription = this.calibrationOptions.find(e => e.calibration === calibration).description;
+      this.activeCalibration = calibration;
+    });
+    this.subscriptionCalibration = this.spiromagicService.minReading$.subscribe(minReading => {
+      this.minReading = minReading;
+    });
+    this.subscriptionCalibration = this.spiromagicService.maxReading$.subscribe(maxReading => {
+      this.maxReading = maxReading;
     });
   }
 
@@ -110,18 +125,16 @@ export class GraphComponent implements OnInit, OnDestroy {
     }
 
     const reading = {
-      id: this.readings,
       value: value,
       timestamp: new Date()
     };
 
-    if (!this.biggestReading || reading.value > this.biggestReading)
-      this.biggestReading = reading.value;
-    if (!this.smallestReading || reading.value < this.smallestReading)
-      this.smallestReading = reading.value;
+    if (!this.minReading || reading.value < this.minReading)
+      this.spiromagicService.minReading$.next(reading.value);
+    if (!this.maxReading || reading.value > this.maxReading)
+      this.spiromagicService.maxReading$.next(reading.value);
 
     this.lastReading = reading.value;
-    this.readings++;
     this.chartData[0].data.push(reading.value);
     this.chartLabels.push(this.getLabel(reading));
   }
