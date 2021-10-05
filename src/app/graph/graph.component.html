@@ -13,14 +13,13 @@
             (click)="changeCalibration(calibration)">
             {{calibration.name}}
           </button>
-          <p class="text-muted mt-2"><small>{{calibrationDescription}}</small></p>
+          <p class="text-muted mt-2"><small>{{activeCalibration.description}}</small></p>
         </div>
       </div>
     </div>
     <div class="col mb-4">
       <div class="card">
         <div class="card-body">
-          <!-- TODO: Height needs to be dynamic and support mobile devices -->
           <div class="graph">
             <canvas baseChart [datasets]="chartData" [chartType]="chartType" [labels]="chartLabels"
               [options]="chartOptions"></canvas>

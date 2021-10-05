@@ -86,7 +86,6 @@ export class GraphComponent implements OnInit, OnDestroy {
       this.pushReadingToGraph(reading);
     });
     this.subscriptionCalibration = this.spiromagicService.calibration$.subscribe(calibration => {
-      this.calibrationDescription = this.calibrations.find(e => e.calibrationType === calibration.calibrationType).description;
       this.activeCalibration = calibration;
     });
     this.subscriptionCalibration = this.spiromagicService.minReading$.subscribe(minReading => {
