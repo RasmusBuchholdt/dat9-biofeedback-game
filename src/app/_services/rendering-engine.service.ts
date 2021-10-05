@@ -71,8 +71,13 @@ export class RenderingEngineService {
     this.scene.add(this.innerCircle);
   }
 
+  private scaleNumberRange(value: number, oldMin: number = 0, oldMax: number = 1, newMin: number, newMax: number) {
+    return (((newMax - newMin) * (value - oldMin)) / (oldMax - oldMin)) + newMin;
+  }
+
   public setInnerCircle(value: number) {
-    let geometry = new THREE.CircleGeometry(value, 32);
+    const scaledValue = this.scaleNumberRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
+    let geometry = new THREE.CircleGeometry(scaledValue, 32);
     let material = new THREE.MeshBasicMaterial({ color: 'green' });
     this.scene.remove(this.innerCircle);
     this.innerCircle = new THREE.Mesh(geometry, material);
