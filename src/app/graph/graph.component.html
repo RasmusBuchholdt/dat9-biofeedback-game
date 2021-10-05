@@ -9,7 +9,8 @@
           <p>Biggest reading: {{maxReading || 'N/A'}}</p>
           <p>Calibration:</p>
           <button type="button" class="btn btn-primary btn-calibration" *ngFor="let calibration of calibrations"
-            [ngClass]="{'active': activeCalibration === calibration}" (click)="changeCalibration(calibration)">
+            [ngClass]="{'active': activeCalibration.calibrationType === calibration.calibrationType}"
+            (click)="changeCalibration(calibration)">
             {{calibration.name}}
           </button>
           <p class="text-muted mt-2"><small>{{calibrationDescription}}</small></p>
