@@ -25,6 +25,7 @@ export class GraphComponent implements OnInit, OnDestroy {
     scales: {
       xAxes: [{
         ticks: {
+          // TODO: These needs to be adjusted if mobile
           maxTicksLimit: 10,
           max: 20
         }
