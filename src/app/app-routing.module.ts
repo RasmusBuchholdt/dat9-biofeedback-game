@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 import { ConnectedGuard } from './_guards/connected.guard';
 import { GameComponent } from './game/game.component';
@@ -13,12 +14,12 @@ const routes: Routes = [
   },
   {
     path: 'game',
-    canActivate: [ConnectedGuard],
+    canActivate: environment.production ? [ConnectedGuard] : [],
     component: GameComponent
   },
   {
     path: 'graph',
-    canActivate: [ConnectedGuard],
+    canActivate: environment.production ? [ConnectedGuard] : [],
     component: GraphComponent
   },
   {
