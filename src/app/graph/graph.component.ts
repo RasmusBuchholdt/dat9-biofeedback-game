@@ -3,6 +3,10 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { Subscription } from 'rxjs';
 
+import {
+  NormalizationOption,
+  NormalizationStrategy,
+} from '../_models/normalization-strategy';
 import { SeriesEntry } from '../_models/series-entry';
 import { SpiromagicService } from '../_services/spiromagic.service';
 
@@ -49,6 +53,23 @@ export class GraphComponent implements OnInit, OnDestroy {
   biggestReading: number;
   readings = null;
 
+  normalizationOptions: NormalizationOption[] =
+    [
+      {
+        strategy: NormalizationStrategy.HARDWARE,
+        name: 'Hardware'
+      },
+      {
+        strategy: NormalizationStrategy.BLOW,
+        name: 'Blow'
+      },
+      {
+        strategy: NormalizationStrategy.EXHALE,
+        name: 'Exhale'
+      }
+    ]
+  selectedNormalizationStrategy: NormalizationStrategy | null = null;
+
   private subscription: Subscription | null;
 
   constructor(
@@ -63,6 +84,11 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  changeNormalizationStrategy(strategy: NormalizationStrategy): void {
+    this.spiromagicService.setNormalizationStrategy(strategy);
+    this.selectedNormalizationStrategy = strategy;
   }
 
   private getReadings(): void {

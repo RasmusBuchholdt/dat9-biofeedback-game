@@ -2,6 +2,7 @@ import { Injectable, NgZone, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
+import { NormalizationStrategy } from '../_models/normalization-strategy';
 import { normalize } from '../_utils/normalize';
 import { GATTCharacteristicService } from './gatt-characteristic.service';
 
@@ -13,6 +14,7 @@ export class SpiromagicService implements OnDestroy {
   public connected = false;
   public reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   private subscription: Subscription | null = null;
+  private selectedNormalizationStrategy = NormalizationStrategy.EXHALE;
 
   constructor(
     private zone: NgZone,
@@ -33,6 +35,10 @@ export class SpiromagicService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  public setNormalizationStrategy(strategy: NormalizationStrategy): void {
+    this.selectedNormalizationStrategy = strategy;
   }
 
   public connect(): void {
@@ -61,17 +67,20 @@ export class SpiromagicService implements OnDestroy {
   private convertValue(value: DataView): number {
     const rawValue = value.getInt32(1, true);
 
-    // Hardware capped values:
-    // Min: 26804568
-    // Max: 2110814406
+    // TODO: Refactor this
+    let min: number;
+    let max: number;
 
-    // Human blow reachable values:
-    // Min: 351147229
-    // Max: 897135635
-
-    // Human exhale reachable values:
-    // Min: 436542358
-    // Max: 469441172
+    if (this.selectedNormalizationStrategy === NormalizationStrategy.HARDWARE) {
+      min = 26804568;
+      max = 2110814406;
+    } else if (this.selectedNormalizationStrategy === NormalizationStrategy.BLOW) {
+      min = 351147229;
+      max = 897135635;
+    } else if (this.selectedNormalizationStrategy === NormalizationStrategy.EXHALE) {
+      min = 436542358;
+      max = 469441172
+    }
 
     // Log min and max readings in development
     if (!environment.production) {
@@ -84,7 +93,11 @@ export class SpiromagicService implements OnDestroy {
         console.log("New raw min reading", this.minReading);
       }
     }
-    return +normalize(rawValue, 436542358, 469441172).toFixed(2);
+    return +normalize(rawValue, min, max).toFixed(2);
+  }
+
+  getStrategyValues(): void {
+
   }
 
   get device(): Observable<BluetoothDevice> {
