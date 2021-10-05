@@ -10,6 +10,7 @@ export class GATTCharacteristicService {
 
   private gattPrimaryService = '';
   private gattCharacteristic = '';
+  private scanFilters: BluetoothLEScanFilter[] = [];
 
   constructor(
     public bluetoothCoreService: BluetoothCore
@@ -19,9 +20,10 @@ export class GATTCharacteristicService {
     return this.bluetoothCoreService.getDevice$();
   }
 
-  stream(service: string, characteristic: string): Observable<DataView> {
+  stream(service: string, characteristic: string, filters?: BluetoothLEScanFilter[]): Observable<DataView> {
     this.gattPrimaryService = service;
     this.gattCharacteristic = characteristic;
+    this.scanFilters = filters;
     return this.bluetoothCoreService.streamValues$().pipe(map((value: DataView) => value));
   }
 
@@ -33,8 +35,8 @@ export class GATTCharacteristicService {
     return this.bluetoothCoreService
       // Trigger the discovery process
       .discover$({
-        acceptAllDevices: true,
-        optionalServices: [this.gattPrimaryService]
+        optionalServices: [this.gattPrimaryService],
+        filters: this.scanFilters
       })
       .pipe(
         // Get the service
