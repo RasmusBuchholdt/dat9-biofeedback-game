@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BluetoothCore } from '@manekinekko/angular-web-bluetooth';
+import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
 @Injectable({
@@ -18,7 +19,7 @@ export class GATTCharacteristicService {
     return this.bluetoothCoreService.getDevice$();
   }
 
-  stream(service: string, characteristic: string) {
+  stream(service: string, characteristic: string): Observable<DataView> {
     this.gattPrimaryService = service;
     this.gattCharacteristic = characteristic;
     return this.bluetoothCoreService.streamValues$().pipe(map((value: DataView) => value));

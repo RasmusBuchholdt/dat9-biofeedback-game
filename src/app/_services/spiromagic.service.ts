@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { GATTCharacteristicService } from './gatt-characteristic.service';
 
@@ -10,12 +10,17 @@ export class SpiromagicService {
 
   public connected = false;
   public reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
+  private subscription: Subscription | null = null;
 
   constructor(
     private zone: NgZone,
     public gattService: GATTCharacteristicService
   ) {
-    this.gattService.stream('73ab1200-a251-4c85-0f8c-d8db000021df', '73ab1201-a251-4c85-0f8c-d8db000021df');
+    this.subscription = this.gattService
+      .stream('73ab1200-a251-4c85-0f8c-d8db000021df', '73ab1201-a251-4c85-0f8c-d8db000021df')
+      .subscribe(reading => {
+        this.handleReading(reading);
+      });
   }
 
   public connect(): void {
@@ -33,6 +38,7 @@ export class SpiromagicService {
   }
 
   private handleReading(value: DataView) {
+
     this.zone.run(() => {
       this.reading$.next(this.convertValue(value));
     });
