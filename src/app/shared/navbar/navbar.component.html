@@ -9,7 +9,8 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item" *ngIf="(spiromagicService.device | async) === null">
-        <a class="nav-link" (click)="spiromagicService.connect()">Connect to device</a>
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show"
+          (click)="spiromagicService.connect()">Connect to device</a>
       </li>
       <ng-container *ngIf="(spiromagicService.device | async)">
         <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
