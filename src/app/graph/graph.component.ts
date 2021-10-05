@@ -44,6 +44,8 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   device: BluetoothDevice | null = null;
   lastReading = 0;
+  smallestReading: number;
+  biggestReading: number;
   readings = null;
 
   private subscription: Subscription | null;
@@ -85,6 +87,11 @@ export class GraphComponent implements OnInit, OnDestroy {
       value: value,
       timestamp: new Date()
     };
+
+    if (!this.biggestReading || reading.value > this.biggestReading)
+      this.biggestReading = reading.value;
+    if (!this.smallestReading || reading.value < this.smallestReading)
+      this.smallestReading = reading.value;
 
     this.lastReading = reading.value;
     this.readings++;

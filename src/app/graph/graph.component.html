@@ -1,5 +1,8 @@
 <a href="#" (click)="$event.preventDefault(); spiromagicService.connect()">Reading ({{lastReading}})%</a>
 
+<p>Smallest reading: {{smallestReading || 'N/A'}}</p>
+<p>Biggest reading: {{biggestReading || 'N/A'}}</p>
+
 <div style="display: block;">
   <canvas
     baseChart
