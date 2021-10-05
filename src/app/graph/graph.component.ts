@@ -1,6 +1,7 @@
 import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 
 import { Calibration } from '../_models/calibration';
@@ -13,22 +14,22 @@ import { SpiromagicService } from '../_services/spiromagic.service';
   styleUrls: ['./graph.component.scss']
 })
 export class GraphComponent implements OnInit, OnDestroy {
-
   chartType = "line" as ChartType;
   chartData: ChartDataSets[] = [
     { data: [], label: "Spirometer readings", fill: false }
   ];
   chartLabels: Label[] = [];
   chartOptions: ChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
     animation: {
       duration: 0
     },
     scales: {
       xAxes: [{
         ticks: {
-          // TODO: These needs to be adjusted if mobile
-          maxTicksLimit: 10,
-          max: 20
+          maxTicksLimit: this.deviceDetectorService.isDesktop() ? 10 : 5,
+          max: this.deviceDetectorService.isDesktop() ? 20 : 10
         }
       }],
       yAxes: [{
@@ -60,7 +61,8 @@ export class GraphComponent implements OnInit, OnDestroy {
 
   constructor(
     public zone: NgZone,
-    public spiromagicService: SpiromagicService
+    public spiromagicService: SpiromagicService,
+    private deviceDetectorService: DeviceDetectorService
   ) { }
 
   ngOnInit() {
@@ -103,7 +105,7 @@ export class GraphComponent implements OnInit, OnDestroy {
   }
 
   private pushReadingToGraph(value: number): void {
-    if (this.isGraphFull(this.chartData, 100)) {
+    if (this.isGraphFull(this.chartData, this.deviceDetectorService.isDesktop() ? 100 : 20)) {
       this.removeLastElement();
     }
 

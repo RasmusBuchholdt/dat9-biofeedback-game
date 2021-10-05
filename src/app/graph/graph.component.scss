@@ -1,3 +1,13 @@
 .btn-calibration {
   margin-right: 5px;
 }
+
+.graph {
+  height: 40vh;
+}
+
+@media (max-width: 600px) {
+  .graph {
+    height: 35vh;
+  }
+}
