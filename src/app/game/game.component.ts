@@ -31,6 +31,7 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.renderingService.createScene(this.rendererCanvas);
     this.renderingService.animate();
+    this.getReadings();
   }
 
   ngOnDestroy(): void {
