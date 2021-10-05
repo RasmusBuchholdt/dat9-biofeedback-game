@@ -53,10 +53,6 @@ export class SpiromagicService implements OnDestroy {
     });
   }
 
-  // Min and max is where the hardware caps
-  private normalize(val: number, min: number = 26804568, max: number = 2107080156) {
-    return (val - min) / (max - min) * 100;
-  }
 
   private convertValue(value: DataView): number {
     return +this.normalize(value.getInt32(1, true)).toFixed(2);
