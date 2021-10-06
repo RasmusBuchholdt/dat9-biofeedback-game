@@ -54,10 +54,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   activeCalibration: Calibration | null = null;
   calibrationDescription: string;
 
-  private subscriptionReading: Subscription | null;
-  private subscriptionCalibration: Subscription | null;
-  private subscriptionMinReading: Subscription | null;
-  private subscriptionMaxReading: Subscription | null;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     public zone: NgZone,
@@ -71,10 +68,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscriptionReading.unsubscribe();
-    this.subscriptionCalibration.unsubscribe();
-    this.subscriptionMinReading.unsubscribe();
-    this.subscriptionMaxReading.unsubscribe();
+    this.subscriptions.forEach(e => e?.unsubscribe());
   }
 
   changeCalibration(calibration: Calibration): void {
@@ -82,18 +76,18 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   }
 
   private setupSpirometer(): void {
-    this.subscriptionReading = this.spiromagicService.reading$.subscribe(reading => {
+    this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading => {
       this.pushReadingToGraph(reading);
-    });
-    this.subscriptionCalibration = this.spiromagicService.calibration$.subscribe(calibration => {
+    }));
+    this.subscriptions.push(this.spiromagicService.calibration$.subscribe(calibration => {
       this.activeCalibration = calibration;
-    });
-    this.subscriptionCalibration = this.spiromagicService.minReading$.subscribe(minReading => {
+    }));
+    this.subscriptions.push(this.spiromagicService.minReading$.subscribe(minReading => {
       this.minReading = minReading;
-    });
-    this.subscriptionCalibration = this.spiromagicService.maxReading$.subscribe(maxReading => {
+    }));
+    this.subscriptions.push(this.spiromagicService.maxReading$.subscribe(maxReading => {
       this.maxReading = maxReading;
-    });
+    }));
   }
 
   private fakeValues(): void {
