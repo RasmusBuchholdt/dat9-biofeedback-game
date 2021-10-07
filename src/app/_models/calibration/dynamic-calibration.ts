@@ -14,6 +14,6 @@ export class DynamicCalibration extends CalibrationBase implements CalibrationSt
   }
 
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
-    return normalize(reading, minReading, maxReading);
+    return normalize(reading * (sensitivity / 1000 + 1), minReading, maxReading);
   }
 }
