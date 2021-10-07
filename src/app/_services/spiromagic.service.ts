@@ -76,10 +76,12 @@ export class SpiromagicService implements OnDestroy {
       console.log("New raw min reading", this.minRawReading);
     }
 
-    const min = (calibration.min || this.minRawReading);
-    const max = (calibration.max || this.maxRawReading) * sensitivity;
+    // TODO: Find out how exactly to apply sensitivity
 
-    return +normalize(rawValue, min * sensitivity, max).toFixed(2);
+    const min = (calibration.min || this.minRawReading);
+    const max = (calibration.max || this.maxRawReading);
+
+    return +normalize(rawValue, min, max).toFixed(2);
   }
 
   get device(): Observable<BluetoothDevice> {
