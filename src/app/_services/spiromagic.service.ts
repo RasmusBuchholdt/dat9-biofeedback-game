@@ -17,7 +17,7 @@ export class SpiromagicService implements OnDestroy {
   public calibration$: BehaviorSubject<CalibrationStrategy | null> = new BehaviorSubject<CalibrationStrategy | null>(this.calibrationService.calibrations[0]);
   public minReading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(Number.MAX_SAFE_INTEGER);
   public maxReading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(Number.MIN_SAFE_INTEGER);
-  public sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(1);
+  public sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(0);
   private subscription: Subscription | null = null;
 
   constructor(
