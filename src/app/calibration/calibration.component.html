@@ -12,7 +12,7 @@
                 <div>
                   <button id="calibrationMode" type="button" class="btn btn-primary btn-calibration"
                     *ngFor="let calibration of calibrations"
-                    [ngClass]="{'active': activeCalibration.calibrationType === calibration.calibrationType}"
+                    [ngClass]="{'active': activeCalibration.name === calibration.name}"
                     (click)="changeCalibration(calibration)">
                     {{calibration.name}}
                   </button>

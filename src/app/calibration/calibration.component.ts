@@ -4,8 +4,11 @@ import { BaseChartDirective, Label } from 'ng2-charts';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Subscription } from 'rxjs';
 
-import { Calibration } from '../_models/calibration';
+import {
+  CalibrationStrategy,
+} from '../_models/calibration/calibration-strategy';
 import { SeriesEntry } from '../_models/series-entry';
+import { CalibrationService } from '../_services/calibration.service';
 import { SpiromagicService } from '../_services/spiromagic.service';
 
 @Component({
@@ -51,8 +54,8 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   maxReading: number;
   sensitivity: number;
 
-  calibrations = this.spiromagicService.calibrations;
-  activeCalibration: Calibration | null = null;
+  calibrations = this.calibrationService.calibrations;
+  activeCalibration: CalibrationStrategy | null = null;
   calibrationDescription: string;
 
   private subscriptions: Subscription[] = [];
@@ -60,7 +63,8 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   constructor(
     public zone: NgZone,
     public spiromagicService: SpiromagicService,
-    private deviceDetectorService: DeviceDetectorService
+    private deviceDetectorService: DeviceDetectorService,
+    private calibrationService: CalibrationService
   ) { }
 
   ngOnInit() {
@@ -72,7 +76,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(e => e?.unsubscribe());
   }
 
-  changeCalibration(calibration: Calibration): void {
+  changeCalibration(calibration: CalibrationStrategy): void {
     this.spiromagicService.calibration$.next(calibration);
   }
 
