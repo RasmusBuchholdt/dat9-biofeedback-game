@@ -49,6 +49,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   lastReading: number;
   minReading: number;
   maxReading: number;
+  sensitivity: number;
 
   calibrations = this.spiromagicService.calibrations;
   activeCalibration: Calibration | null = null;
@@ -75,6 +76,10 @@ export class CalibrationComponent implements OnInit, OnDestroy {
     this.spiromagicService.calibration$.next(calibration);
   }
 
+  changeSensitivity(value: number): void {
+    this.spiromagicService.sensitivity$.next(value);
+  }
+
   private setupSpirometer(): void {
     this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading => {
       this.pushReadingToGraph(reading);
@@ -87,6 +92,9 @@ export class CalibrationComponent implements OnInit, OnDestroy {
     }));
     this.subscriptions.push(this.spiromagicService.maxReading$.subscribe(maxReading => {
       this.maxReading = maxReading;
+    }));
+    this.subscriptions.push(this.spiromagicService.sensitivity$.subscribe(sensitivity => {
+      this.sensitivity = sensitivity;
     }));
   }
 

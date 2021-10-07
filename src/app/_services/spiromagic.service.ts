@@ -15,6 +15,7 @@ export class SpiromagicService implements OnDestroy {
   public calibration$: BehaviorSubject<Calibration | null> = new BehaviorSubject<Calibration | null>(this.calibrations[0]);
   public minReading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(Number.MAX_SAFE_INTEGER);
   public maxReading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(Number.MIN_SAFE_INTEGER);
+  public sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(1);
   private subscription: Subscription | null = null;
 
   constructor(
@@ -64,6 +65,7 @@ export class SpiromagicService implements OnDestroy {
   private convertValue(value: DataView): number {
     const rawValue = value.getInt32(1, true);
     const calibration = this.calibration$.getValue();
+    const sensitivity = this.sensitivity$.getValue();
 
     if (rawValue > this.maxRawReading) {
       this.maxRawReading = rawValue;
@@ -74,7 +76,10 @@ export class SpiromagicService implements OnDestroy {
       console.log("New raw min reading", this.minRawReading);
     }
 
-    return +normalize(rawValue, calibration.min || this.minRawReading, calibration.max || this.maxRawReading).toFixed(2);
+    const min = (calibration.min || this.minRawReading);
+    const max = (calibration.max || this.maxRawReading) * sensitivity;
+
+    return +normalize(rawValue, min * sensitivity, max).toFixed(2);
   }
 
   get device(): Observable<BluetoothDevice> {
