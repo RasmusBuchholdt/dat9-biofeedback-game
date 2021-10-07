@@ -8,12 +8,6 @@
             <div class="col-4">
               <p class="font-weight-bold">Calibration</p>
               <div class="form-group">
-                <label for="sensitivityRange">Sensitivity ({{sensitivity}}%)</label>
-                <input type="range" #sensitivityControl class="form-control" min="0" max="100" step="1"
-                  [value]="sensitivity" (input)="changeSensitivity(+sensitivityControl.value)" id="sensitivityRange">
-                <small class="form-text text-muted">How sensitive should the readings be.</small>
-              </div>
-              <div class="form-group">
                 <label for="calibrationMode">Mode</label>
                 <div>
                   <button id="calibrationMode" type="button" class="btn btn-primary btn-calibration"
@@ -24,6 +18,12 @@
                   </button>
                 </div>
                 <small class="form-text text-muted">{{activeCalibration.description}}</small>
+              </div>
+              <div class="form-group">
+                <label for="sensitivityRange">Sensitivity ({{sensitivity}}%)</label>
+                <input type="range" #sensitivityControl class="form-control" min="0" max="100" step="1"
+                  [value]="sensitivity" (input)="changeSensitivity(+sensitivityControl.value)" id="sensitivityRange">
+                <small class="form-text text-muted">How sensitive should the readings be.</small>
               </div>
             </div>
             <div class="col-4">
