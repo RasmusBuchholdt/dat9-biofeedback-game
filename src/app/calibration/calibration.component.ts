@@ -76,6 +76,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
 
   changeCalibration(calibration: CalibrationStrategy): void {
     this.spiromagicService.calibration$.next(calibration);
+    this.resetReadings(false);
     this.toastrService.success(`Calibration has been changed to <b>${calibration.name}</b>`, 'Calibration changed');
   }
 
@@ -83,9 +84,12 @@ export class CalibrationComponent implements OnInit, OnDestroy {
     this.spiromagicService.sensitivity$.next(value);
   }
 
-  resetReadings(): void {
+  resetReadings(showMessage: boolean = true): void {
+    this.minReading = null;
+    this.maxReading = null;
     this.spiromagicService.resetReadings();
-    this.toastrService.success('The readings have been reset!', 'Readings reset');
+    if (showMessage)
+      this.toastrService.success('The readings have been reset!', 'Readings reset');
   }
 
   private setupSpirometer(): void {
