@@ -7,6 +7,7 @@ import { DynamicCalibration } from '../_models/calibration/dynamic-calibration';
 import {
   HardwareCalibration,
 } from '../_models/calibration/hardware-calibration';
+import { PushCalibration } from '../_models/calibration/push-calibration';
 import { StepperCalibration } from '../_models/calibration/stepper-calibration';
 
 @Injectable({
@@ -20,7 +21,8 @@ export class CalibrationService {
     return [
       new DynamicCalibration(),
       new HardwareCalibration(),
-      new StepperCalibration()
+      new StepperCalibration(),
+      new PushCalibration()
     ]
   }
 }
