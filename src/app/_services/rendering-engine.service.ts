@@ -23,10 +23,11 @@ export class RenderingEngineService {
 
   private frameId: number = null;
 
-  public constructor(private ngZone: NgZone) {
+  public constructor(
+    private ngZone: NgZone) {
   }
 
-  public stopGame(): void {
+  stopGame(): void {
     this.resetGame();
     if (this.frameId != null) {
       cancelAnimationFrame(this.frameId);
@@ -39,13 +40,13 @@ export class RenderingEngineService {
     }
   }
 
-  public resetGame(): void {
+  resetGame(): void {
     this.circleMaxValue = 3;
     this.circleMinValue = 0.1;
     this.biggestValue = 0;
   }
 
-  public createScene(canvas: ElementRef<HTMLCanvasElement>): void {
+  createScene(canvas: ElementRef<HTMLCanvasElement>): void {
     this.canvas = canvas.nativeElement;
 
     this.renderer = new THREE.WebGLRenderer({
@@ -85,7 +86,7 @@ export class RenderingEngineService {
     this.scene.add(this.innerCircle);
   }
 
-  public setInnerCircle(value: number) {
+  setInnerCircle(value: number) {
     const scaledValue = scaleNumberToRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
     let geometry = new THREE.CircleGeometry(scaledValue, 32);
     let material = new THREE.MeshBasicMaterial({ color: 'green' });
@@ -105,7 +106,7 @@ export class RenderingEngineService {
     this.scene.add(this.maxValueCircle);
   }
 
-  public animate(): void {
+  animate(): void {
     this.ngZone.runOutsideAngular(() => {
       if (document.readyState !== 'loading') {
         this.render();
@@ -161,7 +162,7 @@ export class RenderingEngineService {
     this.renderer.setSize(width, height);
   }
 
-  public takeSceneScreenshot(): string {
+  takeSceneScreenshot(): string {
     this.renderer.render(this.scene, this.camera);
     return this.renderer.domElement.toDataURL();
   }

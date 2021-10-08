@@ -46,10 +46,8 @@ export class CalibrationComponent implements OnInit, OnDestroy {
       }]
     }
   }
-
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
-  device: BluetoothDevice | null = null;
   lastReading: number;
   minReading: number;
   maxReading: number;
@@ -57,7 +55,6 @@ export class CalibrationComponent implements OnInit, OnDestroy {
 
   calibrations = this.calibrationService.calibrations;
   activeCalibration: CalibrationStrategy | null = null;
-  calibrationDescription: string;
 
   private subscriptions: Subscription[] = [];
 
@@ -69,7 +66,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // this.fakeValues();
+    // this.fakeReadings();
     this.setupSpirometer();
   }
 
@@ -79,7 +76,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
 
   changeCalibration(calibration: CalibrationStrategy): void {
     this.spiromagicService.calibration$.next(calibration);
-    this.toastrService.success(`Calibration has been changed to <b>${calibration.name}</b>`, 'Calibration changed')
+    this.toastrService.success(`Calibration has been changed to <b>${calibration.name}</b>`, 'Calibration changed');
   }
 
   changeSensitivity(value: number): void {
@@ -88,7 +85,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
 
   resetReadings(): void {
     this.spiromagicService.resetReadings();
-    this.toastrService.success('The readings have been reset!', 'Readings reset')
+    this.toastrService.success('The readings have been reset!', 'Readings reset');
   }
 
   private setupSpirometer(): void {
@@ -98,21 +95,15 @@ export class CalibrationComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.spiromagicService.calibration$.subscribe(calibration => {
       this.activeCalibration = calibration;
     }));
-    this.subscriptions.push(this.spiromagicService.minReading$.subscribe(minReading => {
-      this.minReading = minReading;
-    }));
-    this.subscriptions.push(this.spiromagicService.maxReading$.subscribe(maxReading => {
-      this.maxReading = maxReading;
-    }));
     this.subscriptions.push(this.spiromagicService.sensitivity$.subscribe(sensitivity => {
       this.sensitivity = sensitivity;
     }));
   }
 
-  private fakeValues(): void {
+  private fakeReadings(): void {
     setTimeout(() => {
       this.pushReadingToGraph(+Math.random().toFixed(2));
-      this.fakeValues();
+      this.fakeReadings();
     }, 100);
   }
 
@@ -127,9 +118,9 @@ export class CalibrationComponent implements OnInit, OnDestroy {
     };
 
     if (!this.minReading || reading.value < this.minReading)
-      this.spiromagicService.minReading$.next(reading.value);
+      this.minReading = reading.value;
     if (!this.maxReading || reading.value > this.maxReading)
-      this.spiromagicService.maxReading$.next(reading.value);
+      this.maxReading = reading.value;
 
     this.lastReading = reading.value;
     this.chartData[0].data.push(reading.value);

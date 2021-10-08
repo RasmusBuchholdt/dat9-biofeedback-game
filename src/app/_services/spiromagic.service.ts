@@ -12,12 +12,14 @@ import { GATTCharacteristicService } from './gatt-characteristic.service';
 })
 export class SpiromagicService implements OnDestroy {
 
-  public connected = false;
-  public reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
-  public calibration$: BehaviorSubject<CalibrationStrategy | null> = new BehaviorSubject<CalibrationStrategy | null>(this.calibrationService.calibrations[0]);
-  public minReading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(Number.MAX_SAFE_INTEGER);
-  public maxReading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(Number.MIN_SAFE_INTEGER);
-  public sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(0);
+  connected = false;
+  reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
+  calibration$: BehaviorSubject<CalibrationStrategy | null> = new BehaviorSubject<CalibrationStrategy | null>(this.calibrationService.calibrations[0]);
+  sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(0);
+
+  private minReading = Number.MAX_SAFE_INTEGER;
+  private maxReading = Number.MIN_SAFE_INTEGER;
+
   private subscription: Subscription | null = null;
 
   constructor(
@@ -42,18 +44,18 @@ export class SpiromagicService implements OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  public connect(): void {
+  connect(): void {
     this.getSpirometerReadings();
   }
 
-  public disconnect(): void {
+  disconnect(): void {
     this.connected = false;
     this.gattService.disconnectDevice();
   }
 
-  public resetReadings(): void {
-    this.minRawReading = Number.MAX_SAFE_INTEGER;
-    this.maxRawReading = Number.MIN_SAFE_INTEGER;
+  resetReadings(): void {
+    this.minReading = Number.MAX_SAFE_INTEGER;
+    this.maxReading = Number.MIN_SAFE_INTEGER;
   }
 
   private getSpirometerReadings() {
@@ -61,26 +63,23 @@ export class SpiromagicService implements OnDestroy {
     return this.gattService.value().subscribe(this.handleReading.bind(this));
   }
 
-  private handleReading(value: DataView) {
+  private handleReading(reading: DataView) {
     this.zone.run(() => {
-      this.reading$.next(this.convertValue(value));
+      this.reading$.next(this.convertReading(reading));
     });
   }
 
-  private minRawReading = Number.MAX_SAFE_INTEGER;
-  private maxRawReading = Number.MIN_SAFE_INTEGER;
-
-  private convertValue(reading: DataView): number {
+  private convertReading(reading: DataView): number {
     const rawReading = reading.getInt32(1, true);
     const calibration = this.calibration$.getValue();
     const sensitivity = this.sensitivity$.getValue();
 
-    if (rawReading > this.maxRawReading)
-      this.maxRawReading = rawReading;
-    if (rawReading < this.minRawReading)
-      this.minRawReading = rawReading;
+    if (rawReading < this.minReading)
+      this.minReading = rawReading;
+    if (rawReading > this.maxReading)
+      this.maxReading = rawReading;
 
-    return +calibration.calibrate(rawReading, this.minRawReading, this.maxRawReading, sensitivity).toFixed(2);
+    return +calibration.calibrate(rawReading, this.maxReading, this.maxReading, sensitivity).toFixed(2);
   }
 
   get device(): Observable<BluetoothDevice> {

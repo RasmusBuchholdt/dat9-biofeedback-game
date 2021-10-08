@@ -13,7 +13,7 @@ export class GATTCharacteristicService {
   private scanFilters: BluetoothLEScanFilter[] = [];
 
   constructor(
-    public bluetoothCoreService: BluetoothCore
+    private bluetoothCoreService: BluetoothCore
   ) { }
 
   getDevice() {

@@ -18,7 +18,7 @@ export class CalibrationService {
 
   constructor() { }
 
-  public get calibrations(): CalibrationStrategy[] {
+  get calibrations(): CalibrationStrategy[] {
     return [
       new DynamicCalibration(),
       new HardwareCalibration(),
