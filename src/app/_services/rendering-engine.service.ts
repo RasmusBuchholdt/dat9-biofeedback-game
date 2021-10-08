@@ -25,6 +25,7 @@ export class RenderingEngineService {
   }
 
   public stopGame(): void {
+    this.biggestValue = 0;
     if (this.frameId != null) {
       cancelAnimationFrame(this.frameId);
     }
