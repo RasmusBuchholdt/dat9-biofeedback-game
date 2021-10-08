@@ -37,6 +37,12 @@ export class RenderingEngineService {
     }
   }
 
+  public resetGame(): void {
+    this.circleMaxValue = 3;
+    this.circleMinValue = 0.1;
+    this.biggestValue = 0;
+  }
+
   public createScene(canvas: ElementRef<HTMLCanvasElement>): void {
     this.canvas = canvas.nativeElement;
 
