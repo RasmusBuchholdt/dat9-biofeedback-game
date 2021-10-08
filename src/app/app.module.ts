@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WebBluetoothModule } from '@manekinekko/angular-web-bluetooth';
 import { ChartsModule } from 'ng2-charts';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { environment } from 'src/environments/environment';
+import { ToastrModule } from 'ngx-toastr';
 
 import { SpiromagicService } from './_services/spiromagic.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +31,12 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     ChartsModule,
     WebBluetoothModule.forRoot({
       enableTracing: !environment.production
+    }),
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-bottom-right',
+      enableHtml: true
+      // preventDuplicates: true,
     })
   ],
   providers: [SpiromagicService],
