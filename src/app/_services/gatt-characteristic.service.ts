@@ -11,13 +11,22 @@ export class GATTCharacteristicService {
   private gattPrimaryService = '';
   private gattCharacteristic = '';
   private scanFilters: BluetoothLEScanFilter[] = [];
+  private connected = false;
 
   constructor(
     private bluetoothCoreService: BluetoothCore
-  ) { }
+  ) {
+    this.bluetoothCoreService.onDeviceDisconnected = async () => {
+      this.connected = false;
+    }
+  }
 
-  getDevice() {
+  get device(): Observable<BluetoothDevice> {
     return this.bluetoothCoreService.getDevice$();
+  }
+
+  get isConnected(): boolean {
+    return this.connected;
   }
 
   stream(service: string, characteristic: string, filters?: BluetoothLEScanFilter[]): Observable<DataView> {
@@ -27,11 +36,11 @@ export class GATTCharacteristicService {
     return this.bluetoothCoreService.streamValues$().pipe(map((value: DataView) => value));
   }
 
-  disconnectDevice() {
+  disconnectDevice(): void {
     this.bluetoothCoreService.disconnectDevice();
   }
 
-  value() {
+  value(): Observable<DataView> {
     return this.bluetoothCoreService
       // Trigger the discovery process
       .discover$({
@@ -49,6 +58,7 @@ export class GATTCharacteristicService {
         }),
         // Get the value of that characteristic in form of a DataView
         mergeMap((characteristic: BluetoothRemoteGATTCharacteristic) => {
+          this.connected = true;
           return this.bluetoothCoreService.readValue$(characteristic);
         }),
         // Work some magic on teh value

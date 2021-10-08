@@ -18,7 +18,7 @@ export class ConnectedGuard implements CanActivate {
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    let isConnected = this.spiromagicService.connected;
+    let isConnected = this.spiromagicService.isConnected;
     if (!isConnected) {
       this.router.navigateByUrl('/');
     }

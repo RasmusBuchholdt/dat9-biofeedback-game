@@ -12,7 +12,6 @@ import { GATTCharacteristicService } from './gatt-characteristic.service';
 })
 export class SpiromagicService implements OnDestroy {
 
-  connected = false;
   reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   calibration$: BehaviorSubject<CalibrationStrategy | null> = new BehaviorSubject<CalibrationStrategy | null>(this.calibrationService.calibrations[0]);
   sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(0);
@@ -49,7 +48,6 @@ export class SpiromagicService implements OnDestroy {
   }
 
   disconnect(): void {
-    this.connected = false;
     this.gattService.disconnectDevice();
   }
 
@@ -59,7 +57,6 @@ export class SpiromagicService implements OnDestroy {
   }
 
   private getSpirometerReadings() {
-    this.connected = true;
     return this.gattService.value().subscribe(this.handleReading.bind(this));
   }
 
@@ -83,6 +80,10 @@ export class SpiromagicService implements OnDestroy {
   }
 
   get device(): Observable<BluetoothDevice> {
-    return this.gattService.getDevice();
+    return this.gattService.device;
+  }
+
+  get isConnected(): boolean {
+    return this.gattService.isConnected;
   }
 }
