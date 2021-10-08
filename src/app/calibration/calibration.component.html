@@ -26,11 +26,11 @@
                 <small class="form-text text-muted">How sensitive should the readings be.</small>
               </div>
             </div>
-            <div class="col-4">
+            <div class="col-4" *ngIf="readings">
               <p class="font-weight-bold">Readings</p>
-              <p>Current reading: {{lastReading || 'N/A'}}</p>
-              <p>Min reading: {{minReading || 'N/A'}}</p>
-              <p>Max reading: {{maxReading || 'N/A'}}</p>
+              <p>Current reading: {{readings.current}}</p>
+              <p>Min reading: {{readings.min}}</p>
+              <p>Max reading: {{readings.max}}</p>
               <button type="button" class="btn btn-primary" (click)="resetReadings()">
                 Reset readings
               </button>

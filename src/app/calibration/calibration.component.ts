@@ -5,6 +5,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 
+import { CalibrationReadings } from '../_models/calibration-readings';
 import {
   CalibrationStrategy,
 } from '../_models/calibration/calibration-strategy';
@@ -48,9 +49,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   }
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
-  lastReading: number;
-  minReading: number;
-  maxReading: number;
+  readings: CalibrationReadings | null = null;
   sensitivity: number;
 
   calibrations = this.calibrationService.calibrations;
@@ -85,8 +84,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   }
 
   resetReadings(showMessage: boolean = true): void {
-    this.minReading = null;
-    this.maxReading = null;
+    this.readings = null;
     this.spiromagicService.resetReadings();
     if (showMessage)
       this.toastrService.success('The readings have been reset!', 'Readings reset');
@@ -121,12 +119,19 @@ export class CalibrationComponent implements OnInit, OnDestroy {
       timestamp: new Date()
     };
 
-    if (!this.minReading || reading.value < this.minReading)
-      this.minReading = reading.value;
-    if (!this.maxReading || reading.value > this.maxReading)
-      this.maxReading = reading.value;
+    if (!this.readings) {
+      this.readings = {
+        current: reading.value,
+        min: reading.value,
+        max: reading.value
+      }
+    } else if (reading.value < this.readings.min) {
+      this.readings.min = reading.value;
+    } else if (reading.value > this.readings.max) {
+      this.readings.max = reading.value;
+    }
 
-    this.lastReading = reading.value;
+    this.readings.current = reading.value;
     this.chartData[0].data.push(reading.value);
     this.chartLabels.push(this.getLabel(reading));
   }
