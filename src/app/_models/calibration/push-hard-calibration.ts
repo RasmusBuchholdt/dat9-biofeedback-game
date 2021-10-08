@@ -4,7 +4,7 @@ import { normalize } from 'src/app/_utils/normalize';
 import { CalibrationBase } from './calibration-base';
 import { CalibrationStrategy } from './calibration-strategy';
 
-export class PushCalibration extends CalibrationBase implements CalibrationStrategy {
+export class PushHardCalibration extends CalibrationBase implements CalibrationStrategy {
 
   private previousDifference = 0;
   private previousReading: number;
@@ -14,11 +14,11 @@ export class PushCalibration extends CalibrationBase implements CalibrationStrat
   private negativeStepSize = 1;
 
   get name(): string {
-    return 'Push';
+    return 'Push (Hard)';
   }
 
   get description(): string {
-    return 'The readings will go up if you continuously blow and go down when you stop.'
+    return 'The readings will go up if you continuously blow harder and go down when the readings stop peaking.'
   }
 
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {

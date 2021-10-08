@@ -8,7 +8,9 @@ import {
   HardwareCalibration,
 } from '../_models/calibration/hardware-calibration';
 import { PuffCalibration } from '../_models/calibration/puff-calibration';
-import { PushCalibration } from '../_models/calibration/push-calibration';
+import {
+  PushHardCalibration,
+} from '../_models/calibration/push-hard-calibration';
 import { StepperCalibration } from '../_models/calibration/stepper-calibration';
 
 @Injectable({
@@ -23,7 +25,7 @@ export class CalibrationService {
       new DynamicCalibration(),
       new HardwareCalibration(),
       new StepperCalibration(),
-      new PushCalibration(),
+      new PushHardCalibration(),
       new PuffCalibration()
     ]
   }
