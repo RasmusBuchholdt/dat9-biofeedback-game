@@ -22,6 +22,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     GameComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
     NgxSpinnerModule,
