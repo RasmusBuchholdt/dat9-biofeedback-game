@@ -1,6 +1,8 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
+import { scaleNumberToRange } from '../_utils/scale-number-to-range';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -83,12 +85,8 @@ export class RenderingEngineService {
     this.scene.add(this.innerCircle);
   }
 
-  private scaleNumberRange(value: number, oldMin: number = 0, oldMax: number = 1, newMin: number, newMax: number) {
-    return (((newMax - newMin) * (value - oldMin)) / (oldMax - oldMin)) + newMin;
-  }
-
   public setInnerCircle(value: number) {
-    const scaledValue = this.scaleNumberRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
+    const scaledValue = scaleNumberToRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
     let geometry = new THREE.CircleGeometry(scaledValue, 32);
     let material = new THREE.MeshBasicMaterial({ color: 'green' });
     this.scene.remove(this.innerCircle);
