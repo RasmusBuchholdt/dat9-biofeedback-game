@@ -51,6 +51,11 @@ export class SpiromagicService implements OnDestroy {
     this.gattService.disconnectDevice();
   }
 
+  public resetReadings(): void {
+    this.minRawReading = Number.MAX_SAFE_INTEGER;
+    this.maxRawReading = Number.MIN_SAFE_INTEGER;
+  }
+
   private getSpirometerReadings() {
     this.connected = true;
     return this.gattService.value().subscribe(this.handleReading.bind(this));

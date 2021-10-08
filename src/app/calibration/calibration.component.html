@@ -31,6 +31,9 @@
               <p>Current reading: {{lastReading || 'N/A'}}</p>
               <p>Min reading: {{minReading || 'N/A'}}</p>
               <p>Max reading: {{maxReading || 'N/A'}}</p>
+              <button type="button" class="btn btn-primary" (click)="resetReadings()">
+                Reset readings
+              </button>
             </div>
           </div>
         </div>

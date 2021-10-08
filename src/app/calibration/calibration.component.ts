@@ -61,8 +61,8 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    public zone: NgZone,
-    public spiromagicService: SpiromagicService,
+    private zone: NgZone,
+    private spiromagicService: SpiromagicService,
     private deviceDetectorService: DeviceDetectorService,
     private calibrationService: CalibrationService
   ) { }
@@ -82,6 +82,10 @@ export class CalibrationComponent implements OnInit, OnDestroy {
 
   changeSensitivity(value: number): void {
     this.spiromagicService.sensitivity$.next(value);
+  }
+
+  resetReadings(): void {
+    this.spiromagicService.resetReadings();
   }
 
   private setupSpirometer(): void {
