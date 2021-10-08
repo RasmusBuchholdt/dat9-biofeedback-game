@@ -76,7 +76,7 @@ export class SpiromagicService implements OnDestroy {
     if (rawReading > this.maxReading)
       this.maxReading = rawReading;
 
-    return +calibration.calibrate(rawReading, this.maxReading, this.maxReading, sensitivity).toFixed(2);
+    return +calibration.calibrate(rawReading, this.minReading, this.maxReading, sensitivity).toFixed(2);
   }
 
   get device(): Observable<BluetoothDevice> {
