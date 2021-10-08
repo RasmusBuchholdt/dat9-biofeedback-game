@@ -1,7 +1,8 @@
-import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 
 import {
@@ -61,7 +62,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private zone: NgZone,
+    private toastrService: ToastrService,
     private spiromagicService: SpiromagicService,
     private deviceDetectorService: DeviceDetectorService,
     private calibrationService: CalibrationService
@@ -78,6 +79,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
 
   changeCalibration(calibration: CalibrationStrategy): void {
     this.spiromagicService.calibration$.next(calibration);
+    this.toastrService.success(`Calibration has been changed to <b>${calibration.name}</b>`, 'Calibration changed')
   }
 
   changeSensitivity(value: number): void {
@@ -86,6 +88,7 @@ export class CalibrationComponent implements OnInit, OnDestroy {
 
   resetReadings(): void {
     this.spiromagicService.resetReadings();
+    this.toastrService.success('The readings have been reset!', 'Readings reset')
   }
 
   private setupSpirometer(): void {
