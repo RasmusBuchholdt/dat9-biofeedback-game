@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { WebBluetoothModule } from '@manekinekko/angular-web-bluetooth';
 import { ChartsModule } from 'ng2-charts';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { environment } from 'src/environments/environment';
 import { ToastrModule } from 'ngx-toastr';
 
 import { SpiromagicService } from './_services/spiromagic.service';
@@ -30,7 +29,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     NgxSpinnerModule,
     ChartsModule,
     WebBluetoothModule.forRoot({
-      enableTracing: !environment.production
+      // enableTracing: !environment.production
     }),
     ToastrModule.forRoot({
       timeOut: 2000,
