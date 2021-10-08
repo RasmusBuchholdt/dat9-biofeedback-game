@@ -70,14 +70,10 @@ export class SpiromagicService implements OnDestroy {
     const calibration = this.calibration$.getValue();
     const sensitivity = this.sensitivity$.getValue();
 
-    if (rawReading > this.maxRawReading) {
+    if (rawReading > this.maxRawReading)
       this.maxRawReading = rawReading;
-      console.log("New raw max reading", this.maxRawReading);
-    }
-    if (rawReading < this.minRawReading) {
+    if (rawReading < this.minRawReading)
       this.minRawReading = rawReading;
-      console.log("New raw min reading", this.minRawReading);
-    }
 
     return +calibration.calibrate(rawReading, this.minRawReading, this.maxRawReading, sensitivity).toFixed(2);
   }
