@@ -6,13 +6,13 @@ import { CalibrationStrategy } from './calibration-strategy';
 
 export class PushEasyCalibration extends CalibrationBase implements CalibrationStrategy {
 
-  private initialBreathReading: number;
+  private initialDifference: number;
   private previousDifference = 0;
   private previousReading: number;
   private currentStepValue = 50;
 
   private positiveStepSize = 5;
-  private negativeStepSize = 1;
+  private negativeStepSize = 5;
 
   get name(): string {
     return 'Push (Easy)';
@@ -30,17 +30,19 @@ export class PushEasyCalibration extends CalibrationBase implements CalibrationS
     if (!this.previousDifference) this.previousDifference = difference;
 
     // Did we detect breathing?
-    // TODO: This needs to be better and include sensitivity somehow.
-    if (reading >= minReading * 1.2) {
+    const differenceRequired = this.previousReading * 1.1 / (100 * (sensitivity / 100 + 1));
+
+    if (difference >= differenceRequired) {
       // Set the initial value for this "breathing" session
-      this.initialBreathReading = reading;
+      this.initialDifference = difference;
+      console.log("Initial difference", difference);
     }
 
     // We don't want to move before first breath is detected
-    if (this.initialBreathReading) {
-
+    if (this.initialDifference) {
       // Which direction are we shifting
-      const scalar = reading >= this.initialBreathReading ? 1 : -1;
+      const scalar = difference >= this.initialDifference ? 1 : -1;
+      console.log("Current scalar", scalar);
 
       // Get the correct step size
       const stepSize = scalar === 1 ? this.positiveStepSize : this.negativeStepSize;
@@ -50,7 +52,8 @@ export class PushEasyCalibration extends CalibrationBase implements CalibrationS
 
       // If we are shifting down, then the latest reading will be our current minima
       if (scalar === -1) {
-        this.initialBreathReading = reading;
+        // this.initialDifference = null;
+        console.log("Shifting down");
       }
     }
 
