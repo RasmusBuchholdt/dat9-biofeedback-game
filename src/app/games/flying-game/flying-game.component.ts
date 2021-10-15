@@ -24,8 +24,8 @@ export class FlyingGameComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gameEngine.createScene(this.rendererCanvas);
-    this.gameEngine.animate();
+    this.gameEngine.initialize(this.rendererCanvas);
+    // this.gameEngine.animate();
     this.getReadings();
   }
 
@@ -36,26 +36,7 @@ export class FlyingGameComponent implements OnInit {
 
   getReadings(): void {
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
-      this.gameEngine.setInnerCircle(reading);
+      // t
     })
-  }
-
-  takeScreenshot(): void {
-    this.screenshotBase64 = this.gameEngine.takeSceneScreenshot();
-  }
-
-  resetGame(): void {
-    this.gameEngine.resetGame();
-  }
-
-  downloadScreenshot() {
-    const d = new Date();
-    const dateString = `${d.getFullYear().toString().padStart(4, '0')}${(d.getMonth() + 1).toString().padStart(2, '0')}${d.getDate().toString().padStart(2, '0')}-${d.getHours().toString().padStart(2, '0')}${d.getMinutes().toString().padStart(2, '0')}${d.getSeconds().toString().padStart(2, '0')}`
-    const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href", this.screenshotBase64.toString());
-    downloadAnchorNode.setAttribute("download", `screenshot ${dateString}.png`);
-    document.body.appendChild(downloadAnchorNode);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
   }
 }

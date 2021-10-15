@@ -1,8 +1,6 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
-import { scaleNumberToRange } from '../_utils/scale-number-to-range';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -11,24 +9,26 @@ export class FlyingGameEngineService {
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;
   private scene: THREE.Scene;
-  private light: THREE.HemisphereLight;
 
-  private circleMaxValue = 3;
-  private circleMinValue = 0.1;
-  private biggestValue = 0;
+  private hemisphereLight: THREE.HemisphereLight;
+  private shadowLight: THREE.DirectionalLight;
 
-  private innerCircle: THREE.Mesh;
-  private outerCircle: THREE.Mesh;
-  private maxValueCircle: THREE.Mesh;
+  private fieldOfView;
+  private aspectRatio;
+  private nearPlane;
+  private farPlane;
+  private HEIGHT;
+  private WIDTH;
+
+  private sea: THREE.Object3D;
 
   private frameId: number = null;
 
   public constructor(
-    private ngZone: NgZone) {
-  }
+    private ngZone: NgZone
+  ) { }
 
   stopGame(): void {
-    this.resetGame();
     if (this.frameId != null) {
       cancelAnimationFrame(this.frameId);
     }
@@ -40,86 +40,148 @@ export class FlyingGameEngineService {
     }
   }
 
-  resetGame(): void {
-    this.circleMaxValue = 3;
-    this.circleMinValue = 0.1;
-    this.biggestValue = 0;
+  initialize(canvas: ElementRef<HTMLCanvasElement>): void {
+    // set up the scene, the camera and the renderer
+    this.createScene(canvas);
+
+    // // add the lights
+    this.createLights();
+
+    // // add the objects
+    // createPlane();
+    // createSea();
+    // createSky();
+
+    // // start a loop that will update the objects' positions
+    // // and render the scene on each frame
+    // loop();
   }
 
-  createScene(canvas: ElementRef<HTMLCanvasElement>): void {
+
+  private createScene(canvas: ElementRef<HTMLCanvasElement>): void {
+    // Set the canvas
     this.canvas = canvas.nativeElement;
 
+    // Get the width and the height of the screen,
+    // use them to set up the aspect ratio of the camera
+    // and the size of the renderer.
+    this.HEIGHT = window.innerHeight;
+    this.WIDTH = window.innerWidth;
+
+    // Create the scene
+    this.scene = new THREE.Scene();
+
+    // Add a fog effect to the scene; same color as the
+    // background color used in the style sheet
+    this.scene.fog = new THREE.Fog(0xf7d9aa, 100, 950);
+
+    // Create the camera
+    this.aspectRatio = this.WIDTH / this.HEIGHT;
+    this.fieldOfView = 60;
+    this.nearPlane = 1;
+    this.farPlane = 10000;
+    this.camera = new THREE.PerspectiveCamera(
+      this.fieldOfView,
+      this.aspectRatio,
+      this.nearPlane,
+      this.farPlane
+    );
+
+    // Set the position of the camera
+    this.camera.position.x = 0;
+    this.camera.position.z = 200;
+    this.camera.position.y = 100;
+
+    // Create the renderer
     this.renderer = new THREE.WebGLRenderer({
+      // Set the canvas
       canvas: this.canvas,
+      // Allow transparency to show the gradient background
+      // we defined in the CSS
       alpha: true,
+
+      // Activate the anti-aliasing; this is less performant,
+      // but, as our project is low-poly based, it should be fine :)
       antialias: true
     });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x999999);
+    // Define the size of the renderer; in this case,
+    // it will fill the entire screen
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
 
-    this.camera = new THREE.PerspectiveCamera(
-      75, window.innerWidth / window.innerHeight, 0.1, 1000
-    );
-    this.camera.position.z = 5;
-    this.scene.add(this.camera);
-
-    const skyColor = 0xB1E1FF;
-    const groundColor = 0xB97A20;
-    const intensity = 1.5;
-    this.light = new THREE.HemisphereLight(skyColor, groundColor, intensity);
-    this.scene.add(this.light);
-
-    this.addCircles();
+    // Listen to the screen: if the user resizes it
+    // we have to update the camera and the renderer size
+    window.addEventListener('resize', this.handleWindowResize, false);
   }
 
-  private addCircles(): void {
-    let geometry = new THREE.CircleGeometry(this.circleMaxValue, 32);
-    let material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
-    this.outerCircle = new THREE.Mesh(geometry, material);
-    this.scene.add(this.outerCircle);
+  // private createSea(): void {
+  //   // create the geometry (shape) of the cylinder;
+  //   // the parameters are:
+  //   // radius top, radius bottom, height, number of segments on the radius, number of segments vertically
+  //   var geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10);
 
-    geometry = new THREE.CircleGeometry(this.circleMinValue, 32);
-    material = new THREE.MeshBasicMaterial({ color: 'green' });
-    this.innerCircle = new THREE.Mesh(geometry, material);
-    this.scene.add(this.innerCircle);
+  //   // rotate the geometry on the x axis
+  //   geom.applyMatrix4(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
+
+  //   // create the material
+  //   var mat = new THREE.MeshPhongMaterial({
+  //     color: 'blue',
+  //     transparent: true,
+  //     opacity: .6,
+  //     shading: new THREE.FlatShading,
+  //   });
+
+  //   // To create an object in Three.js, we have to create a mesh
+  //   // which is a combination of a geometry and some material
+  //   this.mesh = new THREE.Mesh(geom, mat);
+
+  //   // Allow the sea to receive shadows
+  //   this.mesh.receiveShadow = true;
+  // }
+
+  private createLights(): void {
+    // A hemisphere light is a gradient colored light;
+    // the first parameter is the sky color, the second parameter is the ground color,
+    // the third parameter is the intensity of the light
+    this.hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, .9)
+
+    // A directional light shines from a specific direction.
+    // It acts like the sun, that means that all the rays produced are parallel.
+    this.shadowLight = new THREE.DirectionalLight(0xffffff, .9);
+
+    // Set the direction of the light
+    this.shadowLight.position.set(150, 350, 350);
+
+    // Allow shadow casting
+    this.shadowLight.castShadow = true;
+
+    // define the visible area of the projected shadow
+    this.shadowLight.shadow.camera.left = -400;
+    this.shadowLight.shadow.camera.right = 400;
+    this.shadowLight.shadow.camera.top = 400;
+    this.shadowLight.shadow.camera.bottom = -400;
+    this.shadowLight.shadow.camera.near = 1;
+    this.shadowLight.shadow.camera.far = 1000;
+
+    // define the resolution of the shadow; the higher the better,
+    // but also the more expensive and less performant
+    this.shadowLight.shadow.mapSize.width = 2048;
+    this.shadowLight.shadow.mapSize.height = 2048;
+
+    // to activate the lights, just add them to the scene
+    this.scene.add(this.hemisphereLight);
+    this.scene.add(this.shadowLight);
   }
 
-  setInnerCircle(value: number) {
-    const scaledValue = scaleNumberToRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
-    let geometry = new THREE.CircleGeometry(scaledValue, 32);
-    let material = new THREE.MeshBasicMaterial({ color: 'green' });
-    this.scene.remove(this.innerCircle);
-    this.innerCircle = new THREE.Mesh(geometry, material);
-    this.scene.add(this.innerCircle);
-
-    if (scaledValue > this.biggestValue) this.adjustMaxValueCircle(scaledValue);
+  private handleWindowResize() {
+    // update height and width of the renderer and the camera
+    this.HEIGHT = window.innerHeight;
+    this.WIDTH = window.innerWidth;
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
+    this.camera.aspect = this.WIDTH / this.HEIGHT;
+    this.camera.updateProjectionMatrix();
   }
 
-  private adjustMaxValueCircle(value: number): void {
-    this.biggestValue = value;
-    let geometry = new THREE.CircleGeometry(value, 32);
-    let material = new THREE.MeshBasicMaterial({ color: 'red' });
-    this.scene.remove(this.maxValueCircle);
-    this.maxValueCircle = new THREE.Mesh(geometry, material);
-    this.scene.add(this.maxValueCircle);
-  }
-
-  animate(): void {
-    this.ngZone.runOutsideAngular(() => {
-      if (document.readyState !== 'loading') {
-        this.render();
-      } else {
-        window.addEventListener('DOMContentLoaded', () => {
-          this.render();
-        });
-      }
-      window.addEventListener('resize', () => {
-        this.resize();
-      });
-    });
-  }
 
   private render(): void {
     this.frameId = requestAnimationFrame(() => {
@@ -152,18 +214,5 @@ export class FlyingGameEngineService {
         value.dispose()
       }
     }
-  }
-
-  private resize(): void {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    this.camera.aspect = width / height;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(width, height);
-  }
-
-  takeSceneScreenshot(): string {
-    this.renderer.render(this.scene, this.camera);
-    return this.renderer.domElement.toDataURL();
   }
 }
