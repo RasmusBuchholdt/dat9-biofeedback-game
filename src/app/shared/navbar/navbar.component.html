@@ -7,7 +7,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav mr-auto" *ngIf="spiromagicService.isConnected">
+    <ul class="navbar-nav mr-auto" *ngIf="spiromagicService.isConnected || !isProduction">
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
         <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game']">Game</a>
       </li>
