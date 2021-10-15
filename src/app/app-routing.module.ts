@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ConnectedGuard } from './_guards/connected.guard';
 import { CalibrationComponent } from './calibration/calibration.component';
 import { CircleGameComponent } from './games/circle-game/circle-game.component';
+import { FlyingGameComponent } from './games/flying-game/flying-game.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path: 'circle',
         component: CircleGameComponent
+      },
+      {
+        path: 'flying',
+        component: FlyingGameComponent
       }
     ]
   },

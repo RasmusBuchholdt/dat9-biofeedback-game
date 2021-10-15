@@ -13,6 +13,7 @@ import { CalibrationComponent } from './calibration/calibration.component';
 import { CircleGameComponent } from './games/circle-game/circle-game.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import { FlyingGameComponent } from './games/flying-game/flying-game.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     HomeComponent,
     CalibrationComponent,
     NavbarComponent,
-    CircleGameComponent
+    CircleGameComponent,
+    FlyingGameComponent
   ],
   imports: [
     BrowserAnimationsModule,
