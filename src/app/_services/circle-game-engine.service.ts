@@ -6,7 +6,7 @@ import { scaleNumberToRange } from '../_utils/scale-number-to-range';
 @Injectable({
   providedIn: 'root'
 })
-export class RenderingEngineService {
+export class CircleGameEngineService {
   private canvas: HTMLCanvasElement;
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;

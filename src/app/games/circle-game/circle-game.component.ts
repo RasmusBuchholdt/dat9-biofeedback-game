@@ -7,15 +7,17 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { RenderingEngineService } from '../_services/rendering-engine.service';
-import { SpiromagicService } from '../_services/spiromagic.service';
+import {
+  CircleGameEngineService,
+} from '../../_services/circle-game-engine.service';
+import { SpiromagicService } from '../../_services/spiromagic.service';
 
 @Component({
-  selector: 'app-game',
-  templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  selector: 'app-circle-game',
+  templateUrl: './circle-game.component.html',
+  styleUrls: ['./circle-game.component.scss']
 })
-export class GameComponent implements OnInit, OnDestroy {
+export class CircleGameComponent implements OnInit, OnDestroy {
 
   @ViewChild('rendererCanvas', { static: true })
   public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
@@ -24,33 +26,33 @@ export class GameComponent implements OnInit, OnDestroy {
   private subscription: Subscription | null;
 
   constructor(
-    private renderingService: RenderingEngineService,
+    private gameEngine: CircleGameEngineService,
     private spiromagicService: SpiromagicService
   ) { }
 
   ngOnInit(): void {
-    this.renderingService.createScene(this.rendererCanvas);
-    this.renderingService.animate();
+    this.gameEngine.createScene(this.rendererCanvas);
+    this.gameEngine.animate();
     this.getReadings();
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
-    this.renderingService.stopGame();
+    this.gameEngine.stopGame();
   }
 
   getReadings(): void {
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
-      this.renderingService.setInnerCircle(reading);
+      this.gameEngine.setInnerCircle(reading);
     })
   }
 
   takeScreenshot(): void {
-    this.screenshotBase64 = this.renderingService.takeSceneScreenshot();
+    this.screenshotBase64 = this.gameEngine.takeSceneScreenshot();
   }
 
   resetGame(): void {
-    this.renderingService.resetGame();
+    this.gameEngine.resetGame();
   }
 
   downloadScreenshot() {

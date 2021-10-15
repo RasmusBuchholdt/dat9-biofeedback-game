@@ -10,7 +10,7 @@ import { SpiromagicService } from './_services/spiromagic.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalibrationComponent } from './calibration/calibration.component';
-import { GameComponent } from './game/game.component';
+import { CircleGameComponent } from './games/circle-game/circle-game.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 
@@ -20,7 +20,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     HomeComponent,
     CalibrationComponent,
     NavbarComponent,
-    GameComponent
+    CircleGameComponent
   ],
   imports: [
     BrowserAnimationsModule,

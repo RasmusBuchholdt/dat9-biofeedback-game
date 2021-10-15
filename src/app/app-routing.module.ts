@@ -4,7 +4,7 @@ import { environment } from 'src/environments/environment';
 
 import { ConnectedGuard } from './_guards/connected.guard';
 import { CalibrationComponent } from './calibration/calibration.component';
-import { GameComponent } from './game/game.component';
+import { CircleGameComponent } from './games/circle-game/circle-game.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
@@ -15,7 +15,12 @@ const routes: Routes = [
   {
     path: 'game',
     canActivate: environment.production ? [ConnectedGuard] : [],
-    component: GameComponent
+    children: [
+      {
+        path: 'circle',
+        component: CircleGameComponent
+      }
+    ]
   },
   {
     path: 'calibration',
