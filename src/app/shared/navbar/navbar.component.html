@@ -8,8 +8,21 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto" *ngIf="spiromagicService.isConnected || !isProduction">
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game']">Game</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarGamesDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Games
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarGamesDropdown">
+          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
+            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/circle']">
+            Circle Game
+          </a>
+          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
+            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/flying']">
+            Flying Game
+          </a>
+        </div>
       </li>
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
         <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show"
