@@ -331,7 +331,7 @@ export class FlyingGameEngineService {
     object.clear();
     if (object.isMesh) {
       object.geometry.dispose()
-      if (object.material.type == 'MeshBasicMaterial') {
+      if (object.material.type == 'MeshBasicMaterial' || object.material.type == 'MeshPhongMaterial') {
         return;
       }
       if (object.material.isMaterial) {
