@@ -1,7 +1,7 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
-import { normalize } from '../_utils/normalize';
+import { scaleNumberToRange } from '../_utils/scale-number-to-range';
 
 @Injectable({
   providedIn: 'root'
@@ -323,7 +323,7 @@ export class FlyingGameEngineService {
   }
 
   public updatePlane(value: number): void {
-    const target = normalize(value, -100, 100);
+    const target = scaleNumberToRange(value, 0, 100, 25, 175)
     this.plane.position.y = target;
   }
 
