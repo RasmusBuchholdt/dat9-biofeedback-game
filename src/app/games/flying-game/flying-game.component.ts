@@ -24,8 +24,8 @@ export class FlyingGameComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.gameEngine.initialize(this.rendererCanvas);
-    // this.gameEngine.animate();
+    this.gameEngine.createScene(this.rendererCanvas);
+    this.gameEngine.animate();
     this.getReadings();
   }
 
@@ -36,7 +36,7 @@ export class FlyingGameComponent implements OnInit {
 
   getReadings(): void {
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
-      // t
+      this.gameEngine.updatePlane(reading);
     })
   }
 }
