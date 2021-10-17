@@ -23,9 +23,9 @@ export class CircleGameEngineService {
 
   private frameId: number = null;
 
-  public constructor(
-    private ngZone: NgZone) {
-  }
+  constructor(
+    private ngZone: NgZone
+  ) { }
 
   stopGame(): void {
     this.resetGame();
