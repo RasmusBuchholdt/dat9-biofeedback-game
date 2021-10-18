@@ -2,6 +2,7 @@ import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
 import { Colors } from '../_models/color';
+import { clamp } from '../_utils/clamp';
 import { scaleNumberToRange } from '../_utils/scale-number-to-range';
 
 @Injectable({
@@ -22,6 +23,9 @@ export class FlyingGameEngineService {
   private sky: THREE.Object3D;
   private plane: THREE.Object3D;
   private propeller: THREE.Object3D;
+
+  private ascending = true;
+  private previousValue: number;
 
   constructor(
     private ngZone: NgZone
@@ -317,6 +321,11 @@ export class FlyingGameEngineService {
     this.sky.rotation.z += .01;
     this.propeller.rotation.x += 0.3;
 
+    if (this.previousValue) {
+      const planeMovement = clamp(this.plane.position.y + (this.ascending ? 0.5 : -0.5), 25, 175);
+      this.plane.position.y = planeMovement;
+    }
+
     this.frameId = requestAnimationFrame(() => {
       this.render();
     });
@@ -326,6 +335,13 @@ export class FlyingGameEngineService {
   public updatePlane(value: number): void {
     const target = scaleNumberToRange(value, 0, 100, 25, 175)
     this.plane.position.y = target;
+  }
+
+  public updatePlaneSmooth(value: number): void {
+    if (this.previousValue === null)
+      this.previousValue = value;
+    this.ascending = value >= this.previousValue;
+    this.previousValue = value;
   }
 
   private killObject(object: (THREE.Object3D | THREE.HemisphereLight | THREE.Mesh) & { isMesh: boolean, material: any, geometry: THREE.BoxGeometry }): void {

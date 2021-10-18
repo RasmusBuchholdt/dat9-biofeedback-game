@@ -40,7 +40,8 @@ export class FlyingGameComponent implements OnInit {
   getReadings(): void {
     this.spiromagicService.calibration$.next(new PushHardCalibration())
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
-      this.gameEngine.updatePlane(reading);
+      // this.gameEngine.updatePlane(reading);
+      this.gameEngine.updatePlaneSmooth(reading);
     })
   }
 }
