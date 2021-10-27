@@ -14,6 +14,7 @@ import { CircleGameComponent } from './games/circle-game/circle-game.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FlyingGameComponent } from './games/flying-game/flying-game.component';
+import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FlyingGameComponent } from './games/flying-game/flying-game.component';
     CalibrationComponent,
     NavbarComponent,
     CircleGameComponent,
-    FlyingGameComponent
+    FlyingGameComponent,
+    KiwiGameComponent
   ],
   imports: [
     BrowserAnimationsModule,
