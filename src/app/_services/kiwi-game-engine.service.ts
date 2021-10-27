@@ -3,6 +3,7 @@ import * as THREE from 'three';
 
 import { Colors } from '../_models/color';
 import { clamp } from '../_utils/clamp';
+import { randomNumberInRange } from '../_utils/randomNumberInRange';
 import { scaleNumberToRange } from '../_utils/scale-number-to-range';
 
 @Injectable({
@@ -19,7 +20,7 @@ export class KiwiGameEngineService {
 
   private frameId: number = null;
 
-  private sea: THREE.Object3D;
+  private floor: THREE.Object3D;
   private sky: THREE.Object3D;
   private plane: THREE.Object3D;
   private propeller: THREE.Object3D;
@@ -117,34 +118,27 @@ export class KiwiGameEngineService {
   }
 
   private createSea(): void {
-    let sea: THREE.Object3D;
-    // create the geometry (shape) of the cylinder;
-    // the parameters are:
-    // radius top, radius bottom, height, number of segments on the radius, number of segments vertically
-    var geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10);
+    let floor: THREE.Object3D;
 
-    // rotate the geometry on the x axis
-    geom.applyMatrix4(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
+    var geom = new THREE.PlaneGeometry(1000, 100);
 
     // create the material
     var mat = new THREE.MeshPhongMaterial({
       color: Colors.blue,
       transparent: true,
-      opacity: .6,
+      opacity: 1,
       flatShading: true
     });
 
     // To create an object in Three.js, we have to create a mesh
     // which is a combination of a geometry and some material
-    sea = new THREE.Mesh(geom, mat);
+    floor = new THREE.Mesh(geom, mat);
 
-    sea.position.y = -600;
+    // Allow the floor to receive shadows
+    floor.receiveShadow = true;
 
-    // Allow the sea to receive shadows
-    sea.receiveShadow = true;
-
-    this.sea = sea;
-    this.scene.add(sea);
+    this.floor = floor;
+    this.scene.add(floor);
   }
 
   private createSky(): void {
@@ -156,7 +150,7 @@ export class KiwiGameEngineService {
 
     // To distribute the clouds consistently,
     // we need to place them according to a uniform angle
-    var stepAngle = Math.PI * 2 / nClouds;
+    var stepAngle = 2;
 
     // create the clouds
     for (var i = 0; i < nClouds; i++) {
@@ -173,8 +167,14 @@ export class KiwiGameEngineService {
       c.position.y = Math.sin(a) * h;
       c.position.x = Math.cos(a) * h;
 
+      c.position.x = randomNumberInRange(0, 1000)
+      c.position.y = randomNumberInRange(200, 1000)
+
       // rotate the cloud according to its position
       c.rotation.z = a + Math.PI / 2;
+
+      console.log(c.position);
+
 
       // for a better result, we position the clouds
       // at random depths inside of the scene
@@ -317,8 +317,8 @@ export class KiwiGameEngineService {
   }
 
   private render(): void {
-    this.sea.rotation.z += .005;
-    this.sky.rotation.z += .01;
+    this.sky.position.x -= 5;
+    // this.sky.rotation.z += .005;
     this.propeller.rotation.x += 0.3;
 
     if (this.previousValue) {
