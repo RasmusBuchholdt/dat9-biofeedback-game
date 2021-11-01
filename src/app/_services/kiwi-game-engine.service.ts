@@ -82,7 +82,7 @@ export class KiwiGameEngineService {
       this.skyOptions.push(this.createSky());
     }
 
-    const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length)];
+    const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length - 1)].clone();
     this.skyFirstHalf = selectedSky;
     this.scene.add(selectedSky);
 
@@ -180,9 +180,6 @@ export class KiwiGameEngineService {
 
       // rotate the cloud according to its position
       c.rotation.z = a + Math.PI / 2;
-
-      console.log(c.position);
-
 
       // for a better result, we position the clouds
       // at random depths inside of the scene
@@ -324,23 +321,7 @@ export class KiwiGameEngineService {
   }
 
   private render(): void {
-    this.skyFirstHalf.position.x -= 5;
-    if (this.skySecondHalf) {
-      this.skySecondHalf.position.x -= 5;
-    }
-
-    if (this.skySecondHalf?.position.x <= -4000) {
-      this.scene.remove(this.skySecondHalf);
-      // this.skySecondHalf.children.forEach(this.killObject);
-      // this.skySecondHalf.clear();
-    }
-
-    if (this.skyFirstHalf.position.x <= -2000) {
-      this.skySecondHalf = this.skyFirstHalf;
-      const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length)];
-      this.skyFirstHalf = selectedSky;
-      this.scene.add(selectedSky);
-    }
+    this.updateSky();
 
     // this.sky.rotation.z += .005;
     this.propeller.rotation.x += 0.3;
@@ -354,6 +335,34 @@ export class KiwiGameEngineService {
       this.render();
     });
     this.renderer.render(this.scene, this.camera);
+  }
+
+  private updateSky(): void {
+    // We keep moving the first half
+    this.skyFirstHalf.position.x -= 5;
+
+    // If we have an active second half it needs to be moved as well
+    if (this.skySecondHalf) {
+      this.skySecondHalf.position.x -= 5;
+    }
+
+    // Once the second half is out of the view we remove it from the scene
+    if (this.skySecondHalf?.position.x <= -4000) {
+      this.scene.remove(this.skySecondHalf);
+      // this.skySecondHalf.children.forEach(this.killObject);
+      // this.skySecondHalf.clear();
+    }
+
+    // Once the first half is over halfway through the view
+    if (this.skyFirstHalf.position.x <= -2000) {
+      // We move the reference to the second half
+      this.skySecondHalf = this.skyFirstHalf;
+
+      // Select a new random sky and asign to first half
+      const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length - 1)].clone();
+      this.skyFirstHalf = selectedSky;
+      this.scene.add(selectedSky);
+    }
   }
 
   public updatePlane(value: number): void {
