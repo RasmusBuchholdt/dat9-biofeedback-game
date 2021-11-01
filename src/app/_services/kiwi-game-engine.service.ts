@@ -21,7 +21,9 @@ export class KiwiGameEngineService {
   private frameId: number = null;
 
   private floor: THREE.Object3D;
-  private sky: THREE.Object3D;
+  private skyOptions: THREE.Object3D[] = [];
+  private skyFirstHalf: THREE.Object3D;
+  private skySecondHalf: THREE.Object3D;
   private plane: THREE.Object3D;
   private propeller: THREE.Object3D;
 
@@ -75,11 +77,17 @@ export class KiwiGameEngineService {
     this.camera.position.z = 200;
     this.camera.position.y = 100;
 
-    // this.scene.add(this.camera);
+    // Pre generate different sky options
+    for (let i = 0; i < 5; i++) {
+      this.skyOptions.push(this.createSky());
+    }
+
+    const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length)];
+    this.skyFirstHalf = selectedSky;
+    this.scene.add(selectedSky);
 
     this.createLights();
     this.createSea();
-    this.createSky();
     this.createPlane()
   }
 
@@ -141,12 +149,12 @@ export class KiwiGameEngineService {
     this.scene.add(floor);
   }
 
-  private createSky(): void {
+  private createSky(): THREE.Object3D {
     // Create an empty container
     let sky = new THREE.Object3D();
 
     // choose a number of clouds to be scattered in the sky
-    let nClouds = 20;
+    let nClouds = 30;
 
     // To distribute the clouds consistently,
     // we need to place them according to a uniform angle
@@ -167,7 +175,7 @@ export class KiwiGameEngineService {
       c.position.y = Math.sin(a) * h;
       c.position.x = Math.cos(a) * h;
 
-      c.position.x = randomNumberInRange(0, 1000)
+      c.position.x = randomNumberInRange(1000, 3000)
       c.position.y = randomNumberInRange(200, 1000)
 
       // rotate the cloud according to its position
@@ -190,8 +198,7 @@ export class KiwiGameEngineService {
 
     sky.position.y = -600;
 
-    this.sky = sky;
-    this.scene.add(sky);
+    return sky;
   }
 
   private createCloud(): THREE.Object3D {
@@ -317,7 +324,24 @@ export class KiwiGameEngineService {
   }
 
   private render(): void {
-    this.sky.position.x -= 5;
+    this.skyFirstHalf.position.x -= 5;
+    if (this.skySecondHalf) {
+      this.skySecondHalf.position.x -= 5;
+    }
+
+    if (this.skySecondHalf?.position.x <= -4000) {
+      this.scene.remove(this.skySecondHalf);
+      // this.skySecondHalf.children.forEach(this.killObject);
+      // this.skySecondHalf.clear();
+    }
+
+    if (this.skyFirstHalf.position.x <= -2000) {
+      this.skySecondHalf = this.skyFirstHalf;
+      const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length)];
+      this.skyFirstHalf = selectedSky;
+      this.scene.add(selectedSky);
+    }
+
     // this.sky.rotation.z += .005;
     this.propeller.rotation.x += 0.3;
 
