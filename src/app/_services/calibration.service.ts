@@ -15,6 +15,7 @@ import {
   PushHardCalibration,
 } from '../_models/calibration/push-hard-calibration';
 import { StepperCalibration } from '../_models/calibration/stepper-calibration';
+import { ConstantStepperCalibration } from '../_models/calibration/constant-stepper-calibration';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,8 @@ export class CalibrationService {
       new StepperCalibration(),
       new PushEasyCalibration(),
       new PushHardCalibration(),
-      new PuffCalibration()
+      new PuffCalibration(),
+      new ConstantStepperCalibration(),
     ]
   }
 }
