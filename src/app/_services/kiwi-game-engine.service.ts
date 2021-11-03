@@ -14,6 +14,8 @@ export class KiwiGameEngineService {
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;
   private scene: THREE.Scene;
+  private listener: THREE.AudioListener;
+  private sound: THREE.Audio;
 
   private hemisphereLight: THREE.HemisphereLight;
   private shadowLight: THREE.DirectionalLight;
@@ -76,6 +78,18 @@ export class KiwiGameEngineService {
     this.camera.position.x = 0;
     this.camera.position.z = 200;
     this.camera.position.y = 100;
+
+    // Sound support
+    this.listener = new THREE.AudioListener();
+    this.camera.add(this.listener);
+    this.sound = new THREE.Audio(this.listener);
+
+    new THREE.AudioLoader().load('assets/sounds/example.ogg', (buffer) => {
+      this.sound.setBuffer(buffer);
+      this.sound.setLoop(true);
+      this.sound.setVolume(0.5);
+      this.sound.play();
+    });
 
     // Pre generate different sky options
     for (let i = 0; i < 5; i++) {
@@ -264,7 +278,7 @@ export class KiwiGameEngineService {
 
   // TODO: Needs to take a function (Like sin)
   private createCoinRow(amount: number): void {
-    // A row is basically a container that holds x amount of coiins
+    // A row is basically a container that holds x amount of coins
     let row = new THREE.Object3D();
     row.name = 'Coin row';
     for (var i = 0; i < amount; i++) {
