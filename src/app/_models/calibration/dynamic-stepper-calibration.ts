@@ -15,7 +15,7 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     private stepValue = 0;
     private maxValue = 100;
     private minValue = 0;
-    private stepIncreasePercentage = 0.1;
+    private stepIncreasePercentage = 0.2;
     
     get name(): string {
         return "Dynamic stepper";

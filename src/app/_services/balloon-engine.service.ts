@@ -76,7 +76,7 @@ export class BalloonEngineService {
   // Particles
   private addParticles(): void {
     const particleGeometry = new THREE.BufferGeometry;
-    const particlesCount = 5000;
+    const particlesCount = 1000;
 
     // Set particle position
     const posArray = new Float32Array(particlesCount * 3);
@@ -115,7 +115,8 @@ export class BalloonEngineService {
 
   setParticleRotation(value: number) {
     const elapsedTime = this.clock.getElapsedTime();
-    this.particleRotation = (.005 * value) + (elapsedTime * 0.05);
+    // this.particleRotation = (.005 * value) + (elapsedTime * 0.05);
+    this.particleRotation = elapsedTime * 0.05;
   }
 
   setInnerCircle(value: number) {
