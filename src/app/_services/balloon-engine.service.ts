@@ -23,7 +23,7 @@ export class BalloonEngineService {
   private particleRotation = 10;
 
   // Circle variables
-  private circleMaxValue = 3;
+  private circleMaxValue = 2.5;
   private circleMinValue = 0.1;
   private outerCircle;
   private innerCircle;
