@@ -24,8 +24,7 @@ export class KiwiGameEngineService {
   private skyOptions: THREE.Object3D[] = [];
   private skyFirstHalf: THREE.Object3D;
   private skySecondHalf: THREE.Object3D;
-  private plane: THREE.Object3D;
-  private propeller: THREE.Object3D;
+  private character: THREE.Object3D;
   private coinRow: THREE.Object3D;
 
   private ascending = true;
@@ -80,7 +79,7 @@ export class KiwiGameEngineService {
 
     // Pre generate different sky options
     for (let i = 0; i < 5; i++) {
-      this.skyOptions.push(this.createSky());
+      this.skyOptions.push(this.createSky(30));
     }
 
     const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length - 1)].clone();
@@ -88,8 +87,8 @@ export class KiwiGameEngineService {
     this.scene.add(selectedSky);
 
     this.createLights();
-    this.createSea();
-    this.createPlane()
+    this.createFloor();
+    this.createCharacter();
     this.createCoinRow(30);
   }
 
@@ -98,10 +97,12 @@ export class KiwiGameEngineService {
     // the first parameter is the sky color, the second parameter is the ground color,
     // the third parameter is the intensity of the light
     this.hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, .9)
+    this.hemisphereLight.name = 'Hemisphere light';
 
     // A directional light shines from a specific direction.
     // It acts like the sun, that means that all the rays produced are parallel.
     this.shadowLight = new THREE.DirectionalLight(0xffffff, .9);
+    this.shadowLight.name = 'Shadow light';
 
     // Set the direction of the light
     this.shadowLight.position.set(150, 350, 350);
@@ -127,72 +128,61 @@ export class KiwiGameEngineService {
     this.scene.add(this.shadowLight);
   }
 
-  private createSea(): void {
+  private createFloor(): void {
     let floor: THREE.Object3D;
 
-    var geom = new THREE.PlaneGeometry(1000, 100);
-
-    // create the material
-    var mat = new THREE.MeshPhongMaterial({
+    let geom = new THREE.PlaneGeometry(1000, 100);
+    let mat = new THREE.MeshPhongMaterial({
       color: Colors.blue,
       transparent: true,
       opacity: 1,
       flatShading: true
     });
-
-    // To create an object in Three.js, we have to create a mesh
-    // which is a combination of a geometry and some material
     floor = new THREE.Mesh(geom, mat);
-
-    // Allow the floor to receive shadows
     floor.receiveShadow = true;
 
     this.floor = floor;
     this.scene.add(floor);
   }
 
-  private createSky(): THREE.Object3D {
-    // Create an empty container
+  private createSky(amount: number): THREE.Object3D {
     let sky = new THREE.Object3D();
-
-    // choose a number of clouds to be scattered in the sky
-    let nClouds = 30;
+    sky.name = 'Sky';
 
     // To distribute the clouds consistently,
     // we need to place them according to a uniform angle
     var stepAngle = 2;
 
-    // create the clouds
-    for (var i = 0; i < nClouds; i++) {
-      var c = this.createCloud();
+    for (let i = 0; i < amount; i++) {
+      let cloud = this.createCloud();
 
       // set the rotation and the position of each cloud;
       // for that we use a bit of trigonometry
-      var a = stepAngle * i; // this is the final angle of the cloud
-      var h = 750 + Math.random() * 200; // this is the distance between the center of the axis and the cloud itself
+      let a = stepAngle * i; // this is the final angle of the cloud
+      let h = 750 + Math.random() * 200; // this is the distance between the center of the axis and the cloud itself
 
       // Trigonometry!!! I hope you remember what you've learned in Math :)
       // in case you don't:
       // we are simply converting polar coordinates (angle, distance) into Cartesian coordinates (x, y)
-      c.position.y = Math.sin(a) * h;
-      c.position.x = Math.cos(a) * h;
+      cloud.position.y = Math.sin(a) * h;
+      cloud.position.x = Math.cos(a) * h;
 
-      c.position.x = randomNumberInRange(1000, 3000)
-      c.position.y = randomNumberInRange(200, 1000)
+      cloud.position.x = randomNumberInRange(1000, 3000)
+      cloud.position.y = randomNumberInRange(200, 1000)
 
       // rotate the cloud according to its position
-      c.rotation.z = a + Math.PI / 2;
+      cloud.rotation.z = a + Math.PI / 2;
 
       // for a better result, we position the clouds
       // at random depths inside of the scene
-      c.position.z = -400 - Math.random() * 400;
+      cloud.position.z = -400 - Math.random() * 400;
 
       // we also set a random scale for each cloud
-      var s = 1 + Math.random() * 2;
-      c.scale.set(s, s, s);
+      let s = 1 + Math.random() * 2;
+      cloud.scale.set(s, s, s);
 
       // do not forget to add the mesh of each cloud in the scene
-      sky.add(c);
+      sky.add(cloud);
     }
 
     sky.position.y = -600;
@@ -201,110 +191,60 @@ export class KiwiGameEngineService {
   }
 
   private createCloud(): THREE.Object3D {
-    // Create an empty container that will hold the different parts of the cloud
     let cloud = new THREE.Object3D();
+    cloud.name = 'Cloud';
 
-    // create a cube geometry;
-    // this shape will be duplicated to create the cloud
-    var geom = new THREE.BoxGeometry(20, 20, 20);
-
-    // create a material; a simple white material will do the trick
-    var mat = new THREE.MeshPhongMaterial({
+    let geom = new THREE.BoxGeometry(20, 20, 20);
+    let mat = new THREE.MeshPhongMaterial({
       color: Colors.white,
     });
 
-    // duplicate the geometry a random number of times
-    var nBlocs = 3 + Math.floor(Math.random() * 3);
-    for (var i = 0; i < nBlocs; i++) {
+    let nBlocs = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < nBlocs; i++) {
 
       // create the mesh by cloning the geometry
-      var m = new THREE.Mesh(geom, mat);
+      let mesh = new THREE.Mesh(geom, mat);
+      mesh.name = 'Block';
 
       // set the position and the rotation of each cube randomly
-      m.position.x = i * 15;
-      m.position.y = Math.random() * 10;
-      m.position.z = Math.random() * 10;
-      m.rotation.z = Math.random() * Math.PI * 2;
-      m.rotation.y = Math.random() * Math.PI * 2;
+      mesh.position.x = i * 15;
+      mesh.position.y = Math.random() * 10;
+      mesh.position.z = Math.random() * 10;
+      mesh.rotation.z = Math.random() * Math.PI * 2;
+      mesh.rotation.y = Math.random() * Math.PI * 2;
 
       // set the size of the cube randomly
-      var s = .1 + Math.random() * .9;
-      m.scale.set(s, s, s);
+      let s = .1 + Math.random() * .9;
+      mesh.scale.set(s, s, s);
 
       // allow each cube to cast and to receive shadows
-      m.castShadow = true;
-      m.receiveShadow = true;
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
 
       // add the cube to the container we first created
-      cloud.add(m);
+      cloud.add(mesh);
     }
 
     return cloud;
   }
 
-  private createPlane(): void {
-
-    let plane = new THREE.Object3D();
-
-    // Create the cabin
-    var geomCockpit = new THREE.BoxGeometry(60, 50, 50, 1, 1, 1);
-    var matCockpit = new THREE.MeshPhongMaterial({ color: Colors.red, flatShading: true });
-    var cockpit = new THREE.Mesh(geomCockpit, matCockpit);
-    cockpit.castShadow = true;
-    cockpit.receiveShadow = true;
-    plane.add(cockpit);
-
-    // Create the engine
-    var geomEngine = new THREE.BoxGeometry(20, 50, 50, 1, 1, 1);
-    var matEngine = new THREE.MeshPhongMaterial({ color: Colors.white, flatShading: true });
-    var engine = new THREE.Mesh(geomEngine, matEngine);
-    engine.position.x = 40;
-    engine.castShadow = true;
-    engine.receiveShadow = true;
-    plane.add(engine);
-
-    // Create the tail
-    var geomTailPlane = new THREE.BoxGeometry(15, 20, 5, 1, 1, 1);
-    var matTailPlane = new THREE.MeshPhongMaterial({ color: Colors.red, flatShading: true });
-    var tailPlane = new THREE.Mesh(geomTailPlane, matTailPlane);
-    tailPlane.position.set(-35, 25, 0);
-    tailPlane.castShadow = true;
-    tailPlane.receiveShadow = true;
-    plane.add(tailPlane);
-
-    // Create the wing
-    var geomSideWing = new THREE.BoxGeometry(40, 8, 150, 1, 1, 1);
-    var matSideWing = new THREE.MeshPhongMaterial({ color: Colors.red, flatShading: true });
-    var sideWing = new THREE.Mesh(geomSideWing, matSideWing);
-    sideWing.castShadow = true;
-    sideWing.receiveShadow = true;
-    plane.add(sideWing);
-
-    // propeller
-    var geomPropeller = new THREE.BoxGeometry(20, 10, 10, 1, 1, 1);
-    var matPropeller = new THREE.MeshPhongMaterial({ color: Colors.brown, flatShading: true });
-    let propeller = new THREE.Mesh(geomPropeller, matPropeller);
-    propeller.castShadow = true;
-    propeller.receiveShadow = true;
-
-    // blades
-    var geomBlade = new THREE.BoxGeometry(1, 100, 20, 1, 1, 1);
-    var matBlade = new THREE.MeshPhongMaterial({ color: Colors.brownDark, flatShading: true });
-
-    var blade = new THREE.Mesh(geomBlade, matBlade);
-    blade.position.set(8, 0, 0);
-    blade.castShadow = true;
-    blade.receiveShadow = true;
-    propeller.add(blade);
-    propeller.position.set(50, 0, 0);
-
-    this.propeller = propeller;
-    plane.add(propeller);
-
-    plane.scale.set(.25, .25, .25);
-    plane.position.y = 100;
-    this.plane = plane;
-    this.scene.add(plane);
+  private createCharacter(): void {
+    let character = new THREE.Object3D();
+    character.name = 'Character';
+    let geom = new THREE.BoxGeometry(60, 50, 50, 1, 1, 1);
+    let mat = new THREE.MeshPhongMaterial({
+      color: Colors.red,
+      flatShading: true
+    });
+    let bodyMesh = new THREE.Mesh(geom, mat);
+    bodyMesh.castShadow = true;
+    bodyMesh.receiveShadow = true;
+    bodyMesh.name = 'Body';
+    character.add(bodyMesh);
+    character.scale.set(.25, .25, .25);
+    character.position.y = 100;
+    this.character = character;
+    this.scene.add(character);
   };
 
   animate(): void {
@@ -326,6 +266,7 @@ export class KiwiGameEngineService {
   private createCoinRow(amount: number): void {
     // A row is basically a container that holds x amount of coiins
     let row = new THREE.Object3D();
+    row.name = 'Coin row';
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
       // These positions needs to be based on the passed function
@@ -340,39 +281,27 @@ export class KiwiGameEngineService {
 
   private createCoin(): THREE.Object3D {
     let coin = new THREE.Object3D();
-    var geom = new THREE.CircleGeometry(3, 20);
-
-    var mat = new THREE.MeshPhongMaterial({
+    coin.name = 'Coin';
+    let geom = new THREE.CircleGeometry(3, 20);
+    let mat = new THREE.MeshPhongMaterial({
       color: 0x009999,
       shininess: 0,
       specular: 0xffffff,
       flatShading: true
     });
-
-    var mesh = new THREE.Mesh(geom, mat);
+    let mesh = new THREE.Mesh(geom, mat);
     coin.add(mesh);
-
-    coin.position.x = 0;
-    coin.position.y = 150;
-
-    coin.name = "Test";
-
-    this.scene.add(coin);
-
     return coin;
   }
 
   private render(): void {
     this.updateSky();
 
-    // this.sky.rotation.z += .005;
-    this.propeller.rotation.x += 0.3;
-
     this.coinRow.position.x -= 3;
 
     if (this.previousValue) {
-      const planeMovement = clamp(this.plane.position.y + (this.ascending ? 0.5 : -0.5), 25, 175);
-      this.plane.position.y = planeMovement;
+      const planeMovement = clamp(this.character.position.y + (this.ascending ? 0.5 : -0.5), 25, 175);
+      this.character.position.y = planeMovement;
     }
 
     this.frameId = requestAnimationFrame(() => {
@@ -411,7 +340,7 @@ export class KiwiGameEngineService {
 
   public updatePlane(value: number): void {
     const target = scaleNumberToRange(value, 0, 100, 25, 175)
-    this.plane.position.y = target;
+    this.character.position.y = target;
   }
 
   public updatePlaneSmooth(value: number): void {
