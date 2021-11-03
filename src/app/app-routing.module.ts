@@ -4,6 +4,9 @@ import { environment } from 'src/environments/environment';
 
 import { ConnectedGuard } from './_guards/connected.guard';
 import { CalibrationComponent } from './calibration/calibration.component';
+import {
+  BalloonGameComponent,
+} from './games/balloon-game/balloon-game.component';
 import { CircleGameComponent } from './games/circle-game/circle-game.component';
 import { FlyingGameComponent } from './games/flying-game/flying-game.component';
 import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
@@ -29,6 +32,10 @@ const routes: Routes = [
       {
         path: 'flying',
         component: FlyingGameComponent
+      },
+      {
+        path: 'balloon',
+        component: BalloonGameComponent
       }
     ]
   },

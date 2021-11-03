@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FlyingGameComponent } from './games/flying-game/flying-game.component';
 import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
+import { BalloonGameComponent } from './games/balloon-game/balloon-game.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
     NavbarComponent,
     CircleGameComponent,
     FlyingGameComponent,
-    KiwiGameComponent
+    KiwiGameComponent,
+    BalloonGameComponent
   ],
   imports: [
     BrowserAnimationsModule,
