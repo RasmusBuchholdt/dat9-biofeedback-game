@@ -1,3 +1,4 @@
+import { DynamicStepperCalibration } from './../../_models/calibration/dynamic-stepper-calibration';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { BalloonEngineService } from 'src/app/_services/balloon-engine.service';
@@ -32,9 +33,10 @@ export class BalloonGameComponent implements OnInit {
   }
 
   getReadings(): void {
+    this.spiromagicService.calibration$.next(new DynamicStepperCalibration())
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
-      // TODO: Call something in your game (control the character or whatever)
-      // this.gameEngine.setInnerCircle(reading);
+      this.gameEngine.setParticleRotation(reading);
+      this.gameEngine.setInnerCircle(reading);
     })
   }
 }
