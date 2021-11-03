@@ -26,6 +26,7 @@ export class KiwiGameEngineService {
   private skySecondHalf: THREE.Object3D;
   private plane: THREE.Object3D;
   private propeller: THREE.Object3D;
+  private coinRow: THREE.Object3D;
 
   private ascending = true;
   private previousValue: number;
@@ -89,6 +90,8 @@ export class KiwiGameEngineService {
     this.createLights();
     this.createSea();
     this.createPlane()
+    // this.createCoin();
+    this.createCoinRow();
   }
 
   private createLights(): void {
@@ -320,11 +323,62 @@ export class KiwiGameEngineService {
     });
   }
 
+  private createCoinRow(): void {
+    let row = new THREE.Object3D();
+
+    let nCoins = 30;
+
+    for (var i = 0; i < nCoins; i++) {
+      var coin = this.createCoin();
+
+      coin.position.x = randomNumberInRange(1000, 3000)
+      coin.position.y = randomNumberInRange(200, 1000)
+
+      // we also set a random scale for each cloud
+      var s = 1 + Math.random() * 2;
+      coin.scale.set(s, s, s);
+
+      // do not forget to add the mesh of each cloud in the scene
+      row.add(coin);
+    }
+
+    row.position.y = -600;
+
+    this.coinRow = row;
+    this.scene.add(row);
+  }
+
+  private createCoin(): THREE.Object3D {
+    let coin = new THREE.Object3D();
+    var geom = new THREE.CircleGeometry(3, 20);
+
+    var mat = new THREE.MeshPhongMaterial({
+      color: 0x009999,
+      shininess: 0,
+      specular: 0xffffff,
+      flatShading: true
+    });
+
+    var mesh = new THREE.Mesh(geom, mat);
+    coin.add(mesh);
+
+    coin.position.x = 0;
+    coin.position.y = 150;
+
+    coin.name = "Test";
+
+    this.scene.add(coin);
+
+    return coin;
+  }
+
   private render(): void {
     this.updateSky();
 
     // this.sky.rotation.z += .005;
     this.propeller.rotation.x += 0.3;
+
+    this.coinRow.position.x -= 3;
 
     if (this.previousValue) {
       const planeMovement = clamp(this.plane.position.y + (this.ascending ? 0.5 : -0.5), 25, 175);
@@ -409,10 +463,5 @@ export class KiwiGameEngineService {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
-  }
-
-  takeSceneScreenshot(): string {
-    this.renderer.render(this.scene, this.camera);
-    return this.renderer.domElement.toDataURL();
   }
 }
