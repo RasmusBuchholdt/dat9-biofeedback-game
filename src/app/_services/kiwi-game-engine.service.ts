@@ -90,8 +90,7 @@ export class KiwiGameEngineService {
     this.createLights();
     this.createSea();
     this.createPlane()
-    // this.createCoin();
-    this.createCoinRow();
+    this.createCoinRow(30);
   }
 
   private createLights(): void {
@@ -323,27 +322,18 @@ export class KiwiGameEngineService {
     });
   }
 
-  private createCoinRow(): void {
+  // TODO: Needs to take a function (Like sin)
+  private createCoinRow(amount: number): void {
+    // A row is basically a container that holds x amount of coiins
     let row = new THREE.Object3D();
-
-    let nCoins = 30;
-
-    for (var i = 0; i < nCoins; i++) {
-      var coin = this.createCoin();
-
+    for (var i = 0; i < amount; i++) {
+      let coin = this.createCoin();
+      // These positions needs to be based on the passed function
       coin.position.x = randomNumberInRange(1000, 3000)
       coin.position.y = randomNumberInRange(200, 1000)
-
-      // we also set a random scale for each cloud
-      var s = 1 + Math.random() * 2;
-      coin.scale.set(s, s, s);
-
-      // do not forget to add the mesh of each cloud in the scene
       row.add(coin);
     }
-
     row.position.y = -600;
-
     this.coinRow = row;
     this.scene.add(row);
   }
