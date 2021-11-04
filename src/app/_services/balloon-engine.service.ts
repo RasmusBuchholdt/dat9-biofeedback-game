@@ -63,6 +63,8 @@ export class BalloonEngineService {
     this.camera.position.z = 5;
     this.scene.add(this.camera);
 
+    this.clock = new Clock();
+
     // Sound
     this.addSound();
 
