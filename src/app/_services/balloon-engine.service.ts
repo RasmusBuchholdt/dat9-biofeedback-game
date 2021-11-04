@@ -80,7 +80,7 @@ export class BalloonEngineService {
     this.camera.add(this.listener);
     this.sound = new THREE.Audio(this.listener);
 
-    new THREE.AudioLoader().load('assets/sounds/pling.ogg', (buffer) => {
+    new THREE.AudioLoader().load('assets/sounds/piano_pling.mp4', (buffer) => {
       this.sound.setBuffer(buffer);
       this.sound.setVolume(0.5);
     });
@@ -119,7 +119,7 @@ export class BalloonEngineService {
     this.outerCircle = new THREE.Line(geometry, material);
     this.scene.add(this.outerCircle);
 
-    geometry = new THREE.CircleGeometry(this.circleMinValue, 256);
+    geometry = new THREE.CircleGeometry(this.circleMinValue, 50);
     material = new THREE.LineBasicMaterial({ color: '#F0E68C' });
     this.innerCircle = new THREE.Mesh(geometry, material);
     this.scene.add(this.innerCircle);

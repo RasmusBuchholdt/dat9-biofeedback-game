@@ -7,7 +7,7 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     
     // Baseline related variables
     private baseline = 0;
-    private minBaselineCounter = 20;
+    private minBaselineCounter = 50;
     private numberOfIterations = 0;
 
     // Calibration related variables
@@ -31,13 +31,13 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
         
         // Find baseline
         this.findBaseline(currentReading);
-        
-        const stepIncreasePercentage = sensitivity * 0.01 + 1;
+    
+        const stepIncreasePercentage = sensitivity * 0.01;
         const stepIncrement = Math.abs(currentReading - this.baseline) * stepIncreasePercentage;
 
         // Find step value
         if(currentReading > this.baseline + 1 && this.stepValue < this.maxValue)
-            this.stepValue += stepIncrement;
+            this.stepValue += stepIncrement + 0.5; // I have added 0.5 because it seems that exhale requires more force than inhale.
         else if(currentReading < this.baseline - 1 && this.stepValue > this.minValue)
             this.stepValue -= stepIncrement;
 
@@ -56,7 +56,10 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
         if(reading == this.previousReading)
         {
             this.numberOfIterations += 1;
-            if(this.numberOfIterations > this.minBaselineCounter) this.baseline = reading;
+            if(this.numberOfIterations > this.minBaselineCounter && reading != this.baseline){
+                this.baseline = reading;
+                console.log("Baseline set.")
+            }
         }
         else this.numberOfIterations = 0;
     }
