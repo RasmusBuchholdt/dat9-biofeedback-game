@@ -18,15 +18,15 @@ export class BalloonEngineService {
   private frameId: number = null;
 
   // Particle rotation variables
-  private clock = new Clock;
-  private particleMesh;
+  private clock: Clock;
+  private particleMesh: THREE.Points;
   private particleRotation = 10;
 
   // Circle variables
   private circleMaxValue = 2.5;
   private circleMinValue = 0.1;
-  private outerCircle;
-  private innerCircle;
+  private outerCircle: THREE.Line;
+  private innerCircle: THREE.Mesh;
 
   constructor(
     private ngZone: NgZone
@@ -73,7 +73,17 @@ export class BalloonEngineService {
     this.addCircles();
   }
 
-  // Particles
+  addSound(){
+    this.listener = new THREE.AudioListener();
+    this.camera.add(this.listener);
+    this.sound = new THREE.Audio(this.listener);
+
+    new THREE.AudioLoader().load('assets/sounds/pling.ogg', (buffer) => {
+      this.sound.setBuffer(buffer);
+      this.sound.setVolume(0.5);
+    });
+  }
+
   private addParticles(): void {
     const particleGeometry = new THREE.BufferGeometry;
     const particlesCount = 1000;
@@ -133,18 +143,6 @@ export class BalloonEngineService {
     this.scene.remove(this.innerCircle);
     this.innerCircle = new THREE.Mesh(geometry, material);
     this.scene.add(this.innerCircle);
-  }
-
-  addSound(){
-    // Sound support
-    this.listener = new THREE.AudioListener();
-    this.camera.add(this.listener);
-    this.sound = new THREE.Audio(this.listener);
-
-    new THREE.AudioLoader().load('assets/sounds/pling.ogg', (buffer) => {
-      this.sound.setBuffer(buffer);
-      this.sound.setVolume(0.5);
-    });
   }
 
   animate(): void {
