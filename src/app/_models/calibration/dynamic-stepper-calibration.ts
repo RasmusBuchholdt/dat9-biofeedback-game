@@ -15,7 +15,6 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     private stepValue = 0;
     private maxValue = 100;
     private minValue = 0;
-    private stepIncreasePercentage = 0.2;
     
     get name(): string {
         return "Dynamic stepper";
@@ -28,12 +27,13 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
         
         // Initialization
-        const currentReading = Math.round(normalize(reading, minReading, maxReading))
+        const currentReading = Math.round(normalize(reading, minReading, maxReading));
         
         // Find baseline
-        this.findBaseline(currentReading)
+        this.findBaseline(currentReading);
         
-        const stepIncrement = Math.abs(currentReading - this.baseline) * this.stepIncreasePercentage;
+        const stepIncreasePercentage = sensitivity * 0.01 + 1;
+        const stepIncrement = Math.abs(currentReading - this.baseline) * stepIncreasePercentage;
 
         // Find step value
         if(currentReading > this.baseline + 1 && this.stepValue < this.maxValue)

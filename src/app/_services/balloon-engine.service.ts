@@ -137,6 +137,8 @@ export class BalloonEngineService {
     let material = new THREE.MeshBasicMaterial({ color: '#F0E68C' });
 
     if(scaledValue == this.circleMaxValue && !this.soundFlag) {
+      if(this.sound.isPlaying) this.sound.stop();
+      
       this.sound.play();
       this.soundFlag = true;
     }
