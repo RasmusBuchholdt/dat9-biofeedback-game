@@ -1,7 +1,10 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import * as THREE from 'three';
+import { Vector3 } from 'three';
 
 import {
+  CoinCollectDistanceTolerance,
   CoinsPerRow,
   CoinsRespawnInternal,
   Colors,
@@ -38,6 +41,7 @@ export class KiwiGameEngineService {
   private skyFirstHalf: THREE.Object3D;
   private skySecondHalf: THREE.Object3D;
   private character: THREE.Object3D;
+  private activeCoins: THREE.Object3D[] = [];
   private coinRow: THREE.Object3D;
 
   private ascending = true;
@@ -50,6 +54,8 @@ export class KiwiGameEngineService {
     specular: 0xffffff,
     flatShading: true
   });
+
+  coinsCollected$: BehaviorSubject<number | null> = new BehaviorSubject<number>(0);
 
   constructor(
     private ngZone: NgZone
@@ -303,12 +309,13 @@ export class KiwiGameEngineService {
     row.name = 'Coin row';
 
     const startPositionY = randomNumberInRange(MinCoinY, MaxCoinY);
-
+    this.activeCoins = [];
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
       coin.position.x = 300 + i * 15
-      coin.position.y = startPositionY;
+      coin.position.y = MinCoinY;
+      this.activeCoins.push(coin);
       row.add(coin);
     }
     row.position.y = -600;
@@ -326,8 +333,7 @@ export class KiwiGameEngineService {
 
   private render(): void {
     this.updateSky();
-
-    this.coinRow.position.x -= 1.5;
+    this.updateCoins();
 
     // Every x seconds we spawn a new coin row
     if (this.clock.getElapsedTime() >= CoinsRespawnInternal) {
@@ -345,6 +351,18 @@ export class KiwiGameEngineService {
       this.render();
     });
     this.renderer.render(this.scene, this.camera);
+  }
+
+  private updateCoins(): void {
+    this.activeCoins.forEach(coin => {
+      coin.position.x -= 1.5;
+      const diffPos = this.character.position.clone().sub(coin.position.clone());
+      const diffLen = diffPos.length();
+      if (diffLen <= 600 + CoinCollectDistanceTolerance) {
+        this.coinsCollected$.next(this.coinsCollected$.getValue() + 1);
+        coin.clear();
+      }
+    });
   }
 
   private updateSky(): void {

@@ -4,8 +4,9 @@ export const MinCharacterY = 30;
 export const MaxSkyY = 650;
 export const MinSkyY = 1000;
 
-export const CoinsRespawnInternal = 20;
+export const CoinsRespawnInternal = 10;
 export const CoinsPerRow = 10;
+export const CoinCollectDistanceTolerance = 0.075;
 
 export const MaxCoinY = 800;
 export const MinCoinY = 630;
