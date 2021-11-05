@@ -1,8 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import {
-  PushHardCalibration,
-} from 'src/app/_models/calibration/push-hard-calibration';
+import { PushHardCalibration } from 'src/app/_models/calibration/push-hard-calibration';
 import {
   KiwiGameEngineService,
 } from 'src/app/_services/kiwi-game-engine.service';
@@ -17,9 +15,9 @@ export class KiwiGameComponent implements OnInit {
 
   @ViewChild('rendererCanvas', { static: true })
   public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
-  public screenshotBase64: ArrayBuffer | string;
+  public coinsCollected = 0;
 
-  private subscription: Subscription | null;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private gameEngine: KiwiGameEngineService,
@@ -33,15 +31,22 @@ export class KiwiGameComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(e => e?.unsubscribe());
     this.gameEngine.stopGame();
   }
 
   getReadings(): void {
-    this.spiromagicService.calibration$.next(new PushHardCalibration())
-    this.subscription = this.spiromagicService.reading$.subscribe(reading => {
+    this.spiromagicService.calibration$.next(new PushHardCalibration());
+    this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading  => {
       // this.gameEngine.updatePlane(reading);
       this.gameEngine.updatePlaneSmooth(reading);
-    })
+    }));
+    this.subscriptions.push(this.gameEngine.coinsCollected$.subscribe(coinsCollected => {
+      this.coinsCollected = coinsCollected;
+    }));
+  }
+
+  resetGame(): void {
+    // this.gameEngine.resetGame();
   }
 }

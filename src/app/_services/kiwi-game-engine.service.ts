@@ -55,7 +55,7 @@ export class KiwiGameEngineService {
     flatShading: true
   });
 
-  coinsCollected$: BehaviorSubject<number | null> = new BehaviorSubject<number>(0);
+  coinsCollected$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
 
   constructor(
     private ngZone: NgZone

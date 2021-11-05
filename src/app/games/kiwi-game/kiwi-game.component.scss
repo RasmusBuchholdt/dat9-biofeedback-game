@@ -1,8 +1,15 @@
+.scoreboard {
+  z-index: 99;
+  position: absolute;
+  top: 10% ;
+  right: 50%;
+}
+
 .toolbar {
   z-index: 99;
   position: absolute;
-  top: 4vw;
-  right: 5vh;
+  top: 10%;
+  right: 1%;
 }
 
 .engine-wrapper {
