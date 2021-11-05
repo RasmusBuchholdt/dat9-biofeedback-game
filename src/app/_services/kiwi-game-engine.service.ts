@@ -7,8 +7,10 @@ import {
   Colors,
   FloorHeight,
   MaxCoinY,
+  MaxSkyY,
   MinCharacterY,
   MinCoinY,
+  MinSkyY,
 } from '../_models/games/kiwi-game';
 import { clamp } from '../_utils/clamp';
 import { randomNumberInRange } from '../_utils/randomNumberInRange';
@@ -44,7 +46,7 @@ export class KiwiGameEngineService {
   private coinGeometry = new THREE.CircleGeometry(3, 20);
   private coinMaterial = new THREE.MeshPhongMaterial({
     color: Colors.yellow,
-    shininess: 10,
+    shininess: 0,
     specular: 0xffffff,
     flatShading: true
   });
@@ -110,7 +112,7 @@ export class KiwiGameEngineService {
 
     // Pre generate different sky options
     for (let i = 0; i < 5; i++) {
-      this.skyOptions.push(this.createSky(30));
+      this.skyOptions.push(this.createSky(15));
     }
 
     const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length - 1)].clone();
@@ -120,6 +122,7 @@ export class KiwiGameEngineService {
     this.createLights();
     this.createFloor();
     this.createCharacter();
+
     this.createCoinRow(CoinsPerRow);
   }
 
@@ -164,14 +167,14 @@ export class KiwiGameEngineService {
 
     let geom = new THREE.PlaneGeometry(1000, FloorHeight);
     let mat = new THREE.MeshPhongMaterial({
-      color: Colors.blue,
+      color: Colors.green,
       transparent: true,
       opacity: 1,
       flatShading: true
     });
     floor = new THREE.Mesh(geom, mat);
     floor.receiveShadow = true;
-
+    floor.name = 'Floor';
     this.floor = floor;
     this.scene.add(floor);
   }
@@ -198,8 +201,8 @@ export class KiwiGameEngineService {
       cloud.position.y = Math.sin(a) * h;
       cloud.position.x = Math.cos(a) * h;
 
-      cloud.position.x = randomNumberInRange(1000, 3000)
-      cloud.position.y = randomNumberInRange(200, 1000)
+      cloud.position.x = randomNumberInRange(1200, 3000);
+      cloud.position.y = randomNumberInRange(MinSkyY, MaxSkyY);
 
       // rotate the cloud according to its position
       cloud.rotation.z = a + Math.PI / 2;
