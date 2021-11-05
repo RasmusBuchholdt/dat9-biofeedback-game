@@ -324,6 +324,13 @@ export class KiwiGameEngineService {
 
     this.coinRow.position.x -= 1.5;
 
+    // Every x seconds we spawn a new coin row
+    if (this.clock.getElapsedTime() >= CoinsRespawnInternal) {
+      this.scene.remove(this.coinRow);
+      this.createCoinRow(CoinsPerRow);
+      this.clock.start();
+    }
+
     if (this.previousValue) {
       const planeMovement = clamp(this.character.position.y + (this.ascending ? 0.5 : -0.5), 25, 175);
       this.character.position.y = planeMovement;
