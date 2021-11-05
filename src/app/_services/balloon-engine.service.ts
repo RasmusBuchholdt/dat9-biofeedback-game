@@ -1,7 +1,11 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
-import { Clock } from 'three';
+import { Clock, Loader, Mesh } from 'three';
 import { scaleNumberToRange } from '../_utils/scale-number-to-range';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +18,7 @@ export class BalloonEngineService {
   private listener: THREE.AudioListener;
   private sound: THREE.Audio;
   private soundFlag = false;
+  private bloomAsset;
   
   private frameId: number = null;
 
@@ -65,6 +70,9 @@ export class BalloonEngineService {
 
     this.clock = new Clock();
 
+    const loader = new THREE.TextureLoader;
+    this.bloomAsset = loader.load('assets/images/Bloom.png');
+
     // Sound
     this.addSound();
 
@@ -73,8 +81,8 @@ export class BalloonEngineService {
 
     // Circles
     this.addCircles();
-  }
 
+  }
   addSound(){
     this.listener = new THREE.AudioListener();
     this.camera.add(this.listener);
@@ -88,18 +96,19 @@ export class BalloonEngineService {
 
   private addParticles(): void {
     const particleGeometry = new THREE.BufferGeometry;
-    const particlesCount = 1000;
+    const particlesCount = 500;
 
     // Set particle position
     const posArray = new Float32Array(particlesCount * 3);
     for(let i = 0; i < particlesCount * 3; i++){
-      posArray[i] = (Math.random() - 0.5) * 10;
+      posArray[i] = (Math.random() - 0.5) * 15;
     }
     particleGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    
+
     // Particle material
     const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.03,
+      size: 0.2,
+      //map: this.bloomAsset,
       map: this.createCircleTexture('#F0E68C', 256),
       blending: THREE.AdditiveBlending,
       opacity: 0.8,
@@ -127,8 +136,8 @@ export class BalloonEngineService {
 
   setParticleRotation(value: number) {
     const elapsedTime = this.clock.getElapsedTime();
-    // this.particleRotation = (.005 * value) + (elapsedTime * 0.05);
-    this.particleRotation = elapsedTime * 0.05;
+    this.particleRotation = (.005 * value) + (elapsedTime * 0.05);
+    //this.particleRotation = elapsedTime * 0.05;
   }
 
   setInnerCircle(value: number) {
