@@ -359,6 +359,7 @@ export class KiwiGameEngineService {
       const diffPos = this.character.position.clone().sub(coin.position.clone());
       const diffLen = diffPos.length();
       if (diffLen <= 600 + CoinCollectDistanceTolerance) {
+        this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
         this.coinsCollected$.next(this.coinsCollected$.getValue() + 1);
         coin.clear();
       }
