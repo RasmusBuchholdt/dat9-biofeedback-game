@@ -314,7 +314,7 @@ export class KiwiGameEngineService {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
       coin.position.x = 300 + i * 15
-      coin.position.y = MinCoinY;
+      coin.position.y = startPositionY;
       this.activeCoins.push(coin);
       row.add(coin);
     }
