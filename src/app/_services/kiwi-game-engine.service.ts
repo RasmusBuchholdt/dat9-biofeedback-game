@@ -1,7 +1,15 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
-import { Colors } from '../_models/color';
+import {
+  CoinsPerRow,
+  CoinsRespawnInternal,
+  Colors,
+  FloorHeight,
+  MaxCoinY,
+  MinCharacterY,
+  MinCoinY,
+} from '../_models/games/kiwi-game';
 import { clamp } from '../_utils/clamp';
 import { randomNumberInRange } from '../_utils/randomNumberInRange';
 import { scaleNumberToRange } from '../_utils/scale-number-to-range';
@@ -16,6 +24,7 @@ export class KiwiGameEngineService {
   private scene: THREE.Scene;
   private listener: THREE.AudioListener;
   private sound: THREE.Audio;
+  private clock = new THREE.Clock();
 
   private hemisphereLight: THREE.HemisphereLight;
   private shadowLight: THREE.DirectionalLight;
@@ -32,13 +41,13 @@ export class KiwiGameEngineService {
   private ascending = true;
   private previousValue: number;
 
-  private maxCharacterY = 195;
-  private minCharacterY = 30;
-
-  private maxCoinY = 800;
-  private minCoinY = 630;
-
-  private floorHeight = 50;
+  private coinGeometry = new THREE.CircleGeometry(3, 20);
+  private coinMaterial = new THREE.MeshPhongMaterial({
+    color: Colors.yellow,
+    shininess: 10,
+    specular: 0xffffff,
+    flatShading: true
+  });
 
   constructor(
     private ngZone: NgZone
@@ -111,7 +120,7 @@ export class KiwiGameEngineService {
     this.createLights();
     this.createFloor();
     this.createCharacter();
-    this.createCoinRow(20);
+    this.createCoinRow(CoinsPerRow);
   }
 
   private createLights(): void {
@@ -153,7 +162,7 @@ export class KiwiGameEngineService {
   private createFloor(): void {
     let floor: THREE.Object3D;
 
-    let geom = new THREE.PlaneGeometry(1000, this.floorHeight);
+    let geom = new THREE.PlaneGeometry(1000, FloorHeight);
     let mat = new THREE.MeshPhongMaterial({
       color: Colors.blue,
       transparent: true,
@@ -264,7 +273,7 @@ export class KiwiGameEngineService {
     bodyMesh.name = 'Body';
     character.add(bodyMesh);
     character.scale.set(.25, .25, .25);
-    character.position.y = this.minCharacterY;
+    character.position.y = MinCharacterY;
     this.character = character;
     this.scene.add(character);
   };
@@ -290,7 +299,7 @@ export class KiwiGameEngineService {
     let row = new THREE.Object3D();
     row.name = 'Coin row';
 
-    const startPositionY = randomNumberInRange(this.minCoinY, this.maxCoinY);
+    const startPositionY = randomNumberInRange(MinCoinY, MaxCoinY);
 
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
@@ -307,14 +316,7 @@ export class KiwiGameEngineService {
   private createCoin(): THREE.Object3D {
     let coin = new THREE.Object3D();
     coin.name = 'Coin';
-    let geom = new THREE.CircleGeometry(3, 20);
-    let mat = new THREE.MeshPhongMaterial({
-      color: 0x009999,
-      shininess: 0,
-      specular: 0xffffff,
-      flatShading: true
-    });
-    let mesh = new THREE.Mesh(geom, mat);
+    const mesh = new THREE.Mesh(this.coinGeometry, this.coinMaterial);
     coin.add(mesh);
     return coin;
   }
