@@ -43,7 +43,7 @@ export class KiwiGameComponent implements OnInit {
       this.gameEngine.updatePlaneSmooth(reading);
     }));
     this.subscriptions.push(this.gameEngine.coinsCollected$.subscribe(coinsCollected => {
-      this.coinsCollected = coinsCollected;
+      this.zone.run(() => this.coinsCollected = coinsCollected);
     }));
   }
 
