@@ -14,6 +14,7 @@ import {
   MinCharacterY,
   MinCoinY,
   MinSkyY,
+  SkyMovementSpeed,
 } from '../_models/games/kiwi-game';
 import { clamp } from '../_utils/clamp';
 import { randomNumberInRange } from '../_utils/randomNumberInRange';
@@ -368,11 +369,11 @@ export class KiwiGameEngineService {
 
   private updateSky(): void {
     // We keep moving the first half
-    this.skyFirstHalf.position.x -= 5;
+    this.skyFirstHalf.position.x -= SkyMovementSpeed;
 
     // If we have an active second half it needs to be moved as well
     if (this.skySecondHalf) {
-      this.skySecondHalf.position.x -= 5;
+      this.skySecondHalf.position.x -= SkyMovementSpeed;
     }
 
     // Once the second half is out of the view we remove it from the scene

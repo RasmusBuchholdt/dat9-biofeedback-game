@@ -11,6 +11,8 @@ export const CoinCollectDistanceTolerance = 0.075;
 export const MaxCoinY = 800;
 export const MinCoinY = 630;
 
+export const SkyMovementSpeed = 3;
+
 export const FloorHeight = 50;
 
 export const Colors = {
