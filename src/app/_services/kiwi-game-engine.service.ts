@@ -32,6 +32,14 @@ export class KiwiGameEngineService {
   private ascending = true;
   private previousValue: number;
 
+  private maxCharacterY = 195;
+  private minCharacterY = 30;
+
+  private maxCoinY = 800;
+  private minCoinY = 630;
+
+  private floorHeight = 50;
+
   constructor(
     private ngZone: NgZone
   ) { }
@@ -84,12 +92,12 @@ export class KiwiGameEngineService {
     this.camera.add(this.listener);
     this.sound = new THREE.Audio(this.listener);
 
-    new THREE.AudioLoader().load('assets/sounds/example.ogg', (buffer) => {
-      this.sound.setBuffer(buffer);
-      this.sound.setLoop(true);
-      this.sound.setVolume(0.5);
-      this.sound.play();
-    });
+    // new THREE.AudioLoader().load('assets/sounds/example.ogg', (buffer) => {
+    //   this.sound.setBuffer(buffer);
+    //   this.sound.setLoop(true);
+    //   this.sound.setVolume(0.5);
+    //   this.sound.play();
+    // });
 
     // Pre generate different sky options
     for (let i = 0; i < 5; i++) {
@@ -103,7 +111,7 @@ export class KiwiGameEngineService {
     this.createLights();
     this.createFloor();
     this.createCharacter();
-    this.createCoinRow(30);
+    this.createCoinRow(20);
   }
 
   private createLights(): void {
@@ -145,7 +153,7 @@ export class KiwiGameEngineService {
   private createFloor(): void {
     let floor: THREE.Object3D;
 
-    let geom = new THREE.PlaneGeometry(1000, 100);
+    let geom = new THREE.PlaneGeometry(1000, this.floorHeight);
     let mat = new THREE.MeshPhongMaterial({
       color: Colors.blue,
       transparent: true,
@@ -256,7 +264,7 @@ export class KiwiGameEngineService {
     bodyMesh.name = 'Body';
     character.add(bodyMesh);
     character.scale.set(.25, .25, .25);
-    character.position.y = 100;
+    character.position.y = this.minCharacterY;
     this.character = character;
     this.scene.add(character);
   };
@@ -281,11 +289,14 @@ export class KiwiGameEngineService {
     // A row is basically a container that holds x amount of coins
     let row = new THREE.Object3D();
     row.name = 'Coin row';
+
+    const startPositionY = randomNumberInRange(this.minCoinY, this.maxCoinY);
+
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
-      // These positions needs to be based on the passed function
-      coin.position.x = randomNumberInRange(1000, 3000)
-      coin.position.y = randomNumberInRange(200, 1000)
+      // Always spawn the coins in a row with a bit space between them
+      coin.position.x = 300 + i * 15
+      coin.position.y = startPositionY;
       row.add(coin);
     }
     row.position.y = -600;
@@ -311,7 +322,7 @@ export class KiwiGameEngineService {
   private render(): void {
     this.updateSky();
 
-    this.coinRow.position.x -= 3;
+    this.coinRow.position.x -= 1.5;
 
     if (this.previousValue) {
       const planeMovement = clamp(this.character.position.y + (this.ascending ? 0.5 : -0.5), 25, 175);
