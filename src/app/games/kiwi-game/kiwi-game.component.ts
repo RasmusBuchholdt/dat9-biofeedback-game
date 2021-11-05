@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { PushHardCalibration } from 'src/app/_models/calibration/push-hard-calibration';
 import {
@@ -21,6 +21,7 @@ export class KiwiGameComponent implements OnInit {
 
   constructor(
     private gameEngine: KiwiGameEngineService,
+    private zone: NgZone,
     private spiromagicService: SpiromagicService
   ) { }
 
