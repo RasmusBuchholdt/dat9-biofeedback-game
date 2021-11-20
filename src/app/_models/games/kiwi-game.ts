@@ -6,7 +6,7 @@ export const MinSkyY = 1000;
 
 export const CoinsRespawnInternal = 10;
 export const CoinsPerRow = 10;
-export const CoinCollectDistanceTolerance = 100;
+export const CoinCollectDistanceTolerance = 50;
 
 export const SkyMovementSpeed = 3;
 

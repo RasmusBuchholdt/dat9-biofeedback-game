@@ -14,6 +14,7 @@ import {
   MinSkyY,
   SkyMovementSpeed,
 } from '../_models/games/kiwi-game';
+import { ObjectDimensions } from '../_models/object-dimensions';
 import { clamp } from '../_utils/clamp';
 import { randomNumberInRange } from '../_utils/randomNumberInRange';
 import { scaleNumberToRange } from '../_utils/scale-number-to-range';
@@ -54,6 +55,8 @@ export class KiwiGameEngineService {
   });
 
   coinsCollected$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+
+  private characterDimensions: ObjectDimensions | null = null;
 
   constructor(
     private ngZone: NgZone
@@ -269,7 +272,7 @@ export class KiwiGameEngineService {
   private createCharacter(): void {
     let character = new THREE.Object3D();
     character.name = 'Character';
-    let geom = new THREE.BoxGeometry(60, 50, 50, 1, 1, 1);
+    let geom = new THREE.BoxGeometry(15, 15, 15, 1, 1, 1);
     let mat = new THREE.MeshPhongMaterial({
       color: Colors.red,
       flatShading: true
@@ -279,9 +282,9 @@ export class KiwiGameEngineService {
     bodyMesh.receiveShadow = true;
     bodyMesh.name = 'Body';
     character.add(bodyMesh);
-    character.scale.set(.25, .25, .25);
     character.position.y = MinCharacterY;
     this.character = character;
+    this.characterDimensions = this.getObjectDimensions(character);
     this.scene.add(character);
   };
 
@@ -308,7 +311,7 @@ export class KiwiGameEngineService {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
       coin.position.x = 300 + i * 15;
-      coin.position.y = startPositionY;
+      coin.position.y = MinCharacterY + 10.1;
       this.activeCoins.push(coin);
       this.scene.add(coin);
     }
@@ -348,8 +351,7 @@ export class KiwiGameEngineService {
     this.activeCoins.forEach(coin => {
       coin.position.x -= 1.5;
       const diffPos = this.character.position.clone().distanceToSquared(coin.position.clone());
-      // TODO: The tolerance should be based of the size of the characters boundary box
-      if (diffPos <= 0 + CoinCollectDistanceTolerance) {
+      if (diffPos <= 0 + (this.characterDimensions.height * this.characterDimensions.width / 2) + CoinCollectDistanceTolerance) {
         this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
         this.coinsCollected$.next(this.coinsCollected$.getValue() + 1);
         coin.clear();
@@ -429,5 +431,14 @@ export class KiwiGameEngineService {
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
+  }
+
+  private getObjectDimensions(object: THREE.Object3D): ObjectDimensions {
+    var bbox = new THREE.Box3().setFromObject(object);
+    return {
+      depth: bbox.max.z - bbox.min.z,
+      height: bbox.max.y - bbox.min.y,
+      width: bbox.max.x - bbox.min.x
+    }
   }
 }
