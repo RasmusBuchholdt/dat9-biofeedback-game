@@ -4,8 +4,8 @@ import * as THREE from 'three';
 
 import {
   CoinCollectDistanceTolerance,
-  CoinsPerRow,
-  CoinsRespawnInternal,
+  CoinsDistance,
+  CoinsPerSpawn,
   Colors,
   FloorHeight,
   MaxCharacterY,
@@ -57,6 +57,7 @@ export class KiwiGameEngineService {
   coinsCollected$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   private characterDimensions: ObjectDimensions | null = null;
+  private coinsRespawnInternal = 0;
 
   constructor(
     private ngZone: NgZone
@@ -120,7 +121,7 @@ export class KiwiGameEngineService {
     this.createFloor();
     this.createCharacter();
 
-    this.createCoinRow(CoinsPerRow);
+    this.spawnCoins(CoinsPerSpawn);
   }
 
   private createLights(): void {
@@ -305,14 +306,22 @@ export class KiwiGameEngineService {
     });
   }
 
-  // TODO: Needs to take a function (Like sin)
-  private createCoinRow(amount: number): void {
-    const startPositionY = randomNumberInRange(MinCharacterY, MaxCharacterY);
+  private spawnCoins(amount: number): void {
     this.activeCoins = [];
+    if (Math.random() < 0.5) {
+      this.createCoinRow(amount);
+    } else {
+      this.createCoinSineWave(amount)
+    }
+  }
+
+  private createCoinRow(amount: number): void {
+    this.coinsRespawnInternal = 10;
+    const startPositionY = randomNumberInRange(MinCharacterY, MaxCharacterY);
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
-      coin.position.x = 300 + i * 15;
+      coin.position.x = 300 + i * CoinsDistance;
       coin.position.y = startPositionY;
       this.activeCoins.push(coin);
       this.scene.add(coin);
@@ -332,9 +341,9 @@ export class KiwiGameEngineService {
     this.updateCoins();
 
     // Every x seconds we spawn a new coin row
-    if (this.clock.getElapsedTime() >= CoinsRespawnInternal) {
+    if (this.clock.getElapsedTime() >= this.coinsRespawnInternal) {
       this.activeCoins.map(e => this.scene.remove(e));
-      this.createCoinRow(CoinsPerRow);
+      this.spawnCoins(CoinsPerSpawn);
       this.clock.start();
     }
 
@@ -442,6 +451,31 @@ export class KiwiGameEngineService {
       depth: bbox.max.z - bbox.min.z,
       height: bbox.max.y - bbox.min.y,
       width: bbox.max.x - bbox.min.x
+    }
+  }
+
+  private createCoinSineWave(length: number) {
+    this.coinsRespawnInternal = 15;
+    const height = MaxCharacterY + MaxCharacterY * 0.15;
+    const amplitude = 80;
+    const frequency = 100;
+    const placeEvery = 100;
+
+    let x = 300;
+    let y = 300;
+    let placed = 0;
+
+    for (let i = 0; i < length * placeEvery; i++) {
+      y = height / 2 + amplitude * Math.sin(x / frequency);
+      x = x + 1;
+      if (placed % placeEvery === 0) {
+        let coin = this.createCoin();
+        coin.position.x = x;
+        coin.position.y = y;
+        this.activeCoins.push(coin);
+        this.scene.add(coin);
+      }
+      placed++;
     }
   }
 }
