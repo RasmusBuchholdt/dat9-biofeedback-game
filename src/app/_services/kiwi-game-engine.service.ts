@@ -105,18 +105,6 @@ export class KiwiGameEngineService {
     this.camera.position.z = 200;
     this.camera.position.y = 100;
 
-    // Sound support
-    this.listener = new THREE.AudioListener();
-    this.camera.add(this.listener);
-    this.sound = new THREE.Audio(this.listener);
-
-    // new THREE.AudioLoader().load('assets/sounds/example.ogg', (buffer) => {
-    //   this.sound.setBuffer(buffer);
-    //   this.sound.setLoop(true);
-    //   this.sound.setVolume(0.5);
-    //   this.sound.play();
-    // });
-
     // Pre generate different sky options
     for (let i = 0; i < 5; i++) {
       this.skyOptions.push(this.createSky(15));
@@ -125,6 +113,8 @@ export class KiwiGameEngineService {
     const selectedSky = this.skyOptions[randomNumberInRange(0, this.skyOptions.length - 1)].clone();
     this.skyFirstHalf = selectedSky;
     this.scene.add(selectedSky);
+
+    this.setupSounds();
 
     this.createLights();
     this.createFloor();
@@ -185,6 +175,18 @@ export class KiwiGameEngineService {
     this.floor = floor;
     this.scene.add(floor);
   }
+
+  private setupSounds(): void {
+    this.listener = new THREE.AudioListener();
+    this.camera.add(this.listener);
+    this.sound = new THREE.Audio(this.listener);
+
+    new THREE.AudioLoader().load('assets/sounds/pling.ogg', (buffer) => {
+      this.sound.setBuffer(buffer);
+      this.sound.setVolume(0.5);
+    });
+  }
+
 
   private createSky(amount: number): THREE.Object3D {
     let sky = new THREE.Object3D();
@@ -355,6 +357,7 @@ export class KiwiGameEngineService {
         this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
         this.coinsCollected$.next(this.coinsCollected$.getValue() + 1);
         coin.clear();
+        this.sound.play();
       }
     });
   }
