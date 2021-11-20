@@ -9,10 +9,8 @@ import {
   Colors,
   FloorHeight,
   MaxCharacterY,
-  MaxCoinY,
   MaxSkyY,
   MinCharacterY,
-  MinCoinY,
   MinSkyY,
   SkyMovementSpeed,
 } from '../_models/games/kiwi-game';
@@ -43,7 +41,6 @@ export class KiwiGameEngineService {
   private skySecondHalf: THREE.Object3D;
   private character: THREE.Object3D;
   private activeCoins: THREE.Object3D[] = [];
-  private coinRow: THREE.Object3D;
 
   private ascending = true;
   private previousValue: number;
@@ -305,23 +302,16 @@ export class KiwiGameEngineService {
 
   // TODO: Needs to take a function (Like sin)
   private createCoinRow(amount: number): void {
-    // A row is basically a container that holds x amount of coins
-    let row = new THREE.Object3D();
-    row.name = 'Coin row';
-
-    const startPositionY = randomNumberInRange(MinCoinY, MaxCoinY);
+    const startPositionY = randomNumberInRange(MinCharacterY, MaxCharacterY);
     this.activeCoins = [];
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
-      coin.position.x = 300 + i * 15
+      coin.position.x = 300 + i * 15;
       coin.position.y = startPositionY;
       this.activeCoins.push(coin);
-      row.add(coin);
+      this.scene.add(coin);
     }
-    row.position.y = -600;
-    this.coinRow = row;
-    this.scene.add(row);
   }
 
   private createCoin(): THREE.Object3D {
@@ -338,7 +328,7 @@ export class KiwiGameEngineService {
 
     // Every x seconds we spawn a new coin row
     if (this.clock.getElapsedTime() >= CoinsRespawnInternal) {
-      this.scene.remove(this.coinRow);
+      this.activeCoins.map(e => this.scene.remove(e));
       this.createCoinRow(CoinsPerRow);
       this.clock.start();
     }
@@ -357,9 +347,10 @@ export class KiwiGameEngineService {
   private updateCoins(): void {
     this.activeCoins.forEach(coin => {
       coin.position.x -= 1.5;
-      const diffPos = this.character.position.clone().sub(coin.position.clone());
-      const diffLen = diffPos.length();
-      if (diffLen <= 600 + CoinCollectDistanceTolerance) {
+      const diffPos = this.character.position.clone().distanceToSquared(coin.position.clone());
+      console.log(diffPos);
+      // TODO: The tolerance should be based of the size of the characters boundary box
+      if (diffPos <= 0 + CoinCollectDistanceTolerance) {
         this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
         this.coinsCollected$.next(this.coinsCollected$.getValue() + 1);
         coin.clear();
