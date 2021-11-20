@@ -7,9 +7,6 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
-  PushHardCalibration,
-} from 'src/app/_models/calibration/push-hard-calibration';
-import {
   KiwiGameEngineService,
 } from 'src/app/_services/kiwi-game-engine.service';
 import { SpiromagicService } from 'src/app/_services/spiromagic.service';
@@ -45,9 +42,8 @@ export class KiwiGameComponent implements OnInit {
   }
 
   getReadings(): void {
-    this.spiromagicService.calibration$.next(new PushHardCalibration());
+    // this.spiromagicService.calibration$.next(new ConstantStepperCalibration());
     this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading  => {
-      // this.gameEngine.updatePlane(reading);
       this.gameEngine.setCharacterPosition(reading);
     }));
     this.subscriptions.push(this.gameEngine.coinsCollected$.subscribe(coinsCollected => {
