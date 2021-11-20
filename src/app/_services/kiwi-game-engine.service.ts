@@ -348,7 +348,6 @@ export class KiwiGameEngineService {
     this.activeCoins.forEach(coin => {
       coin.position.x -= 1.5;
       const diffPos = this.character.position.clone().distanceToSquared(coin.position.clone());
-      console.log(diffPos);
       // TODO: The tolerance should be based of the size of the characters boundary box
       if (diffPos <= 0 + CoinCollectDistanceTolerance) {
         this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
