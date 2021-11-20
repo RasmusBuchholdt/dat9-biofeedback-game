@@ -1,7 +1,6 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as THREE from 'three';
-import { Vector3 } from 'three';
 
 import {
   CoinCollectDistanceTolerance,
@@ -9,6 +8,7 @@ import {
   CoinsRespawnInternal,
   Colors,
   FloorHeight,
+  MaxCharacterY,
   MaxCoinY,
   MaxSkyY,
   MinCharacterY,
