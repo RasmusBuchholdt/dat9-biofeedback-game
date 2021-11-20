@@ -395,8 +395,8 @@ export class KiwiGameEngineService {
     }
   }
 
-  public updatePlane(value: number): void {
-    const target = scaleNumberToRange(value, 0, 100, 25, 175)
+  public setCharacterPosition(value: number): void {
+    const target = scaleNumberToRange(value, 0, 100, MinCharacterY, MaxCharacterY)
     this.character.position.y = target;
   }
 

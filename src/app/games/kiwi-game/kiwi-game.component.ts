@@ -1,6 +1,14 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PushHardCalibration } from 'src/app/_models/calibration/push-hard-calibration';
+import {
+  PushHardCalibration,
+} from 'src/app/_models/calibration/push-hard-calibration';
 import {
   KiwiGameEngineService,
 } from 'src/app/_services/kiwi-game-engine.service';
@@ -40,7 +48,7 @@ export class KiwiGameComponent implements OnInit {
     this.spiromagicService.calibration$.next(new PushHardCalibration());
     this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading  => {
       // this.gameEngine.updatePlane(reading);
-      this.gameEngine.updatePlaneSmooth(reading);
+      this.gameEngine.setCharacterPosition(reading);
     }));
     this.subscriptions.push(this.gameEngine.coinsCollected$.subscribe(coinsCollected => {
       this.zone.run(() => this.coinsCollected = coinsCollected);
