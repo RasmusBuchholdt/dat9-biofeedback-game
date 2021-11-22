@@ -22,11 +22,15 @@ export class SpiromagicService implements OnDestroy {
 
   private subscription: Subscription | null = null;
 
+  private TUTORIAL_KEY = 'TUTORIAL_PENDING';
+
   constructor(
     private zone: NgZone,
     private gattService: GATTCharacteristicService,
     private calibrationService: CalibrationService
   ) {
+    this.getTutorialStatus();
+
     this.subscription = this.gattService
       .stream(
         '73ab1200-a251-4c85-0f8c-d8db000021df',
@@ -55,6 +59,16 @@ export class SpiromagicService implements OnDestroy {
   resetReadings(): void {
     this.minReading = Number.MAX_SAFE_INTEGER;
     this.maxReading = Number.MIN_SAFE_INTEGER;
+  }
+
+  private getTutorialStatus(): void {
+    const content = localStorage.getItem(this.TUTORIAL_KEY);
+    this.tutorialPending$.next(content !== null ? JSON.parse(content) as boolean : true);
+  }
+
+  public markTutorialAsCompleted(): void {
+    localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(false));
+    this.tutorialPending$.next(false);
   }
 
   private getSpirometerReadings() {
