@@ -187,7 +187,7 @@ export class KiwiGameEngineService {
     this.camera.add(this.listener);
     this.sound = new THREE.Audio(this.listener);
 
-    new THREE.AudioLoader().load('assets/sounds/pling.ogg', (buffer) => {
+    new THREE.AudioLoader().load('assets/sounds/coin.ogg', (buffer) => {
       this.sound.setBuffer(buffer);
       this.sound.setVolume(0.5);
     });
