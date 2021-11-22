@@ -10,6 +10,9 @@ import {
 import { CircleGameComponent } from './games/circle-game/circle-game.component';
 import { FlyingGameComponent } from './games/flying-game/flying-game.component';
 import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
+import {
+  TutorialGameComponent,
+} from './games/tutorial-game/tutorial-game.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
@@ -36,6 +39,10 @@ const routes: Routes = [
       {
         path: 'balloon',
         component: BalloonGameComponent
+      },
+      {
+        path: 'tutorial',
+        component: TutorialGameComponent
       }
     ]
   },
