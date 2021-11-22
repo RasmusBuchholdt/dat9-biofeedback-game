@@ -9,25 +9,30 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto" *ngIf="spiromagicService.isConnected || !isProduction">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarGamesDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
+          href="#" id="navbarGamesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
           Games
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarGamesDropdown">
-          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
-            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/kiwi']">
+          <a class="dropdown-item" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" data-toggle="collapse"
+            data-target=".navbar-collapse.show" [routerLink]="['/game/kiwi']">
             Kiwi Game
           </a>
-          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
-            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/circle']">
+          <a class="dropdown-item" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" data-toggle="collapse"
+            data-target=".navbar-collapse.show" [routerLink]="['/game/circle']">
             Circle Game
           </a>
-          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
-            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/flying']">
+          <a class="dropdown-item" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" data-toggle="collapse"
+            data-target=".navbar-collapse.show" [routerLink]="['/game/flying']">
             Flying Game
           </a>
-          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
-            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/balloon']">
+          <a class="dropdown-item" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
+            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" data-toggle="collapse"
+            data-target=".navbar-collapse.show" [routerLink]="['/game/balloon']">
             Balloon Game
           </a>
         </div>

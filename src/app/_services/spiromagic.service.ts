@@ -12,6 +12,7 @@ import { GATTCharacteristicService } from './gatt-characteristic.service';
 })
 export class SpiromagicService implements OnDestroy {
 
+  tutorialPending$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   calibration$: BehaviorSubject<CalibrationStrategy | null> = new BehaviorSubject<CalibrationStrategy | null>(this.calibrationService.calibrations[0]);
   sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(0);
