@@ -8,7 +8,7 @@ export const CoinsPerSpawn = 10;
 export const CoinCollectDistanceTolerance = 50;
 export const CoinsDistance = 50;
 
-export const SkyMovementSpeed = 3;
+export const Speed = 1.5;
 
 export const FloorHeight = 50;
 

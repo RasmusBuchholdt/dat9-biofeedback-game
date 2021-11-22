@@ -360,7 +360,7 @@ export class KiwiGameEngineService {
 
   private updateCoins(): void {
     this.activeCoins.forEach(coin => {
-      coin.position.x -= 1.5;
+      coin.position.x -= Speed / 2;
       const diffPos = this.character.position.clone().distanceToSquared(coin.position.clone());
       if (diffPos <= 0 + (this.characterDimensions.height * this.characterDimensions.width / 2) + CoinCollectDistanceTolerance) {
         this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
@@ -373,11 +373,11 @@ export class KiwiGameEngineService {
 
   private updateSky(): void {
     // We keep moving the first half
-    this.skyFirstHalf.position.x -= SkyMovementSpeed;
+    this.skyFirstHalf.position.x -= Speed;
 
     // If we have an active second half it needs to be moved as well
     if (this.skySecondHalf) {
-      this.skySecondHalf.position.x -= SkyMovementSpeed;
+      this.skySecondHalf.position.x -= Speed;
     }
 
     // Once the second half is out of the view we remove it from the scene
