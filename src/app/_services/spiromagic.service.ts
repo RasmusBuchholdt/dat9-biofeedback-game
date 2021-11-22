@@ -30,7 +30,6 @@ export class SpiromagicService implements OnDestroy {
     private calibrationService: CalibrationService
   ) {
     this.getTutorialStatus();
-
     this.subscription = this.gattService
       .stream(
         '73ab1200-a251-4c85-0f8c-d8db000021df',
