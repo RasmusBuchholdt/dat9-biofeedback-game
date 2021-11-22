@@ -12,7 +12,7 @@ import {
   MaxSkyY,
   MinCharacterY,
   MinSkyY,
-  SkyMovementSpeed,
+  Speed,
 } from '../_models/games/kiwi-game';
 import { ObjectDimensions } from '../_models/object-dimensions';
 import { clamp } from '../_utils/clamp';
@@ -46,8 +46,13 @@ export class KiwiGameEngineService {
   private ascending = true;
   private previousValue: number;
 
-  private coinGeometry = new THREE.CircleGeometry(3, 20);
-  private coinMaterial = new THREE.MeshPhongMaterial({
+  private coinOuterGeometry = new THREE.CircleGeometry(3.25, 20);
+  private coinOuterMaterial = new THREE.MeshPhongMaterial({
+    color: Colors.black
+  });
+
+  private coinInnerGeometry = new THREE.CircleGeometry(3, 20);
+  private coinInnerMaterial = new THREE.MeshPhongMaterial({
     color: Colors.yellow,
     shininess: 0,
     specular: 0xffffff,
@@ -331,8 +336,10 @@ export class KiwiGameEngineService {
   private createCoin(): THREE.Object3D {
     let coin = new THREE.Object3D();
     coin.name = 'Coin';
-    const mesh = new THREE.Mesh(this.coinGeometry, this.coinMaterial);
-    coin.add(mesh);
+    const innerMesh = new THREE.Mesh(this.coinInnerGeometry, this.coinInnerMaterial);
+    const outerMesh = new THREE.Mesh(this.coinOuterGeometry, this.coinOuterMaterial);
+    coin.add(innerMesh);
+    coin.add(outerMesh);
     return coin;
   }
 

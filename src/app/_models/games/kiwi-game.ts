@@ -21,5 +21,6 @@ export const Colors = {
   blue: 0x68c3c0,
   yellow: '#f1c40f',
   dark: '#2d3436',
-  green: '#6ab04c'
+  green: '#6ab04c',
+  black: '#000000'
 };
