@@ -321,7 +321,7 @@ export class KiwiGameEngineService {
   }
 
   private createCoinRow(amount: number): void {
-    this.coinsRespawnInternal = 10;
+    this.coinsRespawnInternal = Speed * 15;
     const startPositionY = randomNumberInRange(MinCharacterY, MaxCharacterY);
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
@@ -462,7 +462,7 @@ export class KiwiGameEngineService {
   }
 
   private createCoinSineWave(length: number) {
-    this.coinsRespawnInternal = 15;
+    this.coinsRespawnInternal = Speed * 20;
     const height = MaxCharacterY + MaxCharacterY * 0.15;
     const amplitude = 80;
     const frequency = 100;
