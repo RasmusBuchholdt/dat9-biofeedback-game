@@ -1,7 +1,7 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
 import { Clock, Loader, Mesh } from 'three';
-import { scaleNumberToRange } from '../_utils/scale-number-to-range';
+import { scaleNumberToRange } from '../../_utils/scale-number-to-range';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
@@ -19,7 +19,7 @@ export class BalloonEngineService {
   private sound: THREE.Audio;
   private soundFlag = false;
   private bloomAsset;
-  
+
   private frameId: number = null;
 
   // Particle rotation variables
@@ -147,7 +147,7 @@ export class BalloonEngineService {
 
     if(scaledValue == this.circleMaxValue && !this.soundFlag) {
       if(this.sound.isPlaying) this.sound.stop();
-      
+
       this.sound.play();
       this.soundFlag = true;
     }

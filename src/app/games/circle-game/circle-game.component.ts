@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 
 import {
   CircleGameEngineService,
-} from '../../_services/circle-game-engine.service';
+} from '../../_services/games/circle-game-engine.service';
 import { SpiromagicService } from '../../_services/spiromagic.service';
 
 @Component({

@@ -8,7 +8,7 @@ import {
 import { Subscription } from 'rxjs';
 import {
   KiwiGameEngineService,
-} from 'src/app/_services/kiwi-game-engine.service';
+} from 'src/app/_services/games/kiwi-game-engine.service';
 import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({

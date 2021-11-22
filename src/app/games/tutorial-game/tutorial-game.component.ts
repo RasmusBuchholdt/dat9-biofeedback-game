@@ -6,10 +6,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 import {
   TutorialGameEngineService,
-} from 'src/app/_services/tutorial-game-engine.service';
+} from 'src/app/_services/games/tutorial-game-engine.service';
+import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({
   selector: 'app-tutorial-game',

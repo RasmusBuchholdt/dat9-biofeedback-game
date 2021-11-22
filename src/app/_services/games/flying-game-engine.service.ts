@@ -1,9 +1,9 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
-import { Colors } from '../_models/color';
-import { clamp } from '../_utils/clamp';
-import { scaleNumberToRange } from '../_utils/scale-number-to-range';
+import { Colors } from '../../_models/color';
+import { clamp } from '../../_utils/clamp';
+import { scaleNumberToRange } from '../../_utils/scale-number-to-range';
 
 @Injectable({
   providedIn: 'root'

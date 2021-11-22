@@ -13,11 +13,11 @@ import {
   MinCharacterY,
   MinSkyY,
   Speed,
-} from '../_models/games/kiwi-game';
-import { ObjectDimensions } from '../_models/object-dimensions';
-import { clamp } from '../_utils/clamp';
-import { randomNumberInRange } from '../_utils/randomNumberInRange';
-import { scaleNumberToRange } from '../_utils/scale-number-to-range';
+} from '../../_models/games/kiwi-game';
+import { ObjectDimensions } from '../../_models/object-dimensions';
+import { clamp } from '../../_utils/clamp';
+import { randomNumberInRange } from '../../_utils/randomNumberInRange';
+import { scaleNumberToRange } from '../../_utils/scale-number-to-range';
 
 @Injectable({
   providedIn: 'root'

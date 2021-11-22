@@ -5,7 +5,7 @@ import {
 } from 'src/app/_models/calibration/push-hard-calibration';
 import {
   FlyingGameEngineService,
-} from 'src/app/_services/flying-game-engine.service';
+} from 'src/app/_services/games/flying-game-engine.service';
 import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({

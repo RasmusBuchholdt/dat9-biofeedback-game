@@ -1,12 +1,12 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import * as THREE from 'three';
 
-import { scaleNumberToRange } from '../_utils/scale-number-to-range';
+import { scaleNumberToRange } from '../../_utils/scale-number-to-range';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TutorialGameEngineService {
+export class CircleGameEngineService {
   private canvas: HTMLCanvasElement;
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;
