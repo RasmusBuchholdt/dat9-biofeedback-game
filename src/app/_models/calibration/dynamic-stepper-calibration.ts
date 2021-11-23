@@ -4,7 +4,7 @@ import { CalibrationBase } from './calibration-base';
 import { CalibrationStrategy } from './calibration-strategy';
 
 export class DynamicStepperCalibration extends CalibrationBase implements CalibrationStrategy {
-    
+
     // Baseline related variables
     private baseline = 0;
     private minBaselineCounter = 50;
@@ -15,7 +15,7 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     private stepValue = 0;
     private maxValue = 100;
     private minValue = 0;
-    
+
     get name(): string {
         return "Dynamic stepper";
     }
@@ -23,15 +23,15 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     get description(): string {
         return "Stepper which stays at last known location. The amount of force of the breath is taken into consideration.";
     }
-    
+
     calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
-        
+
         // Initialization
         const currentReading = Math.round(normalize(reading, minReading, maxReading));
-        
+
         // Find baseline
         this.findBaseline(currentReading);
-    
+
         const stepIncreasePercentage = sensitivity * 0.01;
         const stepIncrement = Math.abs(currentReading - this.baseline) * stepIncreasePercentage;
 
@@ -49,10 +49,13 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
         return this.stepValue;
     }
 
+    reset(): void {
+    }
+
     // Find baseline (value when no exhale or inhale has been made)
     // A value is first seen as a baseline after "minBaselineCounter" number of iterations.
     findBaseline(reading: number): void {
-        
+
         if(reading == this.previousReading)
         {
             this.numberOfIterations += 1;
@@ -63,5 +66,5 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
         }
         else this.numberOfIterations = 0;
     }
-    
+
 }

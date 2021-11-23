@@ -19,4 +19,7 @@ export class HardwareCalibration extends CalibrationBase implements CalibrationS
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
     return normalize(reading * (sensitivity / 100 + 1), this.min, this.max);
   }
+
+  reset(): void {
+  }
 }

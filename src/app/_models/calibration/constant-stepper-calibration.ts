@@ -46,6 +46,13 @@ export class ConstantStepperCalibration extends CalibrationBase implements Calib
     return this.stepValue;
   }
 
+  reset(): void {
+    localStorage.removeItem(this.BASELINE_KEY);
+    this.baseline = 0;
+    console.log("reset");
+
+  }
+
   // Find baseline (value when no exhale or inhale has been made)
   // A value is first seen as a baseline after "minBaselineCounter" number of iterations.
   private findBaseline(reading: number): void {

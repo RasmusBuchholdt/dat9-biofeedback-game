@@ -90,6 +90,10 @@ export class CalibrationComponent implements OnInit, OnDestroy {
       this.toastrService.success('The readings have been reset!', 'Readings reset');
   }
 
+  resetCalibration(): void {
+    this.spiromagicService.calibration$.getValue().reset();
+  }
+
   private setupSpirometer(): void {
     this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading => {
       this.pushReadingToGraph(reading);

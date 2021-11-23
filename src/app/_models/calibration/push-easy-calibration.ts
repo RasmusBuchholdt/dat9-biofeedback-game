@@ -63,4 +63,7 @@ export class PushEasyCalibration extends CalibrationBase implements CalibrationS
 
     return normalize(this.currentStepValue, 1, 100);
   }
+
+  reset(): void {
+  }
 }

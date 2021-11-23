@@ -46,4 +46,7 @@ export class StepperCalibration extends CalibrationBase implements CalibrationSt
 
     return normalize(this.currentStepValue, 1, 100);
   }
+
+  reset(): void {
+  }
 }
