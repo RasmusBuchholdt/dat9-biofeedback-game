@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 import { ConnectedGuard } from './_guards/connected.guard';
+import { TutorialGuard } from './_guards/tutortial.guard';
 import { CalibrationComponent } from './calibration/calibration.component';
 import {
   BalloonGameComponent,
@@ -25,18 +26,22 @@ const routes: Routes = [
     canActivate: environment.production ? [ConnectedGuard] : [],
     children: [
       {
+        canActivate: environment.production ? [TutorialGuard] : [],
         path: 'kiwi',
         component: KiwiGameComponent
       },
       {
+        canActivate: environment.production ? [TutorialGuard] : [],
         path: 'circle',
         component: CircleGameComponent
       },
       {
+        canActivate: environment.production ? [TutorialGuard] : [],
         path: 'flying',
         component: FlyingGameComponent
       },
       {
+        canActivate: environment.production ? [TutorialGuard] : [],
         path: 'balloon',
         component: BalloonGameComponent
       },
