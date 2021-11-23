@@ -41,6 +41,7 @@ export class KiwiGameEngineService {
   private skyFirstHalf: THREE.Object3D;
   private skySecondHalf: THREE.Object3D;
   private character: THREE.Object3D;
+  private propeller: THREE.Object3D;
   private activeCoins: THREE.Object3D[] = [];
 
   private ascending = true;
@@ -280,19 +281,67 @@ export class KiwiGameEngineService {
   private createCharacter(): void {
     let character = new THREE.Object3D();
     character.name = 'Character';
-    let geom = new THREE.BoxGeometry(15, 15, 15, 1, 1, 1);
-    let mat = new THREE.MeshPhongMaterial({
-      color: Colors.red,
-      flatShading: true
-    });
-    let bodyMesh = new THREE.Mesh(geom, mat);
-    bodyMesh.castShadow = true;
-    bodyMesh.receiveShadow = true;
-    bodyMesh.name = 'Body';
-    character.add(bodyMesh);
-    character.position.y = MinCharacterY;
+
+    // Create the cabin
+    let geomCockpit = new THREE.BoxGeometry(60, 50, 50, 1, 1, 1);
+    let matCockpit = new THREE.MeshPhongMaterial({ color: Colors.red, flatShading: true });
+    let cockpit = new THREE.Mesh(geomCockpit, matCockpit);
+    cockpit.castShadow = true;
+    cockpit.receiveShadow = true;
+    character.add(cockpit);
+
+    // Create the engine
+    let geomEngine = new THREE.BoxGeometry(20, 50, 50, 1, 1, 1);
+    let matEngine = new THREE.MeshPhongMaterial({ color: Colors.white, flatShading: true });
+    let engine = new THREE.Mesh(geomEngine, matEngine);
+    engine.position.x = 40;
+    engine.castShadow = true;
+    engine.receiveShadow = true;
+    character.add(engine);
+
+    // Create the tail
+    let geomTailPlane = new THREE.BoxGeometry(15, 20, 5, 1, 1, 1);
+    let matTailPlane = new THREE.MeshPhongMaterial({ color: Colors.red, flatShading: true });
+    let tailPlane = new THREE.Mesh(geomTailPlane, matTailPlane);
+    tailPlane.position.set(-35, 25, 0);
+    tailPlane.castShadow = true;
+    tailPlane.receiveShadow = true;
+    character.add(tailPlane);
+
+    // Create the wing
+    let geomSideWing = new THREE.BoxGeometry(40, 8, 150, 1, 1, 1);
+    let matSideWing = new THREE.MeshPhongMaterial({ color: Colors.red, flatShading: true });
+    let sideWing = new THREE.Mesh(geomSideWing, matSideWing);
+    sideWing.castShadow = true;
+    sideWing.receiveShadow = true;
+    character.add(sideWing);
+
+    // propeller
+    let geomPropeller = new THREE.BoxGeometry(20, 10, 10, 1, 1, 1);
+    let matPropeller = new THREE.MeshPhongMaterial({ color: Colors.brown, flatShading: true });
+    let propeller = new THREE.Mesh(geomPropeller, matPropeller);
+    propeller.castShadow = true;
+    propeller.receiveShadow = true;
+
+    // blades
+    let geomBlade = new THREE.BoxGeometry(1, 100, 20, 1, 1, 1);
+    let matBlade = new THREE.MeshPhongMaterial({ color: Colors.brownDark, flatShading: true });
+
+    let blade = new THREE.Mesh(geomBlade, matBlade);
+    blade.position.set(8, 0, 0);
+    blade.castShadow = true;
+    blade.receiveShadow = true;
+    propeller.add(blade);
+    propeller.position.set(50, 0, 0);
+
+    this.propeller = propeller;
+    character.add(propeller);
+
+    character.scale.set(.25, .25, .25);
+
     this.character = character;
     this.characterDimensions = this.getObjectDimensions(character);
+
     this.scene.add(character);
   };
 
@@ -346,6 +395,8 @@ export class KiwiGameEngineService {
   private render(): void {
     this.updateSky();
     this.updateCoins();
+
+    this.propeller.rotation.x += 0.3;
 
     // Every x seconds we spawn a new coin row
     if (this.clock.getElapsedTime() >= this.coinsRespawnInternal) {
@@ -409,13 +460,6 @@ export class KiwiGameEngineService {
   public setCharacterPosition(value: number): void {
     const target = scaleNumberToRange(value, 0, 100, MinCharacterY, MaxCharacterY)
     this.character.position.y = target;
-  }
-
-  public updatePlaneSmooth(value: number): void {
-    if (this.previousValue === null)
-      this.previousValue = value;
-    this.ascending = value >= this.previousValue;
-    this.previousValue = value;
   }
 
   private killObject(object: (THREE.Object3D | THREE.HemisphereLight | THREE.Mesh) & { isMesh: boolean, material: any, geometry: THREE.BoxGeometry }): void {
