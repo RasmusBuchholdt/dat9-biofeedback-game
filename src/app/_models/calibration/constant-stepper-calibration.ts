@@ -36,10 +36,11 @@ export class ConstantStepperCalibration extends CalibrationBase implements Calib
     this.findBaseline(currentReading);
 
     // Find step value
-    if (currentReading > this.baseline + 1 && this.stepValue < this.maxValue)
+    if (currentReading > this.baseline + 1 && this.stepValue < this.maxValue) {
       this.stepValue += this.stepIncrement;
-    else if (currentReading < this.baseline - 1 && this.stepValue > this.minValue)
+    } else if (currentReading < this.baseline - 1 && this.stepValue > this.minValue) {
       this.stepValue -= this.stepIncrement;
+    }
 
     // Output
     this.previousReading = currentReading;
@@ -49,8 +50,6 @@ export class ConstantStepperCalibration extends CalibrationBase implements Calib
   reset(): void {
     localStorage.removeItem(this.BASELINE_KEY);
     this.baseline = 0;
-    console.log("reset");
-
   }
 
   // Find baseline (value when no exhale or inhale has been made)
