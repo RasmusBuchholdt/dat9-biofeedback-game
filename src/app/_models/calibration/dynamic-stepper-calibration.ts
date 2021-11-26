@@ -41,11 +41,14 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     // Find step value
     if (currentReading > this.baseline + 1 && this.stepValue < this.maxValue) {
       // I have added 0.5 because it seems that exhale requires more force than inhale.
-      this.stepValue = clamp((this.stepValue + stepIncrement + 0.5), 1, 100);
+      this.stepValue += stepIncrement + 0.5;
     }
     else if (currentReading < this.baseline - 1 && this.stepValue > this.minValue) {
-      this.stepValue = clamp((this.stepValue - stepIncrement), 1, 100);
+      this.stepValue -= stepIncrement;
     }
+
+    // Clamp
+    this.stepValue = clamp(this.stepValue, 1, 100);
 
     // Output
     this.previousReading = currentReading;
