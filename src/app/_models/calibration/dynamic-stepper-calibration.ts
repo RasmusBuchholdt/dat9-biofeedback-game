@@ -66,10 +66,7 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     const content = localStorage.getItem(this.BASELINE_KEY);
     if (content !== null) {
       this.baseline = JSON.parse(content) as number;
-      return;
-    }
-
-    if (reading == this.previousReading) {
+    } else if (reading == this.previousReading) {
       this.numberOfIterations += 1;
       if (this.numberOfIterations > this.minBaselineCounter && reading != this.baseline) {
         this.setBaseline(reading);
