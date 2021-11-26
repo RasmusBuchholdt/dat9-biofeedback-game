@@ -1,3 +1,4 @@
+import { clamp } from 'src/app/_utils/clamp';
 import { normalize } from 'src/app/_utils/normalize';
 
 import { CalibrationBase } from './calibration-base';
@@ -40,16 +41,10 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     // Find step value
     if (currentReading > this.baseline + 1 && this.stepValue < this.maxValue) {
       // I have added 0.5 because it seems that exhale requires more force than inhale.
-      this.stepValue += stepIncrement + 0.5;
+      this.stepValue = clamp((this.stepValue + stepIncrement + 0.5), 1, 100);
     }
     else if (currentReading < this.baseline - 1 && this.stepValue > this.minValue) {
-      this.stepValue -= stepIncrement;
-    }
-
-    if (this.stepValue > this.maxValue) {
-      this.stepValue = this.maxValue;
-    } else if (this.stepValue < this.minValue) {
-      this.stepValue = this.minValue;
+      this.stepValue = clamp((this.stepValue - stepIncrement), 1, 100);
     }
 
     // Output

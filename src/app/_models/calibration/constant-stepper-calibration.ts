@@ -1,3 +1,4 @@
+import { clamp } from 'src/app/_utils/clamp';
 import { normalize } from 'src/app/_utils/normalize';
 
 import { CalibrationBase } from './calibration-base';
@@ -37,9 +38,10 @@ export class ConstantStepperCalibration extends CalibrationBase implements Calib
 
     // Find step value
     if (currentReading > this.baseline + 1 && this.stepValue < this.maxValue) {
-      this.stepValue += this.stepIncrement;
-    } else if (currentReading < this.baseline - 1 && this.stepValue > this.minValue) {
-      this.stepValue -= this.stepIncrement;
+      this.stepValue = clamp((this.stepValue + this.stepIncrement), 1, 100);
+    }
+    else if (currentReading < this.baseline - 1 && this.stepValue > this.minValue) {
+      this.stepValue = clamp((this.stepValue - this.stepIncrement), 1, 100);
     }
 
     // Output
