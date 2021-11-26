@@ -64,7 +64,9 @@ export class ConstantStepperCalibration extends CalibrationBase implements Calib
     if (content !== null) {
       this.baseline = JSON.parse(content) as number;
       return;
-    } else if (reading == this.previousReading) {
+    }
+
+    if (reading == this.previousReading) {
       this.numberOfIterations += 1;
       if (this.numberOfIterations > this.minBaselineCounter)
         this.setBaseline(reading);
