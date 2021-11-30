@@ -80,3 +80,17 @@ img {
 .jumbotron {
   padding: 1rem 2rem;
 }
+
+.back-button {
+  position: absolute;
+  padding: 20px;
+  cursor: pointer;
+  left: 0;
+  top: 5%;
+  z-index: 99;
+
+  .fa,
+  .fas {
+    font-size: 50px;
+  }
+}

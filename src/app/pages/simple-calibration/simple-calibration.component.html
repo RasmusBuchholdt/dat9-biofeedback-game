@@ -1,5 +1,8 @@
 <div class="container text-center d-flex align-items-center justify-content-center">
   <div *ngIf="!exhalationCompleted && !inhalationCompleted">
+    <div class="back-button" [routerLink]="['/connect']">
+      <i class="fa fa-arrow-left text-primary"></i>
+    </div>
     <div class="row">
       <div class="col">
         <h1>
@@ -23,6 +26,9 @@
     </div>
   </div>
   <div *ngIf="exhalationCompleted && !inhalationCompleted">
+    <div class="back-button" (click)="exhalationCompleted = false">
+      <i class="fa fa-arrow-left text-primary"></i>
+    </div>
     <div class="row">
       <div class="col">
         <h1>
@@ -46,6 +52,9 @@
     </div>
   </div>
   <div *ngIf="exhalationCompleted && inhalationCompleted">
+    <div class="back-button" (click)="inhalationCompleted = false">
+      <i class="fa fa-arrow-left text-primary"></i>
+    </div>
     <div class="row">
       <div class="col">
         <h1>Calibration done</h1>
