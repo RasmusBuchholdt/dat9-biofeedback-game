@@ -8,7 +8,9 @@ import { CalibrationComponent } from './calibration/calibration.component';
 import {
   BalloonGameComponent,
 } from './games/balloon-game/balloon-game.component';
-import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
+import {
+  CoinCollectorGameComponent,
+} from './games/coin-collector-game/coin-collector-game.component';
 import { ConnectComponent } from './pages/connect/connect.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { SettingsComponent } from './pages/settings/settings.component';
@@ -47,8 +49,8 @@ const routes: Routes = [
     canActivate: environment.production ? [ConnectedGuard, TutorialGuard] : [],
     children: [
       {
-        path: 'kiwi',
-        component: KiwiGameComponent
+        path: 'coin-collector',
+        component: CoinCollectorGameComponent
       },
       {
         path: 'balloon',

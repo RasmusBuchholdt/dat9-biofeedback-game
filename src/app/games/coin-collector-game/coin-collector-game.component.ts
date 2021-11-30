@@ -7,16 +7,16 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import {
-  KiwiGameEngineService,
-} from 'src/app/_services/games/kiwi-game-engine.service';
+  CoinCollectorGameEngineService,
+} from 'src/app/_services/games/coin-collector-game-engine.service';
 import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({
-  selector: 'app-kiwi-game',
-  templateUrl: './kiwi-game.component.html',
-  styleUrls: ['./kiwi-game.component.scss']
+  selector: 'app-coin-collector-game',
+  templateUrl: './coin-collector-game.component.html',
+  styleUrls: ['./coin-collector-game.component.scss']
 })
-export class KiwiGameComponent implements OnInit {
+export class CoinCollectorGameComponent implements OnInit {
 
   @ViewChild('rendererCanvas', { static: true })
   public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
@@ -25,7 +25,7 @@ export class KiwiGameComponent implements OnInit {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private gameEngine: KiwiGameEngineService,
+    private gameEngine: CoinCollectorGameEngineService,
     private zone: NgZone,
     private spiromagicService: SpiromagicService
   ) { }

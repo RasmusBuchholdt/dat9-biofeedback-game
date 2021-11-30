@@ -22,7 +22,7 @@ import { scaleNumberToRange } from '../../_utils/scale-number-to-range';
 @Injectable({
   providedIn: 'root'
 })
-export class KiwiGameEngineService {
+export class CoinCollectorGameEngineService {
   private canvas: HTMLCanvasElement;
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;
