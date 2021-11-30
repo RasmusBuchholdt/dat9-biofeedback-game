@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav *ngIf="!isProduction" class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/']">
     Biofeedback Game
   </a>
@@ -7,43 +7,34 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav mr-auto" *ngIf="spiromagicService.isConnected || !isProduction">
+    <ul class="navbar-nav mr-auto" *ngIf="spiromagicService.isConnected">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
-          href="#" id="navbarGamesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-          aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarGamesDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
           Games
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarGamesDropdown">
-          <a class="dropdown-item" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
-            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" data-toggle="collapse"
-            data-target=".navbar-collapse.show" [routerLink]="['/game/kiwi']">
+          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
+            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/kiwi']">
             Kiwi Game
           </a>
-          <a class="dropdown-item" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
-            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" data-toggle="collapse"
-            data-target=".navbar-collapse.show" [routerLink]="['/game/circle']">
+          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
+            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/circle']">
             Circle Game
           </a>
-          <a class="dropdown-item" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
-            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" data-toggle="collapse"
-            data-target=".navbar-collapse.show" [routerLink]="['/game/flying']">
+          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
+            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/flying']">
             Flying Game
           </a>
-          <a class="dropdown-item" [ngClass]="{'disabled': spiromagicService.tutorialPending$ | async}"
-            routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" data-toggle="collapse"
-            data-target=".navbar-collapse.show" [routerLink]="['/game/balloon']">
+          <a class="dropdown-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}"
+            data-toggle="collapse" data-target=".navbar-collapse.show" [routerLink]="['/game/balloon']">
             Balloon Game
           </a>
         </div>
       </li>
       <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
         <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show"
-          [routerLink]="['/game/tutorial']">Tutorial</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
-        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show"
-          [routerLink]="['/calibration']">Calibration</a>
+          [routerLink]="['/developer/calibration']">Advanced Calibration</a>
       </li>
     </ul>
     <ul class="navbar-nav ml-auto">
