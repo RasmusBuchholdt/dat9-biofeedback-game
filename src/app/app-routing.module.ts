@@ -17,11 +17,6 @@ import {
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'connect',
-  },
-  {
-    path: 'connect',
-    canActivate: environment.production ? [ConnectedGuard] : [],
     component: ConnectComponent
   },
   {
