@@ -13,7 +13,7 @@ import {
   MinCharacterY,
   MinSkyY,
   Speed,
-} from '../../_models/games/kiwi-game';
+} from '../../_models/games/coin-collector-game';
 import { ObjectDimensions } from '../../_models/object-dimensions';
 import { clamp } from '../../_utils/clamp';
 import { randomNumberInRange } from '../../_utils/randomNumberInRange';
