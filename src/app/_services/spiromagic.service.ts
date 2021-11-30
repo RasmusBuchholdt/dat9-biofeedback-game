@@ -12,7 +12,7 @@ import { GATTCharacteristicService } from './gatt-characteristic.service';
 })
 export class SpiromagicService implements OnDestroy {
 
-  tutorialPending$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  tutorialFinished$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   calibration$: BehaviorSubject<CalibrationStrategy | null> = new BehaviorSubject<CalibrationStrategy | null>(this.calibrationService.calibrations[0]);
   sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(0);
@@ -22,7 +22,7 @@ export class SpiromagicService implements OnDestroy {
 
   private subscription: Subscription | null = null;
 
-  private TUTORIAL_KEY = 'TUTORIAL_PENDING';
+  private TUTORIAL_KEY = 'TUTORIAL_FINISHED';
 
   constructor(
     private zone: NgZone,
@@ -62,12 +62,12 @@ export class SpiromagicService implements OnDestroy {
 
   private getTutorialStatus(): void {
     const content = localStorage.getItem(this.TUTORIAL_KEY);
-    this.tutorialPending$.next(content !== null ? JSON.parse(content) as boolean : true);
+    this.tutorialFinished$.next(content !== null ? JSON.parse(content) as boolean : false);
   }
 
   public markTutorialAsCompleted(): void {
-    localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(false));
-    this.tutorialPending$.next(false);
+    localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(true));
+    this.tutorialFinished$.next(true);
   }
 
   private getSpirometerReadings() {
