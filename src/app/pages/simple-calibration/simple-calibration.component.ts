@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({
@@ -12,10 +13,14 @@ export class SimpleCalibrationComponent implements OnInit {
   inhalationCompleted = false;
 
   constructor(
-    public spiromagicService: SpiromagicService
+    public spiromagicService: SpiromagicService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+    // TODO: Maybe remove this or move to better place?
+    if (this.spiromagicService.tutorialFinished$.getValue()) {
+      this.router.navigateByUrl('/menu');
+    };
   }
-
 }
