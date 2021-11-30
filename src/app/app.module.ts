@@ -13,14 +13,9 @@ import { CalibrationComponent } from './calibration/calibration.component';
 import {
   BalloonGameComponent,
 } from './games/balloon-game/balloon-game.component';
-import { CircleGameComponent } from './games/circle-game/circle-game.component';
 import {
   CoinCollectorGameComponent,
 } from './games/coin-collector-game/coin-collector-game.component';
-import { FlyingGameComponent } from './games/flying-game/flying-game.component';
-import {
-  TutorialGameComponent,
-} from './games/tutorial-game/tutorial-game.component';
 import { ConnectComponent } from './pages/connect/connect.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { SettingsComponent } from './pages/settings/settings.component';
@@ -35,11 +30,8 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     AppComponent,
     CalibrationComponent,
     NavbarComponent,
-    CircleGameComponent,
-    FlyingGameComponent,
     CoinCollectorGameComponent,
     BalloonGameComponent,
-    TutorialGameComponent,
     SimpleCalibrationComponent,
     TutorialComponent,
     SettingsComponent,
