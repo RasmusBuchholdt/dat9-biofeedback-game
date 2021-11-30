@@ -1,4 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SpiromagicService } from 'src/app/_services/spiromagic.service';
@@ -11,7 +17,7 @@ import {
   templateUrl: './tutorial.component.html',
   styleUrls: ['./tutorial.component.scss']
 })
-export class TutorialComponent implements OnInit {
+export class TutorialComponent implements OnInit, OnDestroy {
 
   @ViewChild('rendererCanvas', { static: true })
   public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
@@ -29,6 +35,11 @@ export class TutorialComponent implements OnInit {
 
   ngOnInit(): void {
     this.setupSpirometer();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(e => e?.unsubscribe());
+    this.tutorialEngine.stopGame();
   }
 
   private setupSpirometer(): void {
