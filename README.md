@@ -1,3 +1,5 @@
+[![Manual release to Firebase Hosting site](https://github.com/RasmusBuchholdt/dat9-biofeedback-game/actions/workflows/manual.yml/badge.svg?branch=main)](https://dat9-biofeedback-game.web.app/)
+
 # Dat9GameWebsite
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.6.
