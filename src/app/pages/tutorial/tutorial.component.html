@@ -1,5 +1,8 @@
-<div class="container text-center d-flex align-items-center justify-content-center">
-  <div *ngIf="!tutorialStarted">
+<div class="engine-wrapper">
+  <canvas #rendererCanvas id="renderCanvas"></canvas>
+</div>
+<div class="container text-center d-flex align-items-center justify-content-center" *ngIf="!tutorialStarted">
+  <div>
     <div class="row">
       <div class="col">
         <h1>
@@ -18,56 +21,35 @@
     </div>
     <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-primary" (click)="tutorialStarted = true">
+        <button type="button" class="btn btn-primary" (click)="start()">
           Continue
         </button>
       </div>
     </div>
   </div>
-  <div *ngIf="tutorialStarted  && !(spiromagicService.tutorialFinished$ | async)">
-    <div class="row">
-      <div class="col">
-        <p>
-          Slowly inhale from your nose.
-          Slowly exhale from your mouth and fill out the circle.
-        </p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <p>
-          Change the sensitivity,
-          if it is too easy or difficult to fill out the circle.
-        </p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <button type="button" class="btn btn-primary" (click)="spiromagicService.setTutorialCompleted(true)">
-          Continue
-        </button>
+</div>
+<div class="container text-center mt-4" *ngIf="tutorialStarted  && !(spiromagicService.tutorialFinished$ | async)">
+  <div class="row">
+    <div class="col">
+      <p>
+        Slowly inhale from your nose.<br>
+        Slowly exhale from your mouth and fill out the circle.
+      </p>
+      <p>
+        Change the sensitivity, if it is too easy or difficult to fill out the circle.
+      </p>
+      <div class="form-group">
+        <label for="sensitivityRange">Sensitivity ({{sensitivity}}%)</label>
+        <input type="range" #sensitivityControl class="form-control" min="0" max="100" step="1" [value]="sensitivity"
+          (input)="changeSensitivity(+sensitivityControl.value)" id="sensitivityRange">
       </div>
     </div>
   </div>
-  <div *ngIf="tutorialStarted && spiromagicService.tutorialFinished$ | async">
-    <div class="row">
-      <div class="col">
-        <h1>Tutorial completed</h1>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <p>
-          You have completed the tutorial. Select continue to find the games.
-        </p>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <button type="button" class="btn btn-primary" [routerLink]="['/menu']">
-          Continue
-        </button>
-      </div>
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-primary" (click)="finish()">
+        Finish tutorial
+      </button>
     </div>
   </div>
 </div>
