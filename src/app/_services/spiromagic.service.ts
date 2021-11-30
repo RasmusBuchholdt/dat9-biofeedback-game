@@ -98,7 +98,6 @@ export class SpiromagicService implements OnDestroy {
   }
 
   get isConnected(): boolean {
-    return true;
     return this.gattService.isConnected;
   }
 }
