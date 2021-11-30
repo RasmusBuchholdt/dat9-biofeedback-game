@@ -1,4 +1,4 @@
-<div class="engine-wrapper">
+<div class="engine-wrapper" [ngClass]="{'d-none': !tutorialStarted}">
   <canvas #rendererCanvas id="renderCanvas"></canvas>
 </div>
 <div class="container text-center d-flex align-items-center justify-content-center" *ngIf="!tutorialStarted">
