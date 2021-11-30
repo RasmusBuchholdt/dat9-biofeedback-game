@@ -12,7 +12,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-primary" (click)="spiromagicService.connect()">
+        <button type="button" class="btn btn-primary" [disabled]="isConnecting" (click)="connect()">
           Connect
         </button>
       </div>

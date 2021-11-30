@@ -8,6 +8,8 @@ import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 })
 export class ConnectComponent implements OnInit {
 
+  isConnecting = false;
+
   constructor(
     public spiromagicService: SpiromagicService
   ) { }
@@ -16,4 +18,8 @@ export class ConnectComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  connect(): void {
+    this.isConnecting = true;
+    this.spiromagicService.connect();
+  }
 }
