@@ -8,6 +8,10 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav mr-auto" *ngIf="spiromagicService.isConnected">
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+        <a class="nav-link" data-toggle="collapse" data-target=".navbar-collapse.show"
+          [routerLink]="['/menu']">Menu</a>
+      </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarGamesDropdown" role="button" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
