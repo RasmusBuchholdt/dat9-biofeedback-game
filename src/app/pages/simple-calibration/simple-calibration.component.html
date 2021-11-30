@@ -1,1 +1,69 @@
-<p>simple-calibration works!</p>
+<div class="container">
+  <div *ngIf="!exhalationCompleted && !inhalationCompleted">
+    <div class="row">
+      <div class="col">
+        <h1>
+          Exhale as hard as you can into the SpiroMagic
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          When you have exhaled as hard as you can, select continue.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" (click)="exhalationCompleted = true">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="exhalationCompleted && !inhalationCompleted">
+    <div class="row">
+      <div class="col">
+        <h1>
+          Inhale as hard as you can into the SpiroMagic
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          When you have inhaled as hard as you can, select continue.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" (click)="inhalationCompleted = true">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="exhalationCompleted && inhalationCompleted">
+    <div class="row">
+      <div class="col">
+        <h1>Calibration done</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          You have now calibrated the device to fit your breathing.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" [routerLink]="['/tutorial']">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

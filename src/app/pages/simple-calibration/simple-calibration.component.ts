@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({
   selector: 'app-simple-calibration',
@@ -7,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SimpleCalibrationComponent implements OnInit {
 
-  constructor() { }
+  exhalationCompleted = false;
+  inhalationCompleted = false;
+
+  constructor(
+    public spiromagicService: SpiromagicService
+  ) { }
 
   ngOnInit(): void {
   }

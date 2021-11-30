@@ -13,6 +13,7 @@ import { ConnectComponent } from './pages/connect/connect.component';
 import {
   SimpleCalibrationComponent,
 } from './pages/simple-calibration/simple-calibration.component';
+import { TutorialComponent } from './pages/tutorial/tutorial.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,11 @@ const routes: Routes = [
     path: 'calibration',
     canActivate: environment.production ? [ConnectedGuard] : [],
     component: SimpleCalibrationComponent
+  },
+  {
+    path: 'tutorial',
+    canActivate: environment.production ? [ConnectedGuard] : [],
+    component: TutorialComponent
   },
   {
     path: 'settings',
