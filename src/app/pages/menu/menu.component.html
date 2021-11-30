@@ -1,7 +1,8 @@
 <div class="container text-center d-flex align-items-center justify-content-center">
   <div class="row menu-buttons">
     <div class="col-3">
-      <button class="btn btn-primary" [routerLink]="['/tutorial']">
+      <button class="btn btn-primary" (click)="spiromagicService.setTutorialCompleted(false)"
+        [routerLink]="['/tutorial']">
         <i class="fa fa-adjust"></i>
       </button>
       <p>Tutorial</p>

@@ -65,9 +65,9 @@ export class SpiromagicService implements OnDestroy {
     this.tutorialFinished$.next(content !== null ? JSON.parse(content) as boolean : false);
   }
 
-  public markTutorialAsCompleted(): void {
-    localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(true));
-    this.tutorialFinished$.next(true);
+  public setTutorialCompleted(state: boolean): void {
+    localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(state));
+    this.tutorialFinished$.next(state);
   }
 
   private getSpirometerReadings() {
@@ -98,6 +98,7 @@ export class SpiromagicService implements OnDestroy {
   }
 
   get isConnected(): boolean {
+    return true;
     return this.gattService.isConnected;
   }
 }
