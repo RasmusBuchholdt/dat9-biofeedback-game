@@ -10,6 +10,8 @@ import {
 } from './games/balloon-game/balloon-game.component';
 import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
 import { ConnectComponent } from './pages/connect/connect.component';
+import { MenuComponent } from './pages/menu/menu.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 import {
   SimpleCalibrationComponent,
 } from './pages/simple-calibration/simple-calibration.component';
@@ -33,24 +35,22 @@ const routes: Routes = [
   {
     path: 'settings',
     canActivate: environment.production ? [ConnectedGuard, TutorialGuard] : [],
-    component: SimpleCalibrationComponent
+    component: SettingsComponent
   },
   {
     path: 'menu',
     canActivate: environment.production ? [ConnectedGuard, TutorialGuard] : [],
-    component: SimpleCalibrationComponent
+    component: MenuComponent
   },
   {
     path: 'game',
-    canActivate: environment.production ? [ConnectedGuard] : [],
+    canActivate: environment.production ? [ConnectedGuard, TutorialGuard] : [],
     children: [
       {
-        canActivate: environment.production ? [TutorialGuard] : [],
         path: 'kiwi',
         component: KiwiGameComponent
       },
       {
-        canActivate: environment.production ? [TutorialGuard] : [],
         path: 'balloon',
         component: BalloonGameComponent
       }
