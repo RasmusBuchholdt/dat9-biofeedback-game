@@ -19,7 +19,6 @@ export class TutorialEngineService {
 
   private innerCircle: THREE.Mesh;
   private outerCircle: THREE.Mesh;
-  private maxValueCircle: THREE.Mesh;
 
   private frameId: number = null;
 
@@ -70,12 +69,12 @@ export class TutorialEngineService {
 
   private addCircles(): void {
     let geometry = new THREE.CircleGeometry(this.circleMaxValue, 32);
-    let material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+    let material = new THREE.MeshBasicMaterial({ color: '#4472c4' });
     this.outerCircle = new THREE.Mesh(geometry, material);
     this.scene.add(this.outerCircle);
 
     geometry = new THREE.CircleGeometry(this.circleMinValue, 32);
-    material = new THREE.MeshBasicMaterial({ color: 'green' });
+    material = new THREE.MeshBasicMaterial({ color: 'white' });
     this.innerCircle = new THREE.Mesh(geometry, material);
     this.scene.add(this.innerCircle);
   }
@@ -83,21 +82,10 @@ export class TutorialEngineService {
   setInnerCircle(value: number) {
     const scaledValue = scaleNumberToRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
     let geometry = new THREE.CircleGeometry(scaledValue, 32);
-    let material = new THREE.MeshBasicMaterial({ color: 'green' });
+    let material = new THREE.MeshBasicMaterial({ color: 'white' });
     this.scene.remove(this.innerCircle);
     this.innerCircle = new THREE.Mesh(geometry, material);
     this.scene.add(this.innerCircle);
-
-    if (scaledValue > this.biggestValue) this.adjustMaxValueCircle(scaledValue);
-  }
-
-  private adjustMaxValueCircle(value: number): void {
-    this.biggestValue = value;
-    let geometry = new THREE.CircleGeometry(value, 32);
-    let material = new THREE.MeshBasicMaterial({ color: 'red' });
-    this.scene.remove(this.maxValueCircle);
-    this.maxValueCircle = new THREE.Mesh(geometry, material);
-    this.scene.add(this.maxValueCircle);
   }
 
   animate(): void {
