@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({
   selector: 'app-tutorial',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TutorialComponent implements OnInit {
 
-  constructor() { }
+  tutorialStarted = false;
+
+  constructor(
+    public spiromagicService: SpiromagicService
+  ) { }
 
   ngOnInit(): void {
   }

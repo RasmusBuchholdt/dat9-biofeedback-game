@@ -1,1 +1,73 @@
-<p>tutorial works!</p>
+<div class="container text-center d-flex align-items-center justify-content-center">
+  <div *ngIf="!tutorialStarted">
+    <div class="row">
+      <div class="col">
+        <h1>
+          Tutorial
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          In this application,
+          you are going to use a breathing technique
+          called <b>Pursed lip breathing</b>.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" (click)="tutorialStarted = true">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="tutorialStarted  && !(spiromagicService.tutorialFinished$ | async)">
+    <div class="row">
+      <div class="col">
+        <p>
+          Slowly inhale from your nose.
+          Slowly exhale from your mouth and fill out the circle.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          Change the sensitivity,
+          if it is too easy or difficult to fill out the circle.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" (click)="spiromagicService.markTutorialAsCompleted()">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="tutorialStarted && spiromagicService.tutorialFinished$ | async">
+    <div class="row">
+      <div class="col">
+        <h1>Tutorial completed</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>
+          You have completed the tutorial. Select continue to find the games.
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" [routerLink]="['/menu']">
+          Continue
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
