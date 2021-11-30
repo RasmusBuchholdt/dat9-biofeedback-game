@@ -17,6 +17,11 @@ import { FlyingGameComponent } from './games/flying-game/flying-game.component';
 import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
 import { BalloonGameComponent } from './games/balloon-game/balloon-game.component';
 import { TutorialGameComponent } from './games/tutorial-game/tutorial-game.component';
+import { SimpleCalibrationComponent } from './pages/simple-calibration/simple-calibration.component';
+import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { MenuComponent } from './pages/menu/menu.component';
+import { ConnectComponent } from './pages/connect/connect.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +33,12 @@ import { TutorialGameComponent } from './games/tutorial-game/tutorial-game.compo
     FlyingGameComponent,
     KiwiGameComponent,
     BalloonGameComponent,
-    TutorialGameComponent
+    TutorialGameComponent,
+    SimpleCalibrationComponent,
+    TutorialComponent,
+    SettingsComponent,
+    MenuComponent,
+    ConnectComponent
   ],
   imports: [
     BrowserAnimationsModule,

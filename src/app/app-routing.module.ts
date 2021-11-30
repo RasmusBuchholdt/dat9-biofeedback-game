@@ -8,18 +8,36 @@ import { CalibrationComponent } from './calibration/calibration.component';
 import {
   BalloonGameComponent,
 } from './games/balloon-game/balloon-game.component';
-import { CircleGameComponent } from './games/circle-game/circle-game.component';
-import { FlyingGameComponent } from './games/flying-game/flying-game.component';
 import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
+import { ConnectComponent } from './pages/connect/connect.component';
 import {
-  TutorialGameComponent,
-} from './games/tutorial-game/tutorial-game.component';
-import { HomeComponent } from './home/home.component';
+  SimpleCalibrationComponent,
+} from './pages/simple-calibration/simple-calibration.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    redirectTo: 'connect',
+  },
+  {
+    path: 'connect',
+    canActivate: environment.production ? [ConnectedGuard] : [],
+    component: ConnectComponent
+  },
+  {
+    path: 'calibration',
+    canActivate: environment.production ? [ConnectedGuard] : [],
+    component: SimpleCalibrationComponent
+  },
+  {
+    path: 'settings',
+    canActivate: environment.production ? [ConnectedGuard, TutorialGuard] : [],
+    component: SimpleCalibrationComponent
+  },
+  {
+    path: 'menu',
+    canActivate: environment.production ? [ConnectedGuard, TutorialGuard] : [],
+    component: SimpleCalibrationComponent
   },
   {
     path: 'game',
@@ -32,29 +50,20 @@ const routes: Routes = [
       },
       {
         canActivate: environment.production ? [TutorialGuard] : [],
-        path: 'circle',
-        component: CircleGameComponent
-      },
-      {
-        canActivate: environment.production ? [TutorialGuard] : [],
-        path: 'flying',
-        component: FlyingGameComponent
-      },
-      {
-        canActivate: environment.production ? [TutorialGuard] : [],
         path: 'balloon',
         component: BalloonGameComponent
-      },
-      {
-        path: 'tutorial',
-        component: TutorialGameComponent
       }
     ]
   },
   {
-    path: 'calibration',
-    canActivate: environment.production ? [ConnectedGuard] : [],
-    component: CalibrationComponent
+    path: 'developer',
+    children: [
+      {
+        path: 'calibration',
+        canActivate: environment.production ? [ConnectedGuard] : [],
+        component: CalibrationComponent
+      },
+    ]
   },
   {
     path: '**',
