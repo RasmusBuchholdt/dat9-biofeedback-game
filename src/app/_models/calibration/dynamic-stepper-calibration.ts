@@ -40,7 +40,7 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     // Find baseline
     this.findBaseline(currentReading);
 
-    const stepIncreasePercentage = clamp(sensitivity * 0.01, 0.5, 1);
+    const stepIncreasePercentage = sensitivity * 0.01;
     const stepIncrement = Math.abs(currentReading - this.baseline) * stepIncreasePercentage;
 
     // Find step value
