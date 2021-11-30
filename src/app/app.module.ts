@@ -10,23 +10,27 @@ import { SpiromagicService } from './_services/spiromagic.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalibrationComponent } from './calibration/calibration.component';
+import {
+  BalloonGameComponent,
+} from './games/balloon-game/balloon-game.component';
 import { CircleGameComponent } from './games/circle-game/circle-game.component';
-import { HomeComponent } from './home/home.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FlyingGameComponent } from './games/flying-game/flying-game.component';
 import { KiwiGameComponent } from './games/kiwi-game/kiwi-game.component';
-import { BalloonGameComponent } from './games/balloon-game/balloon-game.component';
-import { TutorialGameComponent } from './games/tutorial-game/tutorial-game.component';
-import { SimpleCalibrationComponent } from './pages/simple-calibration/simple-calibration.component';
-import { TutorialComponent } from './pages/tutorial/tutorial.component';
-import { SettingsComponent } from './pages/settings/settings.component';
-import { MenuComponent } from './pages/menu/menu.component';
+import {
+  TutorialGameComponent,
+} from './games/tutorial-game/tutorial-game.component';
 import { ConnectComponent } from './pages/connect/connect.component';
+import { MenuComponent } from './pages/menu/menu.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import {
+  SimpleCalibrationComponent,
+} from './pages/simple-calibration/simple-calibration.component';
+import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     CalibrationComponent,
     NavbarComponent,
     CircleGameComponent,

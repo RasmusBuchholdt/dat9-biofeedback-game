@@ -1,1 +1,40 @@
-<p>connect works!</p>
+<div class="container">
+  <div *ngIf="!spiromagicService.isConnected">
+    <div class="row">
+      <div class="col">
+        <h1>Welcome</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>Please open the SpiroMagic device and connect it to the application.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" (click)="spiromagicService.connect()">
+          Connect
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="spiromagicService.isConnected">
+    <div class="row">
+      <div class="col">
+        <h1>Device successfully connected</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>We must calibrate the SpiroMagic device to fit your breathing.</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary" [routerLink]="['/calibration']">
+          Calibrate
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
