@@ -155,9 +155,4 @@ export class TutorialEngineService {
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
   }
-
-  takeSceneScreenshot(): string {
-    this.renderer.render(this.scene, this.camera);
-    return this.renderer.domElement.toDataURL();
-  }
 }

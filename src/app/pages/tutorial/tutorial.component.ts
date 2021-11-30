@@ -34,6 +34,8 @@ export class TutorialComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.tutorialEngine.createScene(this.rendererCanvas);
+    this.tutorialEngine.animate();
     this.setupSpirometer();
   }
 
@@ -53,12 +55,6 @@ export class TutorialComponent implements OnInit, OnDestroy {
 
   private handleReading(value: number): void {
     this.tutorialEngine.setInnerCircle(value);
-  }
-
-  start(): void {
-    this.tutorialStarted = true;
-    this.tutorialEngine.createScene(this.rendererCanvas);
-    this.tutorialEngine.animate();
   }
 
   finish(): void {
