@@ -46,6 +46,13 @@ export class TutorialComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.spiromagicService.sensitivity$.subscribe(sensitivity => {
       this.sensitivity = sensitivity;
     }));
+    this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading => {
+      this.handleReading(reading);
+    }));
+  }
+
+  private handleReading(value: number): void {
+    this.tutorialEngine.setInnerCircle(value);
   }
 
   start(): void {
