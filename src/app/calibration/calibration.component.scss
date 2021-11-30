@@ -1,15 +1,27 @@
-.btn-calibration {
-  margin-right: 5px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
+.container-fluid {
+  .card {
+    background-color: #323f4f;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.25);
 
-.graph {
-  height: 40vh;
-}
+    .text-muted {
+      color: #ced3d6 !important;
+    }
+  }
 
-@media (max-width: 600px) {
+  .btn-calibration {
+    margin-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
   .graph {
-    height: 35vh;
+    height: 40vh;
+  }
+
+  @media (max-width: 600px) {
+    .graph {
+      height: 35vh;
+    }
   }
 }
