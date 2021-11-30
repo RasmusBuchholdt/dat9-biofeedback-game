@@ -1,1 +1,33 @@
-<p>settings works!</p>
+<div class="container mt-5">
+  <div class="row text-center d-flex align-items-center justify-content-center mb-4">
+    <div class="col col-md-6">
+      <h1>Settings</h1>
+      <div class="form-group">
+        <label for="sensitivityRange">Sensitivity ({{sensitivity}}%)</label>
+        <input type="range" #sensitivityControl class="form-control" min="0" max="100" step="1" [value]="sensitivity"
+          (input)="changeSensitivity(+sensitivityControl.value)" id="sensitivityRange">
+        <small class="form-text text-muted">How sensitive should the readings be.</small>
+      </div>
+      <div class="mt-4">
+        <button type="button" class="btn btn-primary" (click)="resetReadings()">
+          Reset readings
+        </button>
+        <button type="button" class="btn btn-primary ml-2" (click)="resetCalibration()">
+          Reset calibration
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col mb-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="graph">
+            <canvas baseChart [datasets]="chartData" [chartType]="chartType" [labels]="chartLabels"
+              [options]="chartOptions"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

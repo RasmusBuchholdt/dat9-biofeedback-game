@@ -1,0 +1,15 @@
+.container {
+  .text-muted {
+    color: #ced3d6 !important;
+  }
+
+  .graph {
+    height: 40vh;
+  }
+
+  @media (max-width: 600px) {
+    .graph {
+      height: 35vh;
+    }
+  }
+}
