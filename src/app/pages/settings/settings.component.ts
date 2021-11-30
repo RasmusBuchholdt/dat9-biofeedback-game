@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import { DeviceDetectorService } from 'ngx-device-detector';
@@ -56,7 +57,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
     private toastrService: ToastrService,
     private spiromagicService: SpiromagicService,
     private deviceDetectorService: DeviceDetectorService,
-    private calibrationService: CalibrationService
+    private calibrationService: CalibrationService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -80,6 +82,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   resetCalibration(): void {
     this.spiromagicService.calibration$.getValue().reset();
+    this.spiromagicService.setTutorialCompleted(false);
+    this.router.navigateByUrl('/calibration');
   }
 
   private setupSpirometer(): void {
