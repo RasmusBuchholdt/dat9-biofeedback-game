@@ -16,8 +16,6 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
   // Calibration related variables
   private previousReading = 0;
   private stepValue = 0;
-  private maxValue = 100;
-  private minValue = 0;
 
   private BASELINE_KEY = 'DYNAMIC_STEPPER_BASELINE';
   private MAX_KEY = 'DYNAMIC_STEPPER_MAX';
@@ -69,21 +67,29 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     this.baseline = 0;
   }
 
-  setMinMax(minReading: number, maxReading: number): void {
-    const min = +localStorage.getItem(this.MIN_KEY);
-    const max = +localStorage.getItem(this.MAX_KEY);
-  
-    if(min > minReading) {
-      localStorage.setItem(this.MIN_KEY, JSON.stringify(minReading));
-      this.currentMin = minReading;
-    }
-    else this.currentMin = min;
+  private setMinMax(sessionMinReading: number, sessionMaxReading: number): void {
+    const contentMin = localStorage.getItem(this.MIN_KEY);
+    const contentMax = localStorage.getItem(this.MAX_KEY);
 
-    if(max < maxReading){
-      localStorage.setItem(this.MAX_KEY, JSON.stringify(maxReading));
-      this.currentMax = maxReading;
+    if (contentMin !== null) {
+      const cachedMin = JSON.parse(contentMin) as number;
+      if (sessionMinReading < cachedMin) {
+        localStorage.setItem(this.MIN_KEY, JSON.stringify(sessionMinReading));
+        this.currentMin = sessionMinReading;
+      } else {
+        this.currentMin = cachedMin;
+      }
     }
-    else this.currentMax = max;
+
+    if (contentMax !== null) {
+      const cachedMax = JSON.parse(contentMin) as number;
+      if (sessionMaxReading > cachedMax) {
+        localStorage.setItem(this.MIN_KEY, JSON.stringify(sessionMaxReading));
+        this.currentMax = sessionMaxReading;
+      } else {
+        this.currentMax = cachedMax;
+      }
+    }
   }
 
   // Find baseline (value when no exhale or inhale has been made)
@@ -108,5 +114,4 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     localStorage.setItem(this.BASELINE_KEY, JSON.stringify(reading));
     this.baseline = reading;
   }
-
 }
