@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import { Speed } from 'src/app/_models/games/coin-collector-game';
 import {
@@ -29,18 +30,25 @@ export class CoinCollectorGameComponent implements OnInit {
   constructor(
     private gameEngine: CoinCollectorGameEngineService,
     private zone: NgZone,
-    private spiromagicService: SpiromagicService
+    private spiromagicService: SpiromagicService,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.gameEngine.createScene(this.rendererCanvas);
     this.gameEngine.animate();
     this.getReadings();
+    this.toastrService.info(`I'm a message`, `I'm a title`, {
+      disableTimeOut: true,
+      closeButton: true,
+      positionClass: 'toast-bottom-right'
+    });
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(e => e?.unsubscribe());
     this.gameEngine.stopGame();
+    this.toastrService.clear();
   }
 
   getReadings(): void {

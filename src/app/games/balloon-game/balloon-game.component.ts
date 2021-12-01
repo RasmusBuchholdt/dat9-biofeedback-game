@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
 import {
   BalloonEngineService,
@@ -23,18 +24,25 @@ export class BalloonGameComponent implements OnInit {
 
   constructor(
     private gameEngine: BalloonEngineService,
-    private spiromagicService: SpiromagicService
+    private spiromagicService: SpiromagicService,
+    private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
     this.gameEngine.createScene(this.rendererCanvas);
     this.gameEngine.animate();
     this.getReadings();
+    this.toastrService.info(`I'm a message`, `I'm a title`, {
+      disableTimeOut: true,
+      closeButton: true,
+      positionClass: 'toast-bottom-right'
+    });
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
     this.gameEngine.stopGame();
+    this.toastrService.clear();
   }
 
   getReadings(): void {
@@ -42,6 +50,6 @@ export class BalloonGameComponent implements OnInit {
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
       this.gameEngine.setParticleRotation(reading);
       this.gameEngine.setInnerCircle(reading);
-    })
+    });
   }
 }
