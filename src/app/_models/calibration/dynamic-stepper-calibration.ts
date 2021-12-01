@@ -65,6 +65,8 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     localStorage.removeItem(this.MAX_KEY);
     localStorage.removeItem(this.MIN_KEY);
     this.baseline = 0;
+    this.currentMin = 0;
+    this.currentMax = 0;
   }
 
   private setMinMax(sessionMinReading: number, sessionMaxReading: number): void {
