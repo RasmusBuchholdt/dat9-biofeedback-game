@@ -14,8 +14,8 @@
   <div class="card">
     <div class="card-body">
       <div>
-        <label for="gameSpeedRange">Game speed ({{speed}}%)</label>
-        <input type="range" #gameSpeedControl class="form-control" min="0" max="100" step="1" [value]="speed"
+        <label for="gameSpeedRange">Game speed</label>
+        <input type="range" #gameSpeedControl class="form-control" min="0" max="10" step="0.25" [value]="speed"
           (input)="setGameSpeed(+gameSpeedControl.value)" id="gameSpeedRange">
       </div>
     </div>
