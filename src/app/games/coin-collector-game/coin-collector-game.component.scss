@@ -5,6 +5,17 @@
   right: 1%;
 }
 
+.settings {
+  z-index: 99;
+  position: absolute;
+  top: 10%;
+  left: 1%;
+
+  .card {
+    color: black;
+  }
+}
+
 .engine-wrapper {
   background: linear-gradient(#3498db, #2274aa);
 }

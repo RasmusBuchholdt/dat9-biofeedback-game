@@ -65,6 +65,12 @@ export class CoinCollectorGameEngineService {
   private characterDimensions: ObjectDimensions | null = null;
   private coinsRespawnInternal = 0;
 
+  private _gameSpeed = Speed;
+
+  public set gameSpeed(input: number) {
+    this._gameSpeed = input;
+  }
+
   constructor(
     private ngZone: NgZone
   ) { }
@@ -370,7 +376,7 @@ export class CoinCollectorGameEngineService {
   }
 
   private createCoinRow(amount: number): void {
-    this.coinsRespawnInternal = Speed * 15;
+    this.coinsRespawnInternal = this._gameSpeed * 15;
     const startPositionY = randomNumberInRange(MinCharacterY, MaxCharacterY);
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
@@ -418,7 +424,7 @@ export class CoinCollectorGameEngineService {
 
   private updateCoins(): void {
     this.activeCoins.forEach(coin => {
-      coin.position.x -= Speed / 2;
+      coin.position.x -= this._gameSpeed / 2;
       const diffPos = this.character.position.clone().distanceToSquared(coin.position.clone());
       if (diffPos <= 0 + (this.characterDimensions.height * this.characterDimensions.width / 2) + CoinCollectDistanceTolerance) {
         this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
@@ -431,11 +437,11 @@ export class CoinCollectorGameEngineService {
 
   private updateSky(): void {
     // We keep moving the first half
-    this.skyFirstHalf.position.x -= Speed;
+    this.skyFirstHalf.position.x -= this._gameSpeed;
 
     // If we have an active second half it needs to be moved as well
     if (this.skySecondHalf) {
-      this.skySecondHalf.position.x -= Speed;
+      this.skySecondHalf.position.x -= this._gameSpeed;
     }
 
     // Once the second half is out of the view we remove it from the scene
@@ -506,7 +512,7 @@ export class CoinCollectorGameEngineService {
   }
 
   private createCoinSineWave(length: number) {
-    this.coinsRespawnInternal = Speed * 20;
+    this.coinsRespawnInternal = this._gameSpeed * 20;
     const height = MaxCharacterY + MaxCharacterY * 0.15;
     const amplitude = 80;
     const frequency = 100;

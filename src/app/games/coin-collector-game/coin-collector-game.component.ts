@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Speed } from 'src/app/_models/games/coin-collector-game';
 import {
   CoinCollectorGameEngineService,
 } from 'src/app/_services/games/coin-collector-game-engine.service';
@@ -21,6 +22,7 @@ export class CoinCollectorGameComponent implements OnInit {
   @ViewChild('rendererCanvas', { static: true })
   public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
   public coinsCollected = 0;
+  public speed = Speed;
 
   private subscriptions: Subscription[] = [];
 
@@ -43,7 +45,7 @@ export class CoinCollectorGameComponent implements OnInit {
 
   getReadings(): void {
     // this.spiromagicService.calibration$.next(new ConstantStepperCalibration());
-    this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading  => {
+    this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading => {
       this.gameEngine.setCharacterPosition(reading);
     }));
     this.subscriptions.push(this.gameEngine.coinsCollected$.subscribe(coinsCollected => {
@@ -53,5 +55,10 @@ export class CoinCollectorGameComponent implements OnInit {
 
   resetGame(): void {
     // this.gameEngine.resetGame();
+  }
+
+  setGameSpeed(value: number): void {
+    this.speed = value;
+    this.gameEngine.gameSpeed = value;
   }
 }

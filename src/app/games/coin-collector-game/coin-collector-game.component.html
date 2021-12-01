@@ -10,6 +10,18 @@
   </div>
 </div>
 
+<div class="settings">
+  <div class="card">
+    <div class="card-body">
+      <div>
+        <label for="gameSpeedRange">Game speed ({{speed}}%)</label>
+        <input type="range" #gameSpeedControl class="form-control" min="0" max="100" step="1" [value]="speed"
+          (input)="setGameSpeed(+gameSpeedControl.value)" id="gameSpeedRange">
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="engine-wrapper">
   <canvas #rendererCanvas id="renderCanvas"></canvas>
 </div>
