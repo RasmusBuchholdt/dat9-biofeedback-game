@@ -7,7 +7,6 @@ import {
   CoinsDistance,
   CoinsPerSpawn,
   Colors,
-  FloorHeight,
   MaxCharacterY,
   MaxSkyY,
   MinCharacterY,
@@ -36,7 +35,6 @@ export class CoinCollectorGameEngineService {
 
   private frameId: number = null;
 
-  private floor: THREE.Object3D;
   private skyOptions: THREE.Object3D[] = [];
   private skyFirstHalf: THREE.Object3D;
   private skySecondHalf: THREE.Object3D;
@@ -130,7 +128,6 @@ export class CoinCollectorGameEngineService {
     this.setupSounds();
 
     this.createLights();
-    this.createFloor();
     this.createCharacter();
 
     this.spawnCoins(CoinsPerSpawn);
@@ -170,23 +167,6 @@ export class CoinCollectorGameEngineService {
     // to activate the lights, just add them to the scene
     this.scene.add(this.hemisphereLight);
     this.scene.add(this.shadowLight);
-  }
-
-  private createFloor(): void {
-    let floor: THREE.Object3D;
-
-    let geom = new THREE.PlaneGeometry(1000, FloorHeight);
-    let mat = new THREE.MeshPhongMaterial({
-      color: Colors.green,
-      transparent: true,
-      opacity: 1,
-      flatShading: true
-    });
-    floor = new THREE.Mesh(geom, mat);
-    floor.receiveShadow = true;
-    floor.name = 'Floor';
-    this.floor = floor;
-    this.scene.add(floor);
   }
 
   private setupSounds(): void {

@@ -41,7 +41,7 @@ export class CoinCollectorGameComponent implements OnInit {
     this.toastrService.info(`I'm a message`, `I'm a title`, {
       disableTimeOut: true,
       closeButton: true,
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-left'
     });
   }
 
