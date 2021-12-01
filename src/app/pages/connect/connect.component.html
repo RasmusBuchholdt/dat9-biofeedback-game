@@ -18,7 +18,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="spiromagicService.isConnected">
+  <div *ngIf="spiromagicService.isConnected && !(spiromagicService.tutorialFinished$ | async)">
     <div class="row">
       <div class="col">
         <h1>Device successfully connected</h1>
@@ -33,6 +33,30 @@
       <div class="col">
         <button type="button" class="btn btn-primary" [routerLink]="['/calibration']">
           Calibrate
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="spiromagicService.isConnected && spiromagicService.tutorialFinished$ | async">
+    <div class="row">
+      <div class="col">
+        <h1>Device successfully connected</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <p>Your have already calibrated and done the tutorial before, so you can skip directly to the menu or
+          recalibrate the device</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-primary mr-2" [routerLink]="['/menu']">
+          Menu
+        </button>
+        <button type="button" class="btn btn-warning" [routerLink]="['/calibration']"
+          (click)="spiromagicService.setTutorialCompleted(false)">
+          Recalibrate
         </button>
       </div>
     </div>
