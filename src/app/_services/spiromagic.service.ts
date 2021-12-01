@@ -74,6 +74,7 @@ export class SpiromagicService implements OnDestroy {
   public setTutorialCompleted(state: boolean): void {
     localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(state));
     this.tutorialFinished$.next(state);
+    this.calibration$.getValue().reset();
   }
 
   private getSpirometerReadings() {
