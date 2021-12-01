@@ -1,4 +1,5 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import * as THREE from 'three';
 
@@ -130,7 +131,7 @@ export class CoinCollectorGameEngineService {
     this.createLights();
     this.createCharacter();
 
-    this.spawnCoins(CoinsPerSpawn);
+    this.trySpawnCoins(CoinsPerSpawn);
   }
 
   private createLights(): void {
@@ -346,17 +347,27 @@ export class CoinCollectorGameEngineService {
     });
   }
 
+  private trySpawnCoins(amount: number): void {
+    if (this.character.position.y <= MinCharacterY) {
+      this.spawnCoins(amount);
+    } else {
+      // Try again in 5 seconds
+      this.coinsRespawnInternal = 5;
+    }
+  }
+
   private spawnCoins(amount: number): void {
     this.activeCoins = [];
     if (Math.random() < 0.5) {
       this.createCoinRow(amount);
     } else {
+      // Sine wave needs to be cut in half, as we only want upwards motion
       this.createCoinSineWave(amount)
     }
   }
 
   private createCoinRow(amount: number): void {
-    this.coinsRespawnInternal = this._gameSpeed * 15;
+    this.coinsRespawnInternal = 5;
     const startPositionY = randomNumberInRange(MinCharacterY, MaxCharacterY);
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
@@ -387,7 +398,7 @@ export class CoinCollectorGameEngineService {
     // Every x seconds we spawn a new coin row
     if (this.clock.getElapsedTime() >= this.coinsRespawnInternal) {
       this.activeCoins.map(e => this.scene.remove(e));
-      this.spawnCoins(CoinsPerSpawn);
+      this.trySpawnCoins(CoinsPerSpawn);
       this.clock.start();
     }
 
