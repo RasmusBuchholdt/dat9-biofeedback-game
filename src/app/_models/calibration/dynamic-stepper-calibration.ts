@@ -82,7 +82,7 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     }
 
     if (contentMax !== null) {
-      const cachedMax = JSON.parse(contentMin) as number;
+      const cachedMax = JSON.parse(contentMax) as number;
       if (sessionMaxReading > cachedMax) {
         localStorage.setItem(this.MIN_KEY, JSON.stringify(sessionMaxReading));
         this.currentMax = sessionMaxReading;
