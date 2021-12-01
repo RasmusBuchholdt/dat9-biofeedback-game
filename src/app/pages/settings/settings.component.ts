@@ -81,9 +81,8 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   resetCalibration(): void {
-    this.spiromagicService.calibration$.getValue().reset();
-    this.spiromagicService.resetReadings();
     this.spiromagicService.setTutorialCompleted(false);
+    this.spiromagicService.completeReset();
     this.router.navigateByUrl('/calibration');
   }
 

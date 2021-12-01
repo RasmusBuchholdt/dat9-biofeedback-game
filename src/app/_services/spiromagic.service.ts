@@ -61,21 +61,25 @@ export class SpiromagicService implements OnDestroy {
     this.gattService.disconnectDevice();
   }
 
+  completeReset(): void {
+    this.resetReadings();
+    this.calibration$.getValue().reset();
+  }
+
   resetReadings(): void {
     this.minReading = Number.MAX_SAFE_INTEGER;
     this.maxReading = Number.MIN_SAFE_INTEGER;
   }
 
+  setTutorialCompleted(state: boolean): void {
+    localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(state));
+    this.tutorialFinished$.next(state);
+    this.completeReset();
+  }
+
   private getTutorialStatus(): void {
     const content = localStorage.getItem(this.TUTORIAL_KEY);
     this.tutorialFinished$.next(content !== null ? JSON.parse(content) as boolean : false);
-  }
-
-  public setTutorialCompleted(state: boolean): void {
-    localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(state));
-    this.tutorialFinished$.next(state);
-    this.resetReadings();
-    this.calibration$.getValue().reset();
   }
 
   private getSpirometerReadings() {
