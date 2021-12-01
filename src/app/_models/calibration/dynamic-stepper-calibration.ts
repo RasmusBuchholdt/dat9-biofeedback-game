@@ -79,16 +79,22 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
       } else {
         this.currentMin = cachedMin;
       }
+    } else {
+      localStorage.setItem(this.MIN_KEY, JSON.stringify(sessionMinReading));
+      this.currentMin = sessionMinReading;
     }
 
     if (contentMax !== null) {
       const cachedMax = JSON.parse(contentMax) as number;
       if (sessionMaxReading > cachedMax) {
-        localStorage.setItem(this.MIN_KEY, JSON.stringify(sessionMaxReading));
+        localStorage.setItem(this.MAX_KEY, JSON.stringify(sessionMaxReading));
         this.currentMax = sessionMaxReading;
       } else {
         this.currentMax = cachedMax;
       }
+    } else {
+      localStorage.setItem(this.MAX_KEY, JSON.stringify(sessionMaxReading));
+      this.currentMax = sessionMaxReading;
     }
   }
 
