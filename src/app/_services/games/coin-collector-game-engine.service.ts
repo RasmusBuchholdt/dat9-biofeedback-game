@@ -1,11 +1,9 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import * as THREE from 'three';
 
 import {
   CoinCollectDistanceTolerance,
-  CoinsPerSpawn,
   Colors,
   MaxCharacterY,
   MaxSkyY,
@@ -130,7 +128,7 @@ export class CoinCollectorGameEngineService {
     this.createLights();
     this.createCharacter();
 
-    this.trySpawnCoins(CoinsPerSpawn);
+    this.trySpawnCoins();
   }
 
   private createLights(): void {
@@ -395,7 +393,7 @@ export class CoinCollectorGameEngineService {
     // Every x seconds we spawn a new coin row
     if (this.clock.getElapsedTime() >= this.coinsRespawnInternal) {
       this.activeCoins.map(e => this.scene.remove(e));
-      this.trySpawnCoins(CoinsPerSpawn);
+      this.trySpawnCoins();
       this.clock.start();
     }
 
