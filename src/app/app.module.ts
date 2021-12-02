@@ -23,13 +23,11 @@ import {
   SimpleCalibrationComponent,
 } from './pages/simple-calibration/simple-calibration.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
-import { NavbarComponent } from './shared/navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CalibrationComponent,
-    NavbarComponent,
     CoinCollectorGameComponent,
     BalloonGameComponent,
     SimpleCalibrationComponent,
