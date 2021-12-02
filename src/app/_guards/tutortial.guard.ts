@@ -20,7 +20,7 @@ export class TutorialGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     let tutorialFinished = this.spiromagicService.tutorialFinished$.getValue();
     if (!tutorialFinished) {
-      this.router.navigateByUrl('/game/tutorial');
+      this.router.navigateByUrl('/tutorial');
     }
     return tutorialFinished;
   }
