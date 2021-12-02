@@ -19,8 +19,8 @@ import { ConnectComponent } from './pages/connect/connect.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import {
-  SimpleCalibrationComponent,
-} from './pages/simple-calibration/simple-calibration.component';
+  CalibrationComponent,
+} from './pages/calibration/calibration.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
 import { DeveloperComponent } from './pages/developer/developer.component';
 
@@ -29,7 +29,7 @@ import { DeveloperComponent } from './pages/developer/developer.component';
     AppComponent,
     CoinCollectorGameComponent,
     BalloonGameComponent,
-    SimpleCalibrationComponent,
+    CalibrationComponent,
     TutorialComponent,
     SettingsComponent,
     MenuComponent,

@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({
-  selector: 'app-simple-calibration',
-  templateUrl: './simple-calibration.component.html',
-  styleUrls: ['./simple-calibration.component.scss']
+  selector: 'app-calibration',
+  templateUrl: './calibration.component.html',
+  styleUrls: ['./calibration.component.scss']
 })
-export class SimpleCalibrationComponent implements OnInit {
+export class CalibrationComponent implements OnInit {
 
   exhalationCompleted = false;
   inhalationCompleted = false;
