@@ -56,7 +56,7 @@ export class DeveloperComponent implements OnInit, OnDestroy {
 
   constructor(
     private toastrService: ToastrService,
-    private spiromagicService: SpiromagicService,
+    public spiromagicService: SpiromagicService,
     private deviceDetectorService: DeviceDetectorService,
     private calibrationService: CalibrationService
   ) { }

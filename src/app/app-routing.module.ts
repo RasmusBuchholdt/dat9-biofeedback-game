@@ -60,7 +60,6 @@ const routes: Routes = [
   },
   {
     path: 'developer',
-    canActivate: environment.production ? [ConnectedGuard] : [],
     component: DeveloperComponent
   },
   {

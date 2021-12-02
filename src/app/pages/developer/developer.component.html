@@ -7,7 +7,21 @@
     <div class="col">
       <div class="card mt-4 mb-4">
         <div class="card-body">
-          <!-- <h5 class="card-title">Spirometer Calibration</h5> -->
+          <div class="row mb-4">
+            <div class="col">
+              <h5 class="card-title">Developer settings</h5>
+            </div>
+            <div class="col">
+              <button type="button" *ngIf="!spiromagicService.isConnected" class="btn btn-success float-right"
+                (click)="spiromagicService.connect()">
+                Connect to device
+              </button>
+              <button type="button" *ngIf="spiromagicService.isConnected" class="btn btn-warning float-right"
+                (click)="spiromagicService.disconnect()">
+                Disconnect
+              </button>
+            </div>
+          </div>
           <div class="row justify-content-between">
             <div class="col-4">
               <p class="font-weight-bold">Calibration</p>
