@@ -17,7 +17,7 @@ import {
 } from '../../_models/games/coin-collector-game';
 import { ObjectDimensions } from '../../_models/object-dimensions';
 import { clamp } from '../../_utils/clamp';
-import { randomNumberInRange } from '../../_utils/randomNumberInRange';
+import { randomNumberInRange } from '../../_utils/random-number-in-range';
 import { scaleNumberToRange } from '../../_utils/scale-number-to-range';
 
 @Injectable({
