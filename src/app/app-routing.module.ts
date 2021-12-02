@@ -4,7 +4,6 @@ import { environment } from 'src/environments/environment';
 
 import { ConnectedGuard } from './_guards/connected.guard';
 import { TutorialGuard } from './_guards/tutortial.guard';
-import { CalibrationComponent } from './calibration/calibration.component';
 import {
   BalloonGameComponent,
 } from './games/balloon-game/balloon-game.component';
@@ -18,6 +17,7 @@ import {
   SimpleCalibrationComponent,
 } from './pages/simple-calibration/simple-calibration.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import { DeveloperComponent } from './pages/developer/developer.component';
 
 const routes: Routes = [
   {
@@ -61,7 +61,7 @@ const routes: Routes = [
   {
     path: 'developer',
     canActivate: environment.production ? [ConnectedGuard] : [],
-    component: CalibrationComponent
+    component: DeveloperComponent
   },
   {
     path: '**',

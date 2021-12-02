@@ -9,7 +9,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { SpiromagicService } from './_services/spiromagic.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CalibrationComponent } from './calibration/calibration.component';
 import {
   BalloonGameComponent,
 } from './games/balloon-game/balloon-game.component';
@@ -23,18 +22,19 @@ import {
   SimpleCalibrationComponent,
 } from './pages/simple-calibration/simple-calibration.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import { DeveloperComponent } from './pages/developer/developer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CalibrationComponent,
     CoinCollectorGameComponent,
     BalloonGameComponent,
     SimpleCalibrationComponent,
     TutorialComponent,
     SettingsComponent,
     MenuComponent,
-    ConnectComponent
+    ConnectComponent,
+    DeveloperComponent
   ],
   imports: [
     BrowserAnimationsModule,

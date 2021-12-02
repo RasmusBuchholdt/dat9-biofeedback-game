@@ -1,24 +1,21 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { BaseChartDirective, Label } from 'ng2-charts';
+import { ChartType, ChartDataSets, ChartOptions } from 'chart.js';
+import { Label, BaseChartDirective } from 'ng2-charts';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-
-import { CalibrationReadings } from '../_models/calibration-readings';
-import {
-  CalibrationStrategy,
-} from '../_models/calibration/calibration-strategy';
-import { SeriesEntry } from '../_models/series-entry';
-import { CalibrationService } from '../_services/calibration.service';
-import { SpiromagicService } from '../_services/spiromagic.service';
+import { CalibrationReadings } from 'src/app/_models/calibration-readings';
+import { CalibrationStrategy } from 'src/app/_models/calibration/calibration-strategy';
+import { SeriesEntry } from 'src/app/_models/series-entry';
+import { CalibrationService } from 'src/app/_services/calibration.service';
+import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({
-  selector: 'app-calibration',
-  templateUrl: './calibration.component.html',
-  styleUrls: ['./calibration.component.scss']
+  selector: 'app-developer',
+  templateUrl: './developer.component.html',
+  styleUrls: ['./developer.component.scss']
 })
-export class CalibrationComponent implements OnInit, OnDestroy {
+export class DeveloperComponent implements OnInit, OnDestroy {
   chartType = "line" as ChartType;
   chartData: ChartDataSets[] = [
     { data: [], label: "Spirometer readings", fill: false }
