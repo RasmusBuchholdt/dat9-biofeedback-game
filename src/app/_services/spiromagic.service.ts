@@ -75,8 +75,6 @@ export class SpiromagicService implements OnDestroy {
   setTutorialCompleted(state: boolean): void {
     localStorage.setItem(this.TUTORIAL_KEY, JSON.stringify(state));
     this.tutorialFinished$.next(state);
-    if (!state)
-      this.completeReset();
   }
 
   private getTutorialStatus(): void {
