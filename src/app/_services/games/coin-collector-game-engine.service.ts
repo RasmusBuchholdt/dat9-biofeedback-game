@@ -355,11 +355,7 @@ export class CoinCollectorGameEngineService {
 
   private spawnCoins(): void {
     this.activeCoins = [];
-    if (Math.random() < 0.5) {
-      this.createCoinRow(10);
-    } else {
-      this.createCoinSineWave(10)
-    }
+    this.createCoinRow(10);
   }
 
   private createCoinRow(amount: number): void {
