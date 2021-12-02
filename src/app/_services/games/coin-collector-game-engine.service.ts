@@ -353,7 +353,7 @@ export class CoinCollectorGameEngineService {
       // Try again in 5 seconds
       setTimeout(() => {
         this.trySpawnCoins();
-      }, 5000);
+      }, 1000);
     }
   }
 
