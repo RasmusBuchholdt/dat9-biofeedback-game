@@ -60,13 +60,8 @@ const routes: Routes = [
   },
   {
     path: 'developer',
-    children: [
-      {
-        path: 'calibration',
-        canActivate: environment.production ? [ConnectedGuard] : [],
-        component: CalibrationComponent
-      },
-    ]
+    canActivate: environment.production ? [ConnectedGuard] : [],
+    component: CalibrationComponent
   },
   {
     path: '**',
