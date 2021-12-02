@@ -6,6 +6,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
+import { killObject } from 'src/app/_utils/threejs/kill-object';
 
 @Injectable({
   providedIn: 'root'
@@ -43,8 +44,8 @@ export class BalloonEngineService {
     }
     if (this.scene != null) {
       this.renderer.dispose();
-      this.scene.children.forEach(this.killObject); // Remove children, but also their materials.
-      this.scene.clear(); // This does remove all the children too, but does not dispose the materials (I think).
+      this.scene.children.forEach(killObject);
+      this.scene.clear();
       this.scene = null;
     }
   }
@@ -83,7 +84,7 @@ export class BalloonEngineService {
     this.addCircles();
 
   }
-  addSound(){
+  addSound() {
     this.listener = new THREE.AudioListener();
     this.camera.add(this.listener);
     this.sound = new THREE.Audio(this.listener);
@@ -100,7 +101,7 @@ export class BalloonEngineService {
 
     // Set particle position
     const posArray = new Float32Array(particlesCount * 3);
-    for(let i = 0; i < particlesCount * 3; i++){
+    for (let i = 0; i < particlesCount * 3; i++) {
       posArray[i] = (Math.random() - 0.5) * 15;
     }
     particleGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -145,8 +146,8 @@ export class BalloonEngineService {
     let geometry = new THREE.CircleGeometry(scaledValue, 32);
     let material = new THREE.MeshBasicMaterial({ color: '#F0E68C' });
 
-    if(scaledValue == this.circleMaxValue && !this.soundFlag) {
-      if(this.sound.isPlaying) this.sound.stop();
+    if (scaledValue == this.circleMaxValue && !this.soundFlag) {
+      if (this.sound.isPlaying) this.sound.stop();
 
       this.sound.play();
       this.soundFlag = true;
@@ -184,21 +185,6 @@ export class BalloonEngineService {
     this.renderer.render(this.scene, this.camera);
   }
 
-  private killObject(object: (THREE.Object3D | THREE.HemisphereLight | THREE.Mesh) & { isMesh: boolean, material: any, geometry: THREE.BoxGeometry }): void {
-    object.clear();
-    if (object.isMesh) {
-      object.geometry.dispose()
-      if (object.material.type == 'MeshBasicMaterial') {
-        return;
-      }
-      if (object.material.isMaterial) {
-        this.cleanMaterial(object.material)
-      } else {
-        for (const material of object.material) this.cleanMaterial(material)
-      }
-    }
-  }
-
   private cleanMaterial(material: any): void {
     material.dispose()
     // dispose textures
@@ -227,7 +213,7 @@ export class BalloonEngineService {
     // Draw a circle
     var center = size / 2;
     matContext.beginPath();
-    matContext.arc(center, center, size/2, 0, 2 * Math.PI, false);
+    matContext.arc(center, center, size / 2, 0, 2 * Math.PI, false);
     matContext.closePath();
     matContext.fillStyle = color;
     matContext.fill();

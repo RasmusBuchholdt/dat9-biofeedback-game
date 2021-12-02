@@ -1,5 +1,9 @@
 import { ElementRef, Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import {
+  getObjectDimensions,
+} from 'src/app/_utils/threejs/get-object-dimensions';
+import { killObject } from 'src/app/_utils/threejs/kill-object';
 import * as THREE from 'three';
 
 import {
@@ -77,8 +81,8 @@ export class CoinCollectorGameEngineService {
     }
     if (this.scene != null) {
       this.renderer.dispose();
-      this.scene.children.forEach(this.killObject); // Remove children, but also their materials.
-      this.scene.clear(); // This does remove all the children too, but does not dispose the materials (I think).
+      this.scene.children.forEach(killObject);
+      this.scene.clear();
       this.scene = null;
     }
   }
@@ -324,7 +328,7 @@ export class CoinCollectorGameEngineService {
     character.scale.set(.25, .25, .25);
 
     this.character = character;
-    this.characterDimensions = this.getObjectDimensions(character);
+    this.characterDimensions = getObjectDimensions(character);
 
     this.scene.add(character);
   };
@@ -450,47 +454,12 @@ export class CoinCollectorGameEngineService {
     this.character.position.y = target;
   }
 
-  private killObject(object: (THREE.Object3D | THREE.HemisphereLight | THREE.Mesh) & { isMesh: boolean, material: any, geometry: THREE.BoxGeometry }): void {
-    object.clear();
-    if (object.isMesh) {
-      object.geometry.dispose()
-      if (object.material.type == 'MeshBasicMaterial' || object.material.type == 'MeshPhongMaterial') {
-        return;
-      }
-      if (object.material.isMaterial) {
-        this.cleanMaterial(object.material)
-      } else {
-        for (const material of object.material) this.cleanMaterial(material)
-      }
-    }
-  }
-
-  private cleanMaterial(material: any): void {
-    material.dispose()
-    // dispose textures
-    for (const key of Object.keys(material)) {
-      const value = material[key]
-      if (value && typeof value === 'object' && 'minFilter' in value) {
-        value.dispose()
-      }
-    }
-  }
-
   private resize(): void {
     const width = window.innerWidth;
     const height = window.innerHeight;
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height);
-  }
-
-  private getObjectDimensions(object: THREE.Object3D): ObjectDimensions {
-    var bbox = new THREE.Box3().setFromObject(object);
-    return {
-      depth: bbox.max.z - bbox.min.z,
-      height: bbox.max.y - bbox.min.y,
-      width: bbox.max.x - bbox.min.x
-    }
   }
 
   private createCoinSineWave(length: number) {
