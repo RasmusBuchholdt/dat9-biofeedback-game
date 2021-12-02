@@ -30,7 +30,6 @@ export class CoinCollectorGameEngineService {
   private scene: THREE.Scene;
   private listener: THREE.AudioListener;
   private sound: THREE.Audio;
-  private clock = new THREE.Clock();
 
   private hemisphereLight: THREE.HemisphereLight;
   private shadowLight: THREE.DirectionalLight;
@@ -63,7 +62,6 @@ export class CoinCollectorGameEngineService {
   coinsCollected$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   private characterDimensions: ObjectDimensions | null = null;
-  private coinsRespawnInternal = 0;
 
   private _gameSpeed = Speed;
 
@@ -353,7 +351,9 @@ export class CoinCollectorGameEngineService {
       this.spawnCoins();
     } else {
       // Try again in 5 seconds
-      this.coinsRespawnInternal = 5;
+      setTimeout(() => {
+        this.trySpawnCoins();
+      }, 5000);
     }
   }
 
@@ -363,7 +363,6 @@ export class CoinCollectorGameEngineService {
   }
 
   private createCoinRow(amount: number): void {
-    this.coinsRespawnInternal = 5;
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
@@ -390,13 +389,6 @@ export class CoinCollectorGameEngineService {
 
     this.propeller.rotation.x += 0.3;
 
-    // Every x seconds we spawn a new coin row
-    if (this.clock.getElapsedTime() >= this.coinsRespawnInternal) {
-      this.activeCoins.map(e => this.scene.remove(e));
-      this.trySpawnCoins();
-      this.clock.start();
-    }
-
     if (this.previousValue) {
       const planeMovement = clamp(this.character.position.y + (this.ascending ? 0.5 : -0.5), 25, 175);
       this.character.position.y = planeMovement;
@@ -411,12 +403,23 @@ export class CoinCollectorGameEngineService {
   private updateCoins(): void {
     this.activeCoins.forEach(coin => {
       coin.position.x -= this._gameSpeed / 2;
+
+      // Coin collection logic
       const diffPos = this.character.position.clone().distanceToSquared(coin.position.clone());
       if (diffPos <= 0 + (this.characterDimensions.height * this.characterDimensions.width / 2) + CoinCollectDistanceTolerance) {
         this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
         this.coinsCollected$.next(this.coinsCollected$.getValue() + 1);
         coin.clear();
         this.sound.play();
+      } else if (coin.position.x <= -1000) {
+        // If we didn't collect the coin, we need to check if it should be cleaned up
+        this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
+        coin.clear();
+      }
+
+      // Respawn coins if they are all gone
+      if (this.activeCoins.length === 0) {
+        this.trySpawnCoins();
       }
     });
   }
