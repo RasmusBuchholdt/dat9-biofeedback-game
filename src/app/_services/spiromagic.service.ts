@@ -102,7 +102,8 @@ export class SpiromagicService implements OnDestroy {
     if (rawReading > this.maxReading)
       this.maxReading = rawReading;
 
-    this.calibrationProgress$.next(calibration.progression);
+    if (this.calibrationProgress$.getValue() !== 100)
+      this.calibrationProgress$.next(calibration.progression);
 
     return +calibration.calibrate(rawReading, this.minReading, this.maxReading, sensitivity).toFixed(2);
   }
