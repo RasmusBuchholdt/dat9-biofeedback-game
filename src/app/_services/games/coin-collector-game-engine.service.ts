@@ -5,7 +5,6 @@ import * as THREE from 'three';
 
 import {
   CoinCollectDistanceTolerance,
-  CoinsDistance,
   CoinsPerSpawn,
   Colors,
   MaxCharacterY,
@@ -347,33 +346,31 @@ export class CoinCollectorGameEngineService {
     });
   }
 
-  private trySpawnCoins(amount: number): void {
+  private trySpawnCoins(): void {
     if (this.character.position.y <= MinCharacterY) {
-      this.spawnCoins(amount);
+      this.spawnCoins();
     } else {
       // Try again in 5 seconds
       this.coinsRespawnInternal = 5;
     }
   }
 
-  private spawnCoins(amount: number): void {
+  private spawnCoins(): void {
     this.activeCoins = [];
     if (Math.random() < 0.5) {
-      this.createCoinRow(amount);
+      this.createCoinRow(10);
     } else {
-      // Sine wave needs to be cut in half, as we only want upwards motion
-      this.createCoinSineWave(amount)
+      this.createCoinSineWave(10)
     }
   }
 
   private createCoinRow(amount: number): void {
     this.coinsRespawnInternal = 5;
-    const startPositionY = randomNumberInRange(MinCharacterY, MaxCharacterY);
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
-      coin.position.x = 300 + i * CoinsDistance;
-      coin.position.y = startPositionY;
+      coin.position.x = 500 + i * 50;
+      coin.position.y = MinCharacterY + (i * 20);
       this.activeCoins.push(coin);
       this.scene.add(coin);
     }
@@ -503,13 +500,12 @@ export class CoinCollectorGameEngineService {
   }
 
   private createCoinSineWave(length: number) {
-    this.coinsRespawnInternal = this._gameSpeed * 20;
     const height = MaxCharacterY + MaxCharacterY * 0.15;
     const amplitude = 80;
     const frequency = 100;
-    const placeEvery = 100;
+    const placeEvery = 30;
 
-    let x = 300;
+    let x = 500;
     let y = 300;
     let placed = 0;
 

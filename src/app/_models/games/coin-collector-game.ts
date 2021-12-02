@@ -4,7 +4,6 @@ export const MinCharacterY = 0;
 export const MaxSkyY = 0;
 export const MinSkyY = 1000;
 
-export const CoinsPerSpawn = 10;
 export const CoinCollectDistanceTolerance = 50;
 export const CoinsDistance = 50;
 
