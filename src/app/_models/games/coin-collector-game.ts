@@ -8,6 +8,8 @@ export const CoinCollectDistanceTolerance = 50;
 
 export const Speed = 1.5;
 
+export const HorizontalLength = 300;
+
 export const Colors = {
   red: '#e74c3c',
   white: '#95afc0',

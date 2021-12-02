@@ -9,6 +9,7 @@ import * as THREE from 'three';
 import {
   CoinCollectDistanceTolerance,
   Colors,
+  HorizontalLength,
   MaxCharacterY,
   MaxSkyY,
   MinCharacterY,
@@ -366,7 +367,7 @@ export class CoinCollectorGameEngineService {
     for (var i = 0; i < amount; i++) {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
-      coin.position.x = 500 + i * 50;
+      coin.position.x = HorizontalLength + i * 50;
       coin.position.y = MinCharacterY + (i * 20);
       this.activeCoins.push(coin);
       this.scene.add(coin);
@@ -411,7 +412,7 @@ export class CoinCollectorGameEngineService {
         this.coinsCollected$.next(this.coinsCollected$.getValue() + 1);
         coin.clear();
         this.sound.play();
-      } else if (coin.position.x <= -1000) {
+      } else if (coin.position.x <= -HorizontalLength) {
         // If we didn't collect the coin, we need to check if it should be cleaned up
         this.activeCoins.splice(this.activeCoins.indexOf(coin, 0), 1);
         coin.clear();
@@ -472,7 +473,7 @@ export class CoinCollectorGameEngineService {
     const placeEvery = 30;
 
     let x = 500;
-    let y = 300;
+    let y = HorizontalLength;
     let placed = 0;
 
     for (let i = 0; i < length * placeEvery; i++) {
