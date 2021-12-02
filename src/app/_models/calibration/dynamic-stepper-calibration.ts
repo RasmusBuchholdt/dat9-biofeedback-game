@@ -116,9 +116,9 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
 
     if (reading == this.previousReading) {
       this.numberOfIterations += 1;
+      this._progression = Math.ceil(this.numberOfIterations / this.minBaselineCounter * 100);
       if (this.numberOfIterations > this.minBaselineCounter && reading != this.baseline) {
         this.setBaseline(reading);
-        this._progression = Math.ceil(this.numberOfIterations / this.minBaselineCounter * 100);
       }
     } else {
       this.numberOfIterations = 0;
