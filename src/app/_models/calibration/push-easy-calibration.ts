@@ -22,6 +22,10 @@ export class PushEasyCalibration extends CalibrationBase implements CalibrationS
     return 'The readings will go continuously up if any breathing is detected.'
   }
 
+  get progression(): number {
+    return 100;
+  }
+
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
 
     // Prepare variables

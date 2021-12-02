@@ -21,12 +21,18 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
   private MAX_KEY = 'DYNAMIC_STEPPER_MAX';
   private MIN_KEY = 'DYNAMIC_STEPPER_MIN';
 
+  private _progression = 0;
+
   get name(): string {
     return "Dynamic stepper";
   }
 
   get description(): string {
     return "Stepper which stays at last known location. The amount of force of the breath is taken into consideration.";
+  }
+
+  get progression(): number {
+    return this._progression;
   }
 
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
@@ -112,6 +118,7 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
       this.numberOfIterations += 1;
       if (this.numberOfIterations > this.minBaselineCounter && reading != this.baseline) {
         this.setBaseline(reading);
+        this._progression = 100;
       }
     } else {
       this.numberOfIterations = 0;

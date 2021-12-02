@@ -19,6 +19,10 @@ export class StepperCalibration extends CalibrationBase implements CalibrationSt
     return 'The readings will be normalized in steps based on readings.'
   }
 
+  get progression(): number {
+    return 100;
+  }
+
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
 
     // Prepare variables

@@ -22,6 +22,7 @@ export class TutorialComponent implements OnInit, OnDestroy {
   @ViewChild('rendererCanvas', { static: true })
   public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
 
+  calibrationProgress = 0;
   tutorialStarted = false;
   sensitivity: number;
 
@@ -48,6 +49,10 @@ export class TutorialComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.spiromagicService.sensitivity$.subscribe(sensitivity => {
       this.sensitivity = sensitivity;
     }));
+    this.subscriptions.push(this.spiromagicService.calibrationProgress$.subscribe(calibrationProgress => {
+      console.log(calibrationProgress);
+      this.calibrationProgress = calibrationProgress;
+    }));
     this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading => {
       this.handleReading(reading);
     }));
@@ -58,6 +63,7 @@ export class TutorialComponent implements OnInit, OnDestroy {
   }
 
   finish(): void {
+    // TODO: Dont allow the user to finish before baseline has been set
     this.spiromagicService.setTutorialCompleted(true);
     this.tutorialEngine.stopGame();
     this.router.navigateByUrl('menu');

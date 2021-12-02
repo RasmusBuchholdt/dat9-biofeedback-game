@@ -16,6 +16,7 @@ import { GATTCharacteristicService } from './gatt-characteristic.service';
 export class SpiromagicService implements OnDestroy {
 
   tutorialFinished$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  calibrationProgress$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   reading$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null);
   calibration$: BehaviorSubject<CalibrationStrategy | null> = new BehaviorSubject<CalibrationStrategy | null>(this.calibrationService.calibrations[0]);
   sensitivity$: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(0);
@@ -102,6 +103,8 @@ export class SpiromagicService implements OnDestroy {
       this.minReading = rawReading;
     if (rawReading > this.maxReading)
       this.maxReading = rawReading;
+
+    this.calibrationProgress$.next(calibration.progression);
 
     return +calibration.calibrate(rawReading, this.minReading, this.maxReading, sensitivity).toFixed(2);
   }

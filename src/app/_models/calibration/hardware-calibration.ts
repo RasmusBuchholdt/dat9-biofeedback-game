@@ -16,6 +16,10 @@ export class HardwareCalibration extends CalibrationBase implements CalibrationS
     return 'The readings will be normalized based on the hardware capacity.';
   }
 
+  get progression(): number {
+    return 100;
+  }
+
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
     return normalize(reading * (sensitivity / 100 + 1), this.min, this.max);
   }

@@ -18,6 +18,10 @@ export class PuffCalibration extends CalibrationBase implements CalibrationStrat
     return 'The readings will go up shortly when puffs are detected.'
   }
 
+  get progression(): number {
+    return 100;
+  }
+
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
 
     // Prepare variables

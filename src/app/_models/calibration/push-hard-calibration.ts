@@ -21,6 +21,10 @@ export class PushHardCalibration extends CalibrationBase implements CalibrationS
     return 'The readings will go up if you continuously blow harder and go down when the readings stop peaking.'
   }
 
+  get progression(): number {
+    return 100;
+  }
+
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
 
     // Prepare variables

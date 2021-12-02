@@ -28,6 +28,10 @@ export class ConstantStepperCalibration extends CalibrationBase implements Calib
     return "Stepper which stays at last known location.";
   }
 
+  get progression(): number {
+    return 100;
+  }
+
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
 
     // Initialization

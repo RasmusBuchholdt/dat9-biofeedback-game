@@ -32,7 +32,6 @@
   </div>
 </div>
 <div class="container text-center mt-4" *ngIf="tutorialStarted  && !(spiromagicService.tutorialFinished$ | async)">
-  <!-- TODO: This needs to properly hide the canvas as well -->
   <div class="back-button" (click)="tutorialStarted = false">
     <i class="fa fa-arrow-left text-primary"></i>
   </div>
@@ -54,7 +53,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <button type="button" class="btn btn-primary" (click)="finish()">
+      <button [disabled]="calibrationProgress !== 100" type="button" class="btn btn-primary" (click)="finish()">
         Finish tutorial
       </button>
     </div>

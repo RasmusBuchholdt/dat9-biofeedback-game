@@ -3,4 +3,5 @@ export interface CalibrationStrategy {
   reset(): void;
   get name(): string;
   get description(): string;
+  get progression(): number;
 }

@@ -13,6 +13,10 @@ export class DynamicCalibration extends CalibrationBase implements CalibrationSt
     return 'The readings will be normalized based on your personal readings.'
   }
 
+  get progression(): number {
+    return 100;
+  }
+
   calibrate(reading: number, minReading: number, maxReading: number, sensitivity: number): number {
     return normalize(reading * (sensitivity / 1000 + 1), minReading, maxReading);
   }
