@@ -233,7 +233,7 @@ export class CoinCollectorGameEngineService {
 
     let geom = new THREE.BoxGeometry(20, 20, 20);
     let mat = new THREE.MeshPhongMaterial({
-      color: Colors.white,
+      color: Colors.white
     });
 
     let nBlocs = 3 + Math.floor(Math.random() * 3);
@@ -246,17 +246,13 @@ export class CoinCollectorGameEngineService {
       // set the position and the rotation of each cube randomly
       mesh.position.x = i * 15;
       mesh.position.y = Math.random() * 10;
-      mesh.position.z = Math.random() * 10;
+      mesh.position.z = randomNumberInRange(10, 50);
       mesh.rotation.z = Math.random() * Math.PI * 2;
       mesh.rotation.y = Math.random() * Math.PI * 2;
 
       // set the size of the cube randomly
       let s = .1 + Math.random() * .9;
       mesh.scale.set(s, s, s);
-
-      // allow each cube to cast and to receive shadows
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
 
       // add the cube to the container we first created
       cloud.add(mesh);
