@@ -12,7 +12,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button *ngIf="!isConnecting" type="button" class="btn btn-primary"  (click)="connect()">
+        <button *ngIf="!isConnecting" type="button" class="btn btn-light"  (click)="connect()">
           Connect
         </button>
         <div *ngIf="isConnecting" class="spinner-border text-light" role="status">
@@ -34,7 +34,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-primary" [routerLink]="['/calibration']">
+        <button type="button" class="btn btn-light" [routerLink]="['/calibration']">
           Calibrate
         </button>
       </div>
@@ -54,7 +54,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-primary mr-2" [routerLink]="['/menu']">
+        <button type="button" class="btn btn-light mr-2" [routerLink]="['/menu']">
           Menu
         </button>
         <button type="button" class="btn btn-warning" [routerLink]="['/calibration']"

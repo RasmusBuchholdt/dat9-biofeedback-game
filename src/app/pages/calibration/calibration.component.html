@@ -1,7 +1,7 @@
 <div class="container text-center d-flex align-items-center justify-content-center">
   <div *ngIf="!exhalationCompleted && !inhalationCompleted">
     <div class="back-button" [routerLink]="['/connect']">
-      <i class="fa fa-arrow-left text-primary"></i>
+      <i class="fa fa-arrow-left text-light"></i>
     </div>
     <div class="row">
       <div class="col">
@@ -19,7 +19,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-primary" (click)="exhalationCompleted = true">
+        <button type="button" class="btn btn-light" (click)="exhalationCompleted = true">
           Continue
         </button>
       </div>
@@ -27,7 +27,7 @@
   </div>
   <div *ngIf="exhalationCompleted && !inhalationCompleted">
     <div class="back-button" (click)="exhalationCompleted = false">
-      <i class="fa fa-arrow-left text-primary"></i>
+      <i class="fa fa-arrow-left text-light"></i>
     </div>
     <div class="row">
       <div class="col">
@@ -45,7 +45,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-primary" (click)="inhalationCompleted = true">
+        <button type="button" class="btn btn-light" (click)="inhalationCompleted = true">
           Continue
         </button>
       </div>
@@ -53,7 +53,7 @@
   </div>
   <div *ngIf="exhalationCompleted && inhalationCompleted && calibrationProgress !== 100">
     <div class="back-button" (click)="inhalationCompleted = false">
-      <i class="fa fa-arrow-left text-primary"></i>
+      <i class="fa fa-arrow-left text-light"></i>
     </div>
     <div class="row">
       <div class="col">
@@ -74,7 +74,7 @@
   </div>
   <div *ngIf="exhalationCompleted && inhalationCompleted && calibrationProgress === 100">
     <div class="back-button" (click)="inhalationCompleted = false">
-      <i class="fa fa-arrow-left text-primary"></i>
+      <i class="fa fa-arrow-left text-light"></i>
     </div>
     <div class="row">
       <div class="col">
@@ -90,7 +90,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-primary" [routerLink]="['/tutorial']">
+        <button type="button" class="btn btn-light" [routerLink]="['/tutorial']">
           Continue
         </button>
       </div>

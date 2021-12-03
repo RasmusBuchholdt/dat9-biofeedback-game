@@ -1,26 +1,26 @@
 <div class="container text-center d-flex align-items-center justify-content-center">
   <div class="row menu-buttons">
     <div class="col">
-      <button class="btn btn-primary" (click)="spiromagicService.setTutorialCompleted(false)"
+      <button class="btn btn-light" (click)="spiromagicService.setTutorialCompleted(false)"
         [routerLink]="['/tutorial']">
         <i class="fas fa-life-ring"></i>
       </button>
       <p>Tutorial</p>
     </div>
     <div class="col">
-      <button class="btn btn-primary" [routerLink]="['/game/coin-collector']">
+      <button class="btn btn-light" [routerLink]="['/game/coin-collector']">
         <i class="fas fa-plane-departure"></i>
       </button>
       <p>Coin Collector</p>
     </div>
     <div class="col">
-      <button class="btn btn-primary" [routerLink]="['/game/balloon']">
+      <button class="btn btn-light" [routerLink]="['/game/balloon']">
         <i class="fas fa-dot-circle"></i>
       </button>
       <p>Balloon</p>
     </div>
     <div class="col">
-      <button class="btn btn-primary" [routerLink]="['/settings']">
+      <button class="btn btn-light" [routerLink]="['/settings']">
         <i class="fa fa-cog"></i>
       </button>
       <p>Settings</p>
@@ -29,5 +29,5 @@
 </div>
 
 <div class="developer-mode" [routerLink]="['/developer']">
-  <i class="fa fa-code text-primary"></i>
+  <i class="fa fa-code text-light"></i>
 </div>
