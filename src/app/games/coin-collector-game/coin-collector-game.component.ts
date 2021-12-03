@@ -38,7 +38,9 @@ export class CoinCollectorGameComponent implements OnInit {
     this.gameEngine.createScene(this.rendererCanvas);
     this.gameEngine.animate();
     this.getReadings();
-    this.toastrService.info(`I'm a message`, `I'm a title`, {
+    this.toastrService.info(` In this application you will perform the pursed lip breathing exercise like you did in the tutorial.
+                              When you exhale, the plane will fly upwards and slowly fly back down when you inhale.
+                              Collect as many coins as you can! You can increase and decrease the speed in the menu in the upper left corner.`, `Controls`, {
       disableTimeOut: true,
       closeButton: true,
       positionClass: 'toast-bottom-left'

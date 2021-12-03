@@ -32,7 +32,9 @@ export class BalloonGameComponent implements OnInit {
     this.gameEngine.createScene(this.rendererCanvas);
     this.gameEngine.animate();
     this.getReadings();
-    this.toastrService.info(`I'm a message`, `I'm a title`, {
+    this.toastrService.info(` In this application you will perform the pursed lip breathing exercise like you did in the tutorial.
+                              When you exhale through the SpiroMagic device, the inner circle will expand.
+                              Try to expand it enough that it reaches the outer circle.`, `Controls`, {
       disableTimeOut: true,
       closeButton: true,
       positionClass: 'toast-bottom-right'
