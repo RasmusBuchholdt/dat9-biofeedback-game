@@ -6,7 +6,7 @@ This website is used for a scientific paper as a biofeedback system that helps c
 
 There is no public API available for the SpiroMagic spirometer to read its output, so the GATT services and characteristics were acquired by using the [LightBlue®](https://play.google.com/store/apps/details?id=com.punchthrough.lightblueexplorer) BLE scanning tool.
 
-## Dependecies
+## Dependencies
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) and uses [ThreeJS](https://threejs.org/) and [Web Bluetooth API](https://web.dev/bluetooth/) combined with [Angular](https://angular.io/) 12.9 and [Bootstrap](https://getbootstrap.com/) in Version 4.6.
 
