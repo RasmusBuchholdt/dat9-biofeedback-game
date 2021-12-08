@@ -42,7 +42,7 @@ export class TutorialComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(e => e?.unsubscribe());
-    this.tutorialEngine.stopGame();
+    this.tutorialEngine.stop();
   }
 
   private setupSpirometer(): void {
@@ -60,7 +60,7 @@ export class TutorialComponent implements OnInit, OnDestroy {
 
   finish(): void {
     this.spiromagicService.setTutorialCompleted(true);
-    this.tutorialEngine.stopGame();
+    this.tutorialEngine.stop();
     this.router.navigateByUrl('menu');
   }
 

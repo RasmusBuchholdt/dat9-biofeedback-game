@@ -15,7 +15,7 @@ import {
   MinCharacterY,
   MinSkyY,
   Speed,
-} from '../../_models/games/coin-collector-game';
+} from '../../_models/applications/coin-collector';
 import { ObjectDimensions } from '../../_models/object-dimensions';
 import { clamp } from '../../_utils/clamp';
 import { randomNumberInRange } from '../../_utils/random-number-in-range';
@@ -24,7 +24,7 @@ import { scaleNumberToRange } from '../../_utils/scale-number-to-range';
 @Injectable({
   providedIn: 'root'
 })
-export class CoinCollectorGameEngineService {
+export class CoinCollectorEngineService {
   private canvas: HTMLCanvasElement;
   private renderer: THREE.WebGLRenderer;
   private camera: THREE.PerspectiveCamera;
@@ -74,7 +74,7 @@ export class CoinCollectorGameEngineService {
     private ngZone: NgZone
   ) { }
 
-  stopGame(): void {
+  stop(): void {
     if (this.frameId != null) {
       cancelAnimationFrame(this.frameId);
     }

@@ -26,7 +26,7 @@ export class TutorialEngineService {
     private ngZone: NgZone
   ) { }
 
-  stopGame(): void {
+  stop(): void {
     if (this.frameId != null) {
       cancelAnimationFrame(this.frameId);
     }

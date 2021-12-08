@@ -7,18 +7,18 @@ import {
 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
-import { Speed } from 'src/app/_models/games/coin-collector-game';
+import { Speed } from 'src/app/_models/applications/coin-collector';
 import {
-  CoinCollectorGameEngineService,
-} from 'src/app/_services/games/coin-collector-game-engine.service';
+  CoinCollectorEngineService,
+} from 'src/app/_services/applications/coin-collector-engine.service';
 import { SpiromagicService } from 'src/app/_services/spiromagic.service';
 
 @Component({
-  selector: 'app-coin-collector-game',
-  templateUrl: './coin-collector-game.component.html',
-  styleUrls: ['./coin-collector-game.component.scss']
+  selector: 'app-coin-collector',
+  templateUrl: './coin-collector.component.html',
+  styleUrls: ['./coin-collector.component.scss']
 })
-export class CoinCollectorGameComponent implements OnInit {
+export class CoinCollectorComponent implements OnInit {
 
   @ViewChild('rendererCanvas', { static: true })
   public rendererCanvas: ElementRef<HTMLCanvasElement> | undefined;
@@ -28,15 +28,15 @@ export class CoinCollectorGameComponent implements OnInit {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private gameEngine: CoinCollectorGameEngineService,
+    private engine: CoinCollectorEngineService,
     private zone: NgZone,
     private spiromagicService: SpiromagicService,
     private toastrService: ToastrService
   ) { }
 
   ngOnInit(): void {
-    this.gameEngine.createScene(this.rendererCanvas);
-    this.gameEngine.animate();
+    this.engine.createScene(this.rendererCanvas);
+    this.engine.animate();
     this.getReadings();
     this.toastrService.info(`
       In this application you will perform the pursed lip breathing exercise like you did in the tutorial.</br>
@@ -50,26 +50,26 @@ export class CoinCollectorGameComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(e => e?.unsubscribe());
-    this.gameEngine.stopGame();
+    this.engine.stop();
     this.toastrService.clear();
   }
 
   getReadings(): void {
     // this.spiromagicService.calibration$.next(new ConstantStepperCalibration());
     this.subscriptions.push(this.spiromagicService.reading$.subscribe(reading => {
-      this.gameEngine.setCharacterPosition(reading);
+      this.engine.setCharacterPosition(reading);
     }));
-    this.subscriptions.push(this.gameEngine.coinsCollected$.subscribe(coinsCollected => {
+    this.subscriptions.push(this.engine.coinsCollected$.subscribe(coinsCollected => {
       this.zone.run(() => this.coinsCollected = coinsCollected);
     }));
   }
 
   resetGame(): void {
-    // this.gameEngine.resetGame();
+    // this.engine.resetGame();
   }
 
   setGameSpeed(value: number): void {
     this.speed = value;
-    this.gameEngine.gameSpeed = value;
+    this.engine.gameSpeed = value;
   }
 }

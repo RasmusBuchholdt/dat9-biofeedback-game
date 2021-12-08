@@ -9,26 +9,24 @@ import { ToastrModule } from 'ngx-toastr';
 import { SpiromagicService } from './_services/spiromagic.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BalloonComponent } from './applications/balloon/balloon.component';
 import {
-  BalloonGameComponent,
-} from './games/balloon-game/balloon-game.component';
-import {
-  CoinCollectorGameComponent,
-} from './games/coin-collector-game/coin-collector-game.component';
-import { ConnectComponent } from './pages/connect/connect.component';
-import { MenuComponent } from './pages/menu/menu.component';
-import { SettingsComponent } from './pages/settings/settings.component';
+  CoinCollectorComponent,
+} from './applications/coin-collector/coin-collector.component';
 import {
   CalibrationComponent,
 } from './pages/calibration/calibration.component';
-import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import { ConnectComponent } from './pages/connect/connect.component';
 import { DeveloperComponent } from './pages/developer/developer.component';
+import { MenuComponent } from './pages/menu/menu.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { TutorialComponent } from './pages/tutorial/tutorial.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CoinCollectorGameComponent,
-    BalloonGameComponent,
+    BalloonComponent,
+    CoinCollectorComponent,
     CalibrationComponent,
     TutorialComponent,
     SettingsComponent,

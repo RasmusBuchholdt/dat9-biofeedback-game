@@ -4,12 +4,10 @@ import { environment } from 'src/environments/environment';
 
 import { ConnectedGuard } from './_guards/connected.guard';
 import { TutorialGuard } from './_guards/tutortial.guard';
+import { BalloonComponent } from './applications/balloon/balloon.component';
 import {
-  BalloonGameComponent,
-} from './games/balloon-game/balloon-game.component';
-import {
-  CoinCollectorGameComponent,
-} from './games/coin-collector-game/coin-collector-game.component';
+  CoinCollectorComponent,
+} from './applications/coin-collector/coin-collector.component';
 import {
   CalibrationComponent,
 } from './pages/calibration/calibration.component';
@@ -50,11 +48,11 @@ const routes: Routes = [
     children: [
       {
         path: 'coin-collector',
-        component: CoinCollectorGameComponent
+        component: CoinCollectorComponent
       },
       {
         path: 'balloon',
-        component: BalloonGameComponent
+        component: BalloonComponent
       }
     ]
   },
