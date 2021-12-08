@@ -38,7 +38,7 @@ export class BalloonGameComponent implements OnInit {
       Try to expand it enough that it reaches the outer circle.`, `Controls`, {
       disableTimeOut: true,
       closeButton: true,
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-left'
     });
   }
 
