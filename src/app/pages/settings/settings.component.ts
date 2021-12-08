@@ -23,7 +23,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   chartLabels: Label[] = [];
   chartOptions: ChartOptions = {
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     animation: {
       duration: 0
     },
