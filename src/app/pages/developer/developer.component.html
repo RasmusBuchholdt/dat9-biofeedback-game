@@ -28,7 +28,7 @@
               <div class="form-group">
                 <label for="calibrationMode">Mode</label>
                 <div>
-                  <button id="calibrationMode" type="button" class="btn btn-light btn-calibration"
+                  <button id="calibrationMode" type="button" class="btn btn-primary btn-calibration"
                     *ngFor="let calibration of calibrations"
                     [ngClass]="{'active': activeCalibration.name === calibration.name}"
                     (click)="changeCalibration(calibration)">
@@ -49,10 +49,10 @@
               <p>Current reading: {{readings.current}}</p>
               <p>Min reading: {{readings.min}}</p>
               <p>Max reading: {{readings.max}}</p>
-              <button type="button" class="btn btn-light" (click)="resetReadings()">
+              <button type="button" class="btn btn-warning" (click)="resetReadings()">
                 Reset readings
               </button>
-              <button type="button" class="btn btn-light ml-2" (click)="resetCalibration()">
+              <button type="button" class="btn btn-warning ml-2" (click)="resetCalibration()">
                 Reset calibration
               </button>
             </div>
