@@ -47,12 +47,12 @@ export class CoinCollectorGameEngineService {
   private ascending = true;
   private previousValue: number;
 
-  private coinOuterGeometry = new THREE.CircleGeometry(3.25, 20);
+  private coinOuterGeometry = new THREE.CircleGeometry(6.25, 20);
   private coinOuterMaterial = new THREE.MeshPhongMaterial({
     color: Colors.black
   });
 
-  private coinInnerGeometry = new THREE.CircleGeometry(3, 20);
+  private coinInnerGeometry = new THREE.CircleGeometry(6, 20);
   private coinInnerMaterial = new THREE.MeshPhongMaterial({
     color: Colors.yellow,
     shininess: 0,
@@ -364,7 +364,7 @@ export class CoinCollectorGameEngineService {
       let coin = this.createCoin();
       // Always spawn the coins in a row with a bit space between them
       coin.position.x = HorizontalLength + i * 50;
-      coin.position.y = MinCharacterY + (i * 20);
+      coin.position.y = MinCharacterY + (i * 25);
       this.activeCoins.push(coin);
       this.scene.add(coin);
     }
