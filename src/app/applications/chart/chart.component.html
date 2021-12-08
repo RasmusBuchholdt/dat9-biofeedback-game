@@ -1,1 +1,17 @@
-<p>chart works!</p>
+<div class="back-button" [routerLink]="['/menu']">
+  <i class="fa fa-arrow-left text-light"></i>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="graph">
+            <canvas baseChart [datasets]="chartData" [chartType]="chartType" [labels]="chartLabels"
+              [options]="chartOptions"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
