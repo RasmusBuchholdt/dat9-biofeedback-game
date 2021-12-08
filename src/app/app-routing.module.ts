@@ -10,14 +10,14 @@ import {
 import {
   CoinCollectorGameComponent,
 } from './games/coin-collector-game/coin-collector-game.component';
-import { ConnectComponent } from './pages/connect/connect.component';
-import { MenuComponent } from './pages/menu/menu.component';
-import { SettingsComponent } from './pages/settings/settings.component';
 import {
   CalibrationComponent,
 } from './pages/calibration/calibration.component';
-import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import { ConnectComponent } from './pages/connect/connect.component';
 import { DeveloperComponent } from './pages/developer/developer.component';
+import { MenuComponent } from './pages/menu/menu.component';
+import { SettingsComponent } from './pages/settings/settings.component';
+import { TutorialComponent } from './pages/tutorial/tutorial.component';
 
 const routes: Routes = [
   {
@@ -45,7 +45,7 @@ const routes: Routes = [
     component: MenuComponent
   },
   {
-    path: 'game',
+    path: 'application',
     canActivate: environment.production ? [ConnectedGuard, TutorialGuard] : [],
     children: [
       {
