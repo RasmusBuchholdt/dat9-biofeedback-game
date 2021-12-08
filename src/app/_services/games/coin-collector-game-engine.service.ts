@@ -324,6 +324,7 @@ export class CoinCollectorGameEngineService {
 
     this.character = character;
     this.characterDimensions = getObjectDimensions(character);
+    this.character.position.x = -HorizontalLength / 3;
 
     this.scene.add(character);
   };
