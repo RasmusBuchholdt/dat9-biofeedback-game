@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ConnectedGuard } from './_guards/connected.guard';
 import { TutorialGuard } from './_guards/tutortial.guard';
 import { BalloonComponent } from './applications/balloon/balloon.component';
+import { ChartComponent } from './applications/chart/chart.component';
 import {
   CoinCollectorComponent,
 } from './applications/coin-collector/coin-collector.component';
@@ -53,6 +54,10 @@ const routes: Routes = [
       {
         path: 'balloon',
         component: BalloonComponent
+      },
+      {
+        path: 'chart',
+        component: ChartComponent
       }
     ]
   },
