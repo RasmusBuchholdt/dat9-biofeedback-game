@@ -34,6 +34,15 @@ export class BalloonEngineService {
   private outerCircle: THREE.Line;
   private innerCircle: THREE.Mesh;
 
+  private guidanceCircle: THREE.Line;
+  private currentGuidanceCircleSize = 0.1;
+
+  private _guidance = false;
+
+  public set guidance(value: boolean) {
+    this._guidance = value;
+  }
+
   constructor(
     private ngZone: NgZone
   ) { }
@@ -48,6 +57,7 @@ export class BalloonEngineService {
       this.scene.clear();
       this.scene = null;
     }
+    this.guidance = false;
   }
 
   createScene(canvas: ElementRef<HTMLCanvasElement>): void {
@@ -94,10 +104,6 @@ export class BalloonEngineService {
       this.sound.setBuffer(buffer);
       this.sound.setVolume(0.5);
     });
-  }
-
-  enableGuidance(): void {
-
   }
 
   private addParticles(): void {
@@ -180,6 +186,21 @@ export class BalloonEngineService {
     });
   }
 
+  private increasing = true;
+  private adjustGuidanceCircle(): void {
+    if (this.currentGuidanceCircleSize >= this.circleMaxValue) {
+      this.increasing = false;
+    } else if (!this.increasing && this.currentGuidanceCircleSize <= this.circleMinValue) {
+      this.increasing = true;
+    }
+    this.currentGuidanceCircleSize += this.increasing ? 0.02 : -0.02;
+    let geometry = new THREE.CircleGeometry(this.currentGuidanceCircleSize, 64);
+    let material = new THREE.LineBasicMaterial({ color: 'blue' });
+    this.scene.remove(this.guidanceCircle);
+    this.guidanceCircle = new THREE.Line(geometry, material);
+    this.scene.add(this.guidanceCircle);
+  }
+
   private render(): void {
     this.frameId = requestAnimationFrame(() => {
       this.render();
@@ -188,6 +209,9 @@ export class BalloonEngineService {
     // Particle render
     this.particleMesh.rotation.x = this.particleRotation;
     this.renderer.render(this.scene, this.camera);
+
+    if (this._guidance)
+      this.adjustGuidanceCircle();
   }
 
   private resize(): void {

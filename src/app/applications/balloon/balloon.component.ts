@@ -36,7 +36,7 @@ export class BalloonComponent implements OnInit {
     let hint = '';
 
     if (history.state.guidance) {
-      this.engine.enableGuidance();
+      this.engine.guidance = true;
       hint =
         `....`;
     } else {
