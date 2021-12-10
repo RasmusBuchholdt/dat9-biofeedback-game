@@ -10,10 +10,10 @@ export class AppComponent {
   title = 'dat9-game-website';
 
   constructor(private router: Router) {
-    this.checkDeviceSupport();
+    this.checkBrowserBluetoothSupport();
   }
 
-  private async checkDeviceSupport(): Promise<void> {
+  private async checkBrowserBluetoothSupport(): Promise<void> {
     let isSupported = false;
     if (navigator.bluetooth !== undefined) {
       isSupported = await navigator.bluetooth.getAvailability();
