@@ -141,8 +141,8 @@ export class BalloonEngineService {
     this.scene.add(this.outerCircle);
 
     geometry = new THREE.CircleGeometry(this.circleMinValue, 50);
-    material = new THREE.LineBasicMaterial({ color: '#F0E68C' });
-    this.innerCircle = new THREE.Mesh(geometry, material);
+    let materialInner = new THREE.MeshBasicMaterial({ color: '#F0E68C' });
+    this.innerCircle = new THREE.Mesh(geometry, materialInner);
     this.scene.add(this.innerCircle);
   }
 
