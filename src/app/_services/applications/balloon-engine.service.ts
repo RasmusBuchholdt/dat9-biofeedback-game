@@ -129,6 +129,7 @@ export class BalloonEngineService {
 
     // Set particle mesh
     this.particleMesh = new THREE.Points(particleGeometry, particlesMaterial);
+    this.particleMesh.renderOrder = 100;
     this.scene.add(this.particleMesh);
   }
 
