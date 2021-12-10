@@ -34,7 +34,7 @@ export class BalloonEngineService {
   private outerCircle: THREE.Line;
   private innerCircle: THREE.Mesh;
 
-  private guidanceCircle: THREE.Line;
+  private guidanceCircle: THREE.Mesh;
   private currentGuidanceCircleSize = 0.1;
 
   private _guidance = false;
@@ -195,9 +195,9 @@ export class BalloonEngineService {
     }
     this.currentGuidanceCircleSize += this.increasing ? 0.02 : -0.02;
     let geometry = new THREE.CircleGeometry(this.currentGuidanceCircleSize, 64);
-    let material = new THREE.LineBasicMaterial({ color: 'blue' });
+    let material = new THREE.MeshBasicMaterial({ color: '#6F1E51' });
     this.scene.remove(this.guidanceCircle);
-    this.guidanceCircle = new THREE.Line(geometry, material);
+    this.guidanceCircle = new THREE.Mesh(geometry, material);
     this.guidanceCircle.translateZ(-0.00001);
     this.scene.add(this.guidanceCircle);
   }
