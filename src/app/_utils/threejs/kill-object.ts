@@ -8,7 +8,7 @@ export function killObject(object: (THREE.Object3D | THREE.HemisphereLight | THR
       return;
     }
     if (object.material.isMaterial) {
-      this.cleanMaterial(object.material)
+      cleanMaterial(object.material)
     } else {
       for (const material of object.material) cleanMaterial(material)
     }
