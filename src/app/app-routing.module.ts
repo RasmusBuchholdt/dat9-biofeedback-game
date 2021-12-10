@@ -17,6 +17,7 @@ import { DeveloperComponent } from './pages/developer/developer.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import { BrowserNotSupportedComponent } from './pages/browser-not-supported/browser-not-supported.component';
 
 const routes: Routes = [
   {
@@ -64,6 +65,10 @@ const routes: Routes = [
   {
     path: 'developer',
     component: DeveloperComponent
+  },
+  {
+    path: 'browser-not-supported',
+    component: BrowserNotSupportedComponent
   },
   {
     path: '**',

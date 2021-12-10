@@ -22,6 +22,7 @@ import { MenuComponent } from './pages/menu/menu.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
 import { ChartComponent } from './applications/chart/chart.component';
+import { BrowserNotSupportedComponent } from './pages/browser-not-supported/browser-not-supported.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ChartComponent } from './applications/chart/chart.component';
     MenuComponent,
     ConnectComponent,
     DeveloperComponent,
-    ChartComponent
+    ChartComponent,
+    BrowserNotSupportedComponent
   ],
   imports: [
     BrowserAnimationsModule,
