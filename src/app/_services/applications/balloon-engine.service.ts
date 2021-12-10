@@ -130,6 +130,7 @@ export class BalloonEngineService {
     // Set particle mesh
     this.particleMesh = new THREE.Points(particleGeometry, particlesMaterial);
     this.particleMesh.renderOrder = 100;
+    this.particleMesh.name = 'Particles';
     this.scene.add(this.particleMesh);
   }
 
@@ -139,11 +140,13 @@ export class BalloonEngineService {
       color: '#F0E68C'
     });
     this.outerCircle = new THREE.Line(geometry, material);
+    this.outerCircle.name = 'Border circle';
     this.scene.add(this.outerCircle);
 
     geometry = new THREE.CircleGeometry(this.circleMinValue, 50);
     let materialInner = new THREE.MeshBasicMaterial({ color: '#F0E68C' });
     this.innerCircle = new THREE.Mesh(geometry, materialInner);
+    this.innerCircle.name = 'Indicator circle';
     this.scene.add(this.innerCircle);
   }
 
@@ -170,6 +173,7 @@ export class BalloonEngineService {
     this.scene.remove(this.innerCircle);
     this.innerCircle = new THREE.Mesh(geometry, material);
     this.innerCircle.renderOrder = 2;
+    this.innerCircle.name = 'Indicator circle';
     this.scene.add(this.innerCircle);
   }
 
@@ -201,6 +205,7 @@ export class BalloonEngineService {
     this.scene.remove(this.guidanceCircle);
     this.guidanceCircle = new THREE.Mesh(geometry, material);
     this.guidanceCircle.renderOrder = 1;
+    this.guidanceCircle.name = 'Guidance circle';
     this.scene.add(this.guidanceCircle);
   }
 
