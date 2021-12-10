@@ -138,6 +138,7 @@ export class BalloonEngineService {
       color: '#F0E68C'
     });
     this.outerCircle = new THREE.Line(geometry, material);
+    this.outerCircle.translateZ(-0.0001);
     this.scene.add(this.outerCircle);
 
     geometry = new THREE.CircleGeometry(this.circleMinValue, 50);
@@ -198,7 +199,7 @@ export class BalloonEngineService {
     let material = new THREE.MeshBasicMaterial({ color: '#6F1E51' });
     this.scene.remove(this.guidanceCircle);
     this.guidanceCircle = new THREE.Mesh(geometry, material);
-    this.guidanceCircle.translateZ(-0.00001);
+    this.guidanceCircle.translateZ(-0.0001);
     this.scene.add(this.guidanceCircle);
   }
 
