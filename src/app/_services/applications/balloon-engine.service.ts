@@ -84,7 +84,8 @@ export class BalloonEngineService {
     this.addCircles();
 
   }
-  addSound() {
+
+  private addSound() {
     this.listener = new THREE.AudioListener();
     this.camera.add(this.listener);
     this.sound = new THREE.Audio(this.listener);
@@ -135,24 +136,25 @@ export class BalloonEngineService {
     this.scene.add(this.innerCircle);
   }
 
-  setParticleRotation(value: number) {
+  private setParticleRotation(value: number) {
     const elapsedTime = this.clock.getElapsedTime();
     this.particleRotation = (.005 * value) + (elapsedTime * 0.05);
     //this.particleRotation = elapsedTime * 0.05;
   }
 
   setInnerCircle(value: number) {
+    this.setParticleRotation(value);
     const scaledValue = scaleNumberToRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
     let geometry = new THREE.CircleGeometry(scaledValue, 32);
     let material = new THREE.MeshBasicMaterial({ color: '#F0E68C' });
 
     if (scaledValue == this.circleMaxValue && !this.soundFlag) {
       if (this.sound.isPlaying) this.sound.stop();
-
       this.sound.play();
       this.soundFlag = true;
+    } else if (scaledValue != this.circleMaxValue) {
+      this.soundFlag = false;
     }
-    else if (scaledValue != this.circleMaxValue) this.soundFlag = false;
 
     this.scene.remove(this.innerCircle);
     this.innerCircle = new THREE.Mesh(geometry, material);
@@ -181,19 +183,7 @@ export class BalloonEngineService {
 
     // Particle render
     this.particleMesh.rotation.x = this.particleRotation;
-
     this.renderer.render(this.scene, this.camera);
-  }
-
-  private cleanMaterial(material: any): void {
-    material.dispose()
-    // dispose textures
-    for (const key of Object.keys(material)) {
-      const value = material[key]
-      if (value && typeof value === 'object' && 'minFilter' in value) {
-        value.dispose()
-      }
-    }
   }
 
   private resize(): void {
@@ -204,7 +194,7 @@ export class BalloonEngineService {
     this.renderer.setSize(width, height);
   }
 
-  createCircleTexture(color, size) {
+  private createCircleTexture(color, size) {
     var matCanvas = document.createElement('canvas');
     matCanvas.width = matCanvas.height = size;
     var matContext = matCanvas.getContext('2d');
@@ -222,5 +212,4 @@ export class BalloonEngineService {
     // return a texture made from the canvas
     return texture;
   }
-
 }
