@@ -138,7 +138,6 @@ export class BalloonEngineService {
       color: '#F0E68C'
     });
     this.outerCircle = new THREE.Line(geometry, material);
-    this.outerCircle.translateZ(-0.0001);
     this.scene.add(this.outerCircle);
 
     geometry = new THREE.CircleGeometry(this.circleMinValue, 50);
@@ -169,6 +168,7 @@ export class BalloonEngineService {
 
     this.scene.remove(this.innerCircle);
     this.innerCircle = new THREE.Mesh(geometry, material);
+    this.innerCircle.renderOrder = 2;
     this.scene.add(this.innerCircle);
   }
 
@@ -199,7 +199,7 @@ export class BalloonEngineService {
     let material = new THREE.MeshBasicMaterial({ color: '#6F1E51' });
     this.scene.remove(this.guidanceCircle);
     this.guidanceCircle = new THREE.Mesh(geometry, material);
-    this.guidanceCircle.translateZ(-0.0001);
+    this.guidanceCircle.renderOrder = 1;
     this.scene.add(this.guidanceCircle);
   }
 
@@ -242,4 +242,13 @@ export class BalloonEngineService {
     // return a texture made from the canvas
     return texture;
   }
+
+  private setOpacity(obj, opacity) {
+    obj.traverse(child => {
+      if (child instanceof THREE.Mesh) {
+        child.material.opacity = opacity;
+      }
+    });
+  }
+
 }
