@@ -198,6 +198,7 @@ export class BalloonEngineService {
     let material = new THREE.LineBasicMaterial({ color: 'blue' });
     this.scene.remove(this.guidanceCircle);
     this.guidanceCircle = new THREE.Line(geometry, material);
+    this.guidanceCircle.translateZ(-0.00001);
     this.scene.add(this.guidanceCircle);
   }
 
