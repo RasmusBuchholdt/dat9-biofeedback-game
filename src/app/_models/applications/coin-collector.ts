@@ -6,7 +6,7 @@ export const MinSkyY = 1000;
 
 export const CoinCollectDistanceTolerance = 50;
 
-export const Speed = 3;
+export const Speed = 5;
 
 export const HorizontalLength = 300;
 
