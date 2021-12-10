@@ -156,7 +156,7 @@ export class BalloonEngineService {
     this.setParticleRotation(value);
     const scaledValue = scaleNumberToRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
     let geometry = new THREE.CircleGeometry(scaledValue, 32);
-    let material = new THREE.MeshBasicMaterial({ color: '#F0E68C' });
+    let material = new THREE.MeshBasicMaterial({ color: '#F0E68C', opacity: 0.9, transparent: true });
 
     if (scaledValue == this.circleMaxValue && !this.soundFlag) {
       if (this.sound.isPlaying) this.sound.stop();
