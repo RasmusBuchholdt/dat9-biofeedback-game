@@ -14,10 +14,16 @@
       <p>Coin Collector</p>
     </div>
     <div class="col">
-      <button class="btn btn-light" [routerLink]="['/application/balloon']">
+      <button class="btn btn-light" [routerLink]="['/application/balloon']" [state]="{ guidance: true }">
         <i class="fas fa-dot-circle"></i>
       </button>
-      <p>Balloon</p>
+      <p>Balloon 1</p>
+    </div>
+    <div class="col">
+      <button class="btn btn-light" [routerLink]="['/application/balloon']" [state]="{ guidance: false }">
+        <i class="fas fa-dot-circle"></i>
+      </button>
+      <p>Balloon 2</p>
     </div>
     <div class="col">
       <button class="btn btn-light" [routerLink]="['/application/chart']">

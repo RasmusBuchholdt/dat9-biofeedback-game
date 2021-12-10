@@ -25,17 +25,28 @@ export class BalloonComponent implements OnInit {
   constructor(
     private engine: BalloonEngineService,
     private spiromagicService: SpiromagicService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
   ) { }
 
   ngOnInit(): void {
     this.engine.createScene(this.rendererCanvas);
     this.engine.animate();
     this.getReadings();
-    this.toastrService.info(`
-      In this application you will perform the pursed lip breathing exercise like you did in the tutorial.</br>
+
+    let hint = '';
+
+    if (history.state.guidance) {
+      this.engine.enableGuidance();
+      hint =
+        `....`;
+    } else {
+      hint =
+        `In this application you will perform the pursed lip breathing exercise like you did in the tutorial.</br>
       When you exhale through the SpiroMagic device, the inner circle will expand.</br>
-      Try to expand it enough that it reaches the outer circle.`, `Controls`, {
+      Try to expand it enough that it reaches the outer circle.`;
+    }
+
+    this.toastrService.info(hint, `Controls`, {
       disableTimeOut: true,
       closeButton: true,
       positionClass: 'toast-bottom-left'
@@ -51,7 +62,6 @@ export class BalloonComponent implements OnInit {
   getReadings(): void {
     this.spiromagicService.calibration$.next(new DynamicStepperCalibration())
     this.subscription = this.spiromagicService.reading$.subscribe(reading => {
-      this.engine.setParticleRotation(reading);
       this.engine.setInnerCircle(reading);
     });
   }

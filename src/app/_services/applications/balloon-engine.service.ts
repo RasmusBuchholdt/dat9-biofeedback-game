@@ -96,6 +96,10 @@ export class BalloonEngineService {
     });
   }
 
+  enableGuidance(): void {
+
+  }
+
   private addParticles(): void {
     const particleGeometry = new THREE.BufferGeometry;
     const particlesCount = 500;
