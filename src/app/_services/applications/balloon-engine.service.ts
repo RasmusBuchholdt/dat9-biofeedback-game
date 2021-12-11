@@ -108,7 +108,7 @@ export class BalloonEngineService {
 
   private addParticles(): void {
     const particleGeometry = new THREE.BufferGeometry;
-    const particlesCount = 500;
+    const particlesCount = 200;
 
     // Set particle position
     const posArray = new Float32Array(particlesCount * 3);
@@ -193,13 +193,25 @@ export class BalloonEngineService {
   }
 
   private increasing = true;
+  private stopCycles = 20;
+  private currentCycle = 0;
   private adjustGuidanceCircle(): void {
     if (this.currentGuidanceCircleSize >= this.circleMaxValue) {
       this.increasing = false;
     } else if (!this.increasing && this.currentGuidanceCircleSize <= this.circleMinValue) {
       this.increasing = true;
     }
-    this.currentGuidanceCircleSize += this.increasing ? 0.02 : -0.02;
+
+    if(!this.increasing && this.currentGuidanceCircleSize >= this.circleMaxValue && this.currentCycle != this.stopCycles)
+      this.currentCycle += 1;
+    else if(this.increasing && this.currentGuidanceCircleSize <= this.circleMinValue && this.currentCycle != this.stopCycles) {
+      this.currentCycle += 1;
+    }
+    else {
+      this.currentGuidanceCircleSize += this.increasing ? 0.015 : -0.015;
+      this.currentCycle = 0;
+    }
+
     let geometry = new THREE.CircleGeometry(this.currentGuidanceCircleSize, 64);
     let material = new THREE.MeshBasicMaterial({ color: '#6F1E51' });
     this.scene.remove(this.guidanceCircle);
