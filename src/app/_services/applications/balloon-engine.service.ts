@@ -202,7 +202,6 @@ export class BalloonEngineService {
       setTimeout(() => {
         this.guidanceCirclePausing = false;
       }, 2000);
-      return;
     }
     if (!this.guidanceCirclePausing)
       this.setGuidanceCircle();
