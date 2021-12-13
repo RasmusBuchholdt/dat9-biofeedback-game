@@ -108,7 +108,7 @@ export class BalloonEngineService {
 
   private addParticles(): void {
     const particleGeometry = new THREE.BufferGeometry;
-    const particlesCount = 500;
+    const particlesCount = 200;
 
     // Set particle position
     const posArray = new Float32Array(particlesCount * 3);
