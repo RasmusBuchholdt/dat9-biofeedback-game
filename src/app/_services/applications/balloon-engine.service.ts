@@ -32,10 +32,12 @@ export class BalloonEngineService {
   private circleMinValue = 0.1;
   private outerCircle: THREE.Line;
   private innerCircle: THREE.Mesh;
+  private currentInnerCircleSize = 0.1;
 
   private guidanceCircle: THREE.Mesh;
   private guidanceCircleIncreasing = true;
   private guidanceCirclePausing = false;
+  private guidanceCircleThreshold = 0.2;
   private currentGuidanceCircleSize = 0.1;
 
   private _guidance = false;
@@ -159,6 +161,7 @@ export class BalloonEngineService {
     const scaledValue = scaleNumberToRange(value, 0, 100, this.circleMinValue, this.circleMaxValue);
     let geometry = new THREE.CircleGeometry(scaledValue, 32);
     let material = new THREE.MeshBasicMaterial({ color: '#F0E68C', opacity: 0.5, transparent: true });
+    this.currentInnerCircleSize = scaledValue;
 
     if (scaledValue == this.circleMaxValue && !this.soundFlag) {
       if (this.sound.isPlaying) this.sound.stop();
@@ -207,8 +210,10 @@ export class BalloonEngineService {
 
   private setGuidanceCircle(): void {
     this.currentGuidanceCircleSize += this.guidanceCircleIncreasing ? 0.015 : -0.015;
+    const difference = Math.abs(this.currentGuidanceCircleSize - this.currentInnerCircleSize);
+    const color = difference <= this.guidanceCircleThreshold ? 'green' : '#6F1E51';
     let geometry = new THREE.CircleGeometry(this.currentGuidanceCircleSize, 64);
-    let material = new THREE.MeshBasicMaterial({ color: '#6F1E51' });
+    let material = new THREE.MeshBasicMaterial({ color });
     this.scene.remove(this.guidanceCircle);
     this.guidanceCircle = new THREE.Mesh(geometry, material);
     this.guidanceCircle.renderOrder = 1;
