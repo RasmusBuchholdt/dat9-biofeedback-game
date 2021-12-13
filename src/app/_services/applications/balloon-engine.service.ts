@@ -19,7 +19,6 @@ export class BalloonEngineService {
   private listener: THREE.AudioListener;
   private sound: THREE.Audio;
   private soundFlag = false;
-  private bloomAsset;
 
   private frameId: number = null;
 
@@ -82,9 +81,6 @@ export class BalloonEngineService {
     this.scene.add(this.camera);
 
     this.clock = new Clock();
-
-    const loader = new THREE.TextureLoader;
-    this.bloomAsset = loader.load('assets/images/Bloom.png');
 
     // Sound
     this.addSound();
