@@ -35,6 +35,8 @@ export class BalloonEngineService {
   private innerCircle: THREE.Mesh;
 
   private guidanceCircle: THREE.Mesh;
+  private guidanceCircleIncreasing = true;
+  private guidanceCirclePausing = false;
   private currentGuidanceCircleSize = 0.1;
 
   private _guidance = false;
@@ -192,14 +194,23 @@ export class BalloonEngineService {
     });
   }
 
-  private increasing = true;
   private adjustGuidanceCircle(): void {
     if (this.currentGuidanceCircleSize >= this.circleMaxValue) {
-      this.increasing = false;
-    } else if (!this.increasing && this.currentGuidanceCircleSize <= this.circleMinValue) {
-      this.increasing = true;
+      this.guidanceCircleIncreasing = false;
+    } else if (!this.guidanceCircleIncreasing && this.currentGuidanceCircleSize <= this.circleMinValue) {
+      this.guidanceCircleIncreasing = true;
+      this.guidanceCirclePausing = true;
+      setTimeout(() => {
+        this.guidanceCirclePausing = false;
+      }, 2000);
+      return;
     }
-    this.currentGuidanceCircleSize += this.increasing ? 0.02 : -0.02;
+    if (!this.guidanceCirclePausing)
+      this.setGuidanceCircle();
+  }
+
+  private setGuidanceCircle(): void {
+    this.currentGuidanceCircleSize += this.guidanceCircleIncreasing ? 0.015 : -0.015;
     let geometry = new THREE.CircleGeometry(this.currentGuidanceCircleSize, 64);
     let material = new THREE.MeshBasicMaterial({ color: '#6F1E51' });
     this.scene.remove(this.guidanceCircle);
