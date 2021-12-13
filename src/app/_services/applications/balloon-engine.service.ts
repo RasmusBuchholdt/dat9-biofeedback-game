@@ -255,12 +255,4 @@ export class BalloonEngineService {
     // return a texture made from the canvas
     return texture;
   }
-
-  private setOpacity(obj, opacity) {
-    obj.traverse(child => {
-      if (child instanceof THREE.Mesh) {
-        child.material.opacity = opacity;
-      }
-    });
-  }
 }
