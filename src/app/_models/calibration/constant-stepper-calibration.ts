@@ -44,9 +44,7 @@ export class ConstantStepperCalibration extends CalibrationBase implements Calib
     if (currentReading > this.baseline + 1 && this.stepValue < this.maxValue) {
       this.stepValue += this.stepIncrement;
     }
-    else if (currentReading < this.baseline - 1 && this.stepValue > this.minValue) {
-      this.stepValue -= this.stepIncrement;
-    }
+    else this.stepValue -= 2;
 
     // Clamp
     this.stepValue = clamp(this.stepValue, 1, 100);
