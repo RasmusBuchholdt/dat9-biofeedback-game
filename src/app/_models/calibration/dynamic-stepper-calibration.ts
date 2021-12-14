@@ -50,7 +50,8 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     // Find step value
     if (currentReading > this.baseline + 1) {
       // I have added 0.5 because it seems that exhale requires more force than inhale.
-      this.stepValue += stepIncrement + 0.5;
+      //this.stepValue += stepIncrement + 0.5;
+      this.stepValue += 1.5;
     }
     //Comment this in if you want to enable inhale.
     /* else if (currentReading < this.baseline - 1) {
