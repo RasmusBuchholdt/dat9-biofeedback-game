@@ -48,6 +48,7 @@ export class DynamicStepperCalibration extends CalibrationBase implements Calibr
     const stepIncrement = Math.abs(currentReading - this.baseline) * stepIncreasePercentage;
 
     // Find step value
+    // Include the sensitivity here, so it's more likely to go up
     if (currentReading > this.baseline + 1) {
       // I have added 0.5 because it seems that exhale requires more force than inhale.
       //this.stepValue += stepIncrement + 0.5;
