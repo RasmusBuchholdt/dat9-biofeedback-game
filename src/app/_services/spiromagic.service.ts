@@ -5,8 +5,8 @@ import {
   CalibrationStrategy,
 } from '../_models/calibration/calibration-strategy';
 import {
-  ConstantStepperCalibration,
-} from '../_models/calibration/constant-stepper-calibration';
+  DynamicStepperCalibration,
+} from '../_models/calibration/dynamic-stepper-calibration';
 import { CalibrationService } from './calibration.service';
 import { GATTCharacteristicService } from './gatt-characteristic.service';
 
@@ -35,7 +35,7 @@ export class SpiromagicService implements OnDestroy {
   ) {
     this.getTutorialStatus();
     // Default values
-    this.calibration$.next(new ConstantStepperCalibration());
+    this.calibration$.next(new DynamicStepperCalibration());
     this.sensitivity$.next(15);
     this.subscription = this.gattService
       .stream(

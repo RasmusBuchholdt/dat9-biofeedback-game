@@ -201,14 +201,14 @@ export class BalloonEngineService {
       this.guidanceCirclePausing = true;
       setTimeout(() => {
         this.guidanceCirclePausing = false;
-      }, 2000);
+      }, 250);
     }
     if (!this.guidanceCirclePausing)
       this.setGuidanceCircle();
   }
 
   private setGuidanceCircle(): void {
-    this.currentGuidanceCircleSize += this.guidanceCircleIncreasing ? 0.015 : -0.015;
+    this.currentGuidanceCircleSize += this.guidanceCircleIncreasing ? 0.0075 : -0.015;
     const difference = Math.abs(this.currentGuidanceCircleSize - this.currentInnerCircleSize);
     const color = difference <= this.guidanceCircleThreshold ? 'green' : '#6F1E51';
     let geometry = new THREE.CircleGeometry(this.currentGuidanceCircleSize, 64);
