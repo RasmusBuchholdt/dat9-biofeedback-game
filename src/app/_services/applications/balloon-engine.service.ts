@@ -213,7 +213,7 @@ export class BalloonEngineService {
   }
 
   private setGuidanceCircle(): void {
-    this.currentGuidanceCircleSize += this.guidanceCircleIncreasing ? 0.00675 : -0.010;
+    this.currentGuidanceCircleSize += this.guidanceCircleIncreasing ? 0.00675 : -0.0105;
     const difference = Math.abs(this.currentGuidanceCircleSize - this.currentInnerCircleSize);
     const color = difference <= this.guidanceCircleThreshold ? 'green' : '#6F1E51';
     let geometry = new THREE.CircleGeometry(this.currentGuidanceCircleSize, 64);
