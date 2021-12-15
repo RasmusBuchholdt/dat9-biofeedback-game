@@ -196,10 +196,15 @@ export class BalloonEngineService {
   private adjustGuidanceCircle(): void {
     if (this.currentGuidanceCircleSize >= this.circleMaxValue) {
       this.guidanceCircleIncreasing = false;
+      console.log('Exhale', this.clock.getElapsedTime());
+      this.clock.start();
     } else if (!this.guidanceCircleIncreasing && this.currentGuidanceCircleSize <= this.circleMinValue) {
+      console.log("Inhale", this.clock.getElapsedTime());
       this.guidanceCircleIncreasing = true;
       this.guidanceCirclePausing = true;
       setTimeout(() => {
+        console.log("Inhale + pause", this.clock.getElapsedTime());
+        this.clock.start();
         this.guidanceCirclePausing = false;
       }, 250);
     }
