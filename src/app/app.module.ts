@@ -14,6 +14,9 @@ import {
   CoinCollectorComponent,
 } from './applications/coin-collector/coin-collector.component';
 import {
+  BrowserNotSupportedComponent,
+} from './pages/browser-not-supported/browser-not-supported.component';
+import {
   CalibrationComponent,
 } from './pages/calibration/calibration.component';
 import { ConnectComponent } from './pages/connect/connect.component';
@@ -21,8 +24,6 @@ import { DeveloperComponent } from './pages/developer/developer.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
-import { ChartComponent } from './applications/chart/chart.component';
-import { BrowserNotSupportedComponent } from './pages/browser-not-supported/browser-not-supported.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,6 @@ import { BrowserNotSupportedComponent } from './pages/browser-not-supported/brow
     MenuComponent,
     ConnectComponent,
     DeveloperComponent,
-    ChartComponent,
     BrowserNotSupportedComponent
   ],
   imports: [

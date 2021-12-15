@@ -5,10 +5,12 @@ import { environment } from 'src/environments/environment';
 import { ConnectedGuard } from './_guards/connected.guard';
 import { TutorialGuard } from './_guards/tutortial.guard';
 import { BalloonComponent } from './applications/balloon/balloon.component';
-import { ChartComponent } from './applications/chart/chart.component';
 import {
   CoinCollectorComponent,
 } from './applications/coin-collector/coin-collector.component';
+import {
+  BrowserNotSupportedComponent,
+} from './pages/browser-not-supported/browser-not-supported.component';
 import {
   CalibrationComponent,
 } from './pages/calibration/calibration.component';
@@ -17,7 +19,6 @@ import { DeveloperComponent } from './pages/developer/developer.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
-import { BrowserNotSupportedComponent } from './pages/browser-not-supported/browser-not-supported.component';
 
 const routes: Routes = [
   {
@@ -55,10 +56,6 @@ const routes: Routes = [
       {
         path: 'balloon',
         component: BalloonComponent
-      },
-      {
-        path: 'chart',
-        component: ChartComponent
       }
     ]
   },
