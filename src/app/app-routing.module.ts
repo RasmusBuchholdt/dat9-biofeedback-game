@@ -8,6 +8,7 @@ import { BalloonComponent } from './applications/balloon/balloon.component';
 import {
   CoinCollectorComponent,
 } from './applications/coin-collector/coin-collector.component';
+import { TextComponent } from './applications/text/text.component';
 import {
   BrowserNotSupportedComponent,
 } from './pages/browser-not-supported/browser-not-supported.component';
@@ -56,6 +57,10 @@ const routes: Routes = [
       {
         path: 'balloon',
         component: BalloonComponent
+      },
+      {
+        path: 'text',
+        component: TextComponent
       }
     ]
   },

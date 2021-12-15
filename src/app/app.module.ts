@@ -24,6 +24,7 @@ import { DeveloperComponent } from './pages/developer/developer.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { TutorialComponent } from './pages/tutorial/tutorial.component';
+import { TextComponent } from './applications/text/text.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { TutorialComponent } from './pages/tutorial/tutorial.component';
     MenuComponent,
     ConnectComponent,
     DeveloperComponent,
-    BrowserNotSupportedComponent
+    BrowserNotSupportedComponent,
+    TextComponent
   ],
   imports: [
     BrowserAnimationsModule,
