@@ -94,3 +94,25 @@ img {
     font-size: 50px;
   }
 }
+
+.instructions-button {
+  position: absolute;
+  padding: 20px;
+  cursor: pointer;
+  right: 0;
+  top: 0%;
+  z-index: 99;
+
+  .fa,
+  .fas {
+    font-size: 50px;
+  }
+}
+
+.modal-content {
+  background-color: #323f4f;
+
+  .close {
+    color: #fff;
+  }
+}
