@@ -34,12 +34,15 @@ export class BalloonComponent implements OnInit {
 
     if (history.state.guidance) {
       this.engine.guidance = true;
-      this.instructions = '';
+      this.instructions =
+        `In this application, you will slowly inhale through your nose for 4 seconds and slowly exhale into the SpiroMagic for 6 seconds. Repeat this 10 times.</br></br>
+      The yellow circle in the middle will follow your breathing. The red circle expands for 6 seconds, the same rate that you should breathe in the exercise. The yellow circle will turn green when your breath follows this closely.
+      `;
     } else {
       this.instructions =
-        `In this application you will perform the pursed lip breathing exercise like you did in the tutorial.</br>
-      When you exhale through the SpiroMagic device, the inner circle will expand.</br>
-      Try to expand it enough that it reaches the outer circle.`;
+        `In this application, you will slowly inhale through your nose for 4 seconds and slowly exhale into the SpiroMagic for 6 seconds. Repeat this 10 times.</br></br>
+        The yellow circle in the middle will follow your breathing.
+      `;
     }
   }
 
