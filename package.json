@@ -21,6 +21,7 @@
     "@angular/router": "^14.2.4",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@manekinekko/angular-web-bluetooth": "^11.2.2",
+    "@types/offscreencanvas": "^2019.7.0",
     "bootstrap": "^4.6.0",
     "chart.js": "^2.9.4",
     "jquery": "^3.6.0",
