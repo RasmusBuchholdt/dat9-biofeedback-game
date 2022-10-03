@@ -114,5 +114,7 @@
       }
     }
   },
-  "defaultProject": "dat9-game-website"
+  "cli": {
+    "analytics": false
+  }
 }
